@@ -1,0 +1,44 @@
+name: Validate plugins
+
+# Runs on every PR (no path filter) so a required check never hangs at "Expected — waiting".
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the action diffs against the base ref
+
+      # Anthropic's canonical marketplace validation:
+      # invariants I1–I11, `claude plugin validate` on the marketplace,
+      # changed plugin folders, JSON-parse of .mcp.json / .lsp.json / hooks/hooks.json.
+      # Pinned to a commit SHA (never @main) — see the action's RELEASING.md.
+      - name: Validate (anthropics/validate-plugins)
+        uses: anthropics/claude-plugins-community/.github/actions/validate-plugins@06ec7b6a0a82bdc4bec44bd82d4368c42f20d7c1
+        with:
+          marketplace-path: .claude-plugin/marketplace.json
+          claude-cli-version: "2.1.316"
+          # Treat every invariant (incl. I1 alpha-sort, I8 plugin path exists) as an error.
+          warn-invariants: ""
+          # Kept false: it fails on any "⚠" line, incl. the advisory ICON_MISSING
+          # directory check. Strictness is enforced by the step below instead.
+          fail-on-warnings: "false"
+
+      # The action validates only CHANGED plugin folders and without --strict.
+      # Sweep everything with --strict (schema warnings = failure). `claude` is installed by the action.
+      - name: Strict validate (marketplace + all plugins)
+        run: |
+          claude plugin validate . --strict
+          for p in plugins/*/; do
+            echo "::group::$p"
+            claude plugin validate "$p" --strict
+            echo "::endgroup::"
+          done

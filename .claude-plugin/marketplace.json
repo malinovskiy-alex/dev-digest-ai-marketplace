@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "dev-digest-ai",
+  "description": "AI plugins for developer digests",
+  "owner": {
+    "name": "Oleksandr Malinovskyi",
+    "url": "https://github.com/malinovskiy-alex"
+  },
+  "plugins": [
+    {
+      "name": "example-plugin",
+      "source": "./plugins/example-plugin",
+      "description": "Example plugin: summarizes text into a short developer digest",
+      "category": "productivity",
+      "tags": ["digest", "summary"]
+    }
+  ]
+}
