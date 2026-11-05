@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Component library</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.app{--bg:#F7F7F5;--surface:#FFFFFF;--sunken:#F1F1ED;--text:#16171A;--text-muted:#4E5157;--text-subtle:#676A71;--on-accent:#FFFFFF;--link:#3346CC;--border:#E2E1DC;--border-strong:#C6C4BC;--focus:#3346CC;--accent:#3346CC;--accent-s:#ECEEFC;--accent-text:#2836A8;--mark-bg:#FFE380;--mark-text:#16171A;--info:#2A5687;--info-s:#E8F0F9;--success:#1B6B3E;--success-s:#E4F3EA;--warning:#7E5300;--warning-s:#FCEFD6;--danger:#B42318;--danger-s:#FDECEA;--plugin:#46505F;--plugin-s:#ECEEF2;--skill:#6237C2;--skill-s:#F0EAFD;--agent:#0D6B73;--agent-s:#E1F2F3;--command:#735730;--command-s:#F3EDE3;--hook:#A12D73;--hook-s:#FBE9F3;--mcp:#1E5BC6;--mcp-s:#E6EEFB;--shadow:0 1px 2px rgba(16,17,19,.06),0 6px 16px rgba(16,17,19,.08);font-family:'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:20px;color:var(--text);background:var(--bg)}
+.app.dark{--bg:#0E0F11;--surface:#16181B;--sunken:#0A0B0D;--text:#ECEDEF;--text-muted:#B0B4BC;--text-subtle:#8E939C;--on-accent:#0E0F11;--link:#9AA8FF;--border:#2A2D33;--border-strong:#40444C;--focus:#9AA8FF;--accent:#9AA8FF;--accent-s:#1D2342;--accent-text:#B6C0FF;--mark-bg:#5C4A0E;--mark-text:#FFF0B3;--info:#94B8E6;--info-s:#15223A;--success:#74D19C;--success-s:#0F2A1B;--warning:#F0C46C;--warning-s:#30240B;--danger:#FF8D84;--danger-s:#3A1614;--plugin:#B8C1CE;--plugin-s:#22262D;--skill:#BBA4FF;--skill-s:#251C3E;--agent:#6CD2DB;--agent-s:#0D2A2D;--command:#D9BC8E;--command-s:#2C2519;--hook:#F393CE;--hook-s:#381730;--mcp:#86B2FF;--mcp-s:#132340;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 16px rgba(0,0,0,.35)}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.muted{color:var(--text-muted)}.subtle{color:var(--text-subtle)}
+a{color:var(--link);text-decoration:none}
+.ico{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;font-weight:500;line-height:1;cursor:pointer;white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--text-muted)}
+.btn.on{background:var(--accent-s);border-color:var(--accent);color:var(--accent-text)}
+.btn.danger{background:var(--danger-s);border-color:var(--danger);color:var(--danger)}
+.btn.hover{background:var(--sunken)}
+.btn:disabled{color:var(--text-subtle);background:transparent;border-style:dashed;cursor:not-allowed}
+.btn.sm{height:28px;padding:0 10px;font-size:12px}
+.btn.icon{width:32px;padding:0}.btn.sm.icon{width:28px}
+.fr{outline:2px solid var(--focus);outline-offset:2px}
+.badge{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 6px;border-radius:4px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:.04em;line-height:1;white-space:nowrap}
+.badge .ico{width:12px;height:12px;stroke-width:2}
+.t-plugin{color:var(--plugin);background:var(--plugin-s)}.t-skill{color:var(--skill);background:var(--skill-s)}.t-agent{color:var(--agent);background:var(--agent-s)}.t-command{color:var(--command);background:var(--command-s)}.t-hook{color:var(--hook);background:var(--hook-s)}.t-mcp{color:var(--mcp);background:var(--mcp-s)}
+.sb{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:4px;font-size:12px;font-weight:500;line-height:1;white-space:nowrap}
+.sb .ico{width:13px;height:13px}
+.s-info{color:var(--info);background:var(--info-s)}.s-success{color:var(--success);background:var(--success-s)}.s-warning{color:var(--warning);background:var(--warning-s)}.s-danger{color:var(--danger);background:var(--danger-s)}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;cursor:pointer}
+.chip .n{font-family:'Geist Mono',monospace;font-size:12px;color:var(--text-subtle)}
+.chip.on{background:var(--accent-s);border-color:var(--accent);color:var(--accent-text)}.chip.on .n{color:var(--accent-text)}
+.chip.hover{border-color:var(--border-strong);background:var(--sunken)}
+.chip:disabled{color:var(--text-subtle);background:transparent;border-style:dashed}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.code{display:flex;align-items:center;gap:8px;background:var(--sunken);border:1px solid var(--border);border-radius:6px;padding:3px 3px 3px 12px;font-family:'Geist Mono',monospace;font-size:12.5px;min-width:0}
+.code .c{flex:1;min-width:0;overflow-x:auto;white-space:nowrap;padding:6px 0}
+mark{background:var(--mark-bg);color:var(--mark-text);border-radius:2px;padding:0 1px}
+.tag{font-family:'Geist Mono',monospace;font-size:12px;color:var(--text-muted)}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle)}
+.grp{display:flex;flex-direction:column;gap:10px;padding-top:20px;border-top:1px solid var(--border)}
+.wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.in{height:36px;box-sizing:border-box;padding:0 10px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit;font-size:14px;width:100%}
+</style>
+</helmet>
+<div class="app dark" style="width: 1440px; height: 2700px; box-sizing: border-box; padding: 56px; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 600; letter-spacing: -0.02em">Components</h1>
+<p class="muted" style="margin: 0">Every component in both themes, with its states. Shared by all screens.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<sc-for list="{{themes}}" as="t" hint-placeholder-count="2">
+<section class="app {{t.cls}}" style="border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">{{t.label}}</h2>
+
+<div class="grp" style="border-top: 0; padding-top: 0">
+<h3 class="lbl" style="margin: 0">Buttons · default, hover, focus, disabled, loading</h3>
+<div class="wrap">
+<button class="btn primary">Download ZIP</button>
+<button class="btn">Copy install</button>
+<button class="btn hover">Hover</button>
+<button class="btn fr">Focus</button>
+<button class="btn ghost">Ghost</button>
+<button class="btn danger">Clear stack</button>
+<button class="btn" disabled>Disabled</button>
+<button class="btn" aria-busy="true"><svg viewBox="0 0 20 20" aria-hidden="true" style="width: 14px; height: 14px"><circle cx="10" cy="10" r="7" fill="none" stroke="var(--border-strong)" stroke-width="2.5"/><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="14 44"/></svg>Loading</button>
+<button class="btn icon" aria-label="Copy" title="Copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button>
+<button class="btn sm"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add to stack</button>
+<button class="btn sm on" aria-pressed="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>In stack</button>
+</div>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Type badges</h3>
+<div class="wrap">
+<span class="badge t-plugin"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 12h16M12 4v16"/></svg>PLUGIN</span>
+<span class="badge t-skill"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z"/><path d="M9 9h6"/></svg>SKILL</span>
+<span class="badge t-agent"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01"/></svg>AGENT</span>
+<span class="badge t-command"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 7 5 5-5 5M12 19h7"/></svg>COMMAND</span>
+<span class="badge t-hook"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4v9a5 5 0 0 1-10 0v-2"/><path d="M15 4h4"/></svg>HOOK</span>
+<span class="badge t-mcp"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0V8ZM12 17v4"/></svg>MCP</span>
+<span class="badge t-command"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"/></svg>LEGACY COMMAND</span>
+</div>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Security badges</h3>
+<div class="wrap">
+<span class="sb s-info"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4v9a5 5 0 0 1-10 0v-2"/><path d="M15 4h4"/></svg>Runs hooks</span>
+<span class="sb s-warning"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v4M12 17h.01"/></svg>Broad hook</span>
+<span class="sb s-info"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0V8ZM12 17v4"/></svg>MCP</span>
+<span class="sb s-warning"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Remote MCP</span>
+<span class="sb s-danger"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>Insecure MCP (http)</span>
+<span class="sb s-info"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3"/></svg>Needs secrets</span>
+<span class="sb s-info"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8l-5-5Z"/><path d="m10 13-2 2 2 2M14 13l2 2-2 2"/></svg>Scripts</span>
+<span class="sb s-success"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>Restricted tools</span>
+</div>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Filter chips · default, hover, selected, auto, disabled, focus</h3>
+<div class="wrap">
+<button class="chip">Plugin<span class="n">3</span></button>
+<button class="chip hover">Agent<span class="n">1</span></button>
+<button class="chip on" aria-pressed="true">Hook<span class="n">2</span></button>
+<button class="chip on" title="Selected from your query. Click to remove.">Skill<span class="mono" style="font-size: 10px; border: 1px solid var(--accent); border-radius: 3px; padding: 0 3px">auto</span><span class="n">4</span></button>
+<button class="chip" disabled>Command<span class="n">0</span></button>
+<button class="chip fr">MCP<span class="n">1</span></button>
+<button class="btn ghost sm">Clear all</button>
+</div>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Search box · default, focus + filled</h3>
+<div style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 6px 0 12px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px">
+<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--text-subtle)"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+<span class="subtle" style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Describe what you need — e.g. “summarize release notes”</span>
+<span class="mono subtle" style="border: 1px solid var(--border-strong); border-radius: 4px; padding: 1px 6px; font-size: 11px">/</span>
+<button class="btn sm"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg>Smart</button>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 6px 0 12px; background: var(--surface); border: 1px solid var(--accent); border-radius: 8px; box-shadow: 0 0 0 3px var(--accent-s)">
+<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--text-subtle)"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+<span style="flex: 1">tldr<span style="display: inline-block; width: 1px; height: 18px; background: var(--text); vertical-align: middle; margin-left: 1px"></span></span>
+<button class="btn ghost sm icon" aria-label="Clear search"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+<button class="btn sm on"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg>Smart</button>
+</div>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Copy command · idle, copied, blocked</h3>
+<div class="code"><span class="c">/plugin install release-tools@dev-digest-ai</span><button class="btn sm ghost icon" aria-label="Copy command"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button></div>
+<div class="code"><span class="c">/plugin install release-tools@dev-digest-ai</span><button class="btn sm ghost" style="color: var(--success)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Copied</button></div>
+<div class="code" style="border-color: var(--warning)"><span class="c"><span style="background: var(--accent-s); color: var(--accent-text)">/plugin install release-tools@dev-digest-ai</span></span><span style="font-family: 'Geist', sans-serif; font-size: 12px; color: var(--warning); padding-right: 8px">Press Ctrl+C to copy</span></div>
+<div style="border: 1px solid var(--border); border-radius: 6px; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 6px; padding: 4px 4px 4px 12px; background: var(--surface); border-bottom: 1px solid var(--border)"><span class="mono subtle" style="flex: 1; font-size: 12px">hooks/hooks.json · bash</span><button class="btn sm ghost icon" aria-label="Copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button><button class="btn sm ghost icon" aria-label="Download"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></button></div>
+<pre class="mono" style="margin: 0; padding: 12px; background: var(--sunken); font-size: 12.5px; line-height: 20px; overflow-x: auto">node ${CLAUDE_PLUGIN_ROOT}/scripts/log-release.mjs --event "$CLAUDE_HOOK_EVENT"</pre>
+</div>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Result card variants · plugin, hook, edge case</h3>
+<article class="card">
+<div style="display: flex; align-items: center; gap: 8px"><span class="badge t-plugin">PLUGIN</span><span class="mono" style="font-weight: 600">release-tools</span><span class="mono subtle" style="margin-left: auto; font-size: 12px">v1.2.0</span></div>
+<div class="subtle" style="font-size: 12px">release · <span class="mono">2 skills · 1 agent · 1 hook</span></div>
+<p class="muted" style="margin: 0">Drafts changelogs and release notes from git history, and reviews a release before it is tagged.</p>
+<div class="wrap"><span class="sb s-info">Runs hooks</span><span class="sb s-info">Scripts</span></div>
+</article>
+<article class="card">
+<div style="display: flex; align-items: center; gap: 8px"><span class="badge t-hook">HOOK</span><span class="mono" style="font-weight: 600">PreToolUse hook · matcher: *</span><span class="mono subtle" style="margin-left: auto; font-size: 12px">v1.0.0</span></div>
+<div class="subtle" style="font-size: 12px">in <span class="mono">guarded-review</span> · security</div>
+<p class="subtle" style="margin: 0; font-size: 13px">Blocks risky shell commands and asks for review before they run.</p>
+<div class="wrap"><span class="sb s-info">Runs hooks</span><span class="sb s-warning">Broad hook</span><span class="sb s-danger">Insecure MCP (http)</span><span class="sb" style="color: var(--text-muted); background: var(--sunken)">+4</span></div>
+</article>
+<article class="card">
+<div style="display: flex; align-items: center; gap: 8px; min-width: 0"><span class="badge t-plugin">PLUGIN</span><span class="mono" style="font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">a-plugin-with-a-deliberately-long-name-to-test-wrapping-x</span><span class="mono subtle" style="flex: none; font-size: 12px">v10.12.3</span></div>
+<p class="muted" style="margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Long descriptions are clamped to three lines on cards so the grid keeps an even rhythm. The full text stays on the detail page, where the description is shown in full and search terms are not highlighted beyond the first match in each field, which keeps scanning fast.</p>
+<div class="wrap"><span class="tag">#notes</span><span class="tag">#archive</span><span class="tag">#legacy</span><span class="tag">#export</span><span class="tag">+5</span></div>
+</article>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Security panel · broad hook + insecure MCP</h3>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; flex-direction: column">
+<span style="font-weight: 600; margin-bottom: 8px">What this plugin can do on your machine</span>
+<div style="display: flex; gap: 10px; padding: 10px; border-radius: 6px; background: var(--warning-s)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--warning); margin-top: 2px"><path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v4M12 17h.01"/></svg><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; color: var(--warning)">Broad hook</span><span class="muted" style="font-size: 13px">A hook runs on every prompt or tool call, not only in specific cases.</span><span class="mono" style="font-size: 12px; color: var(--link)">PreToolUse · matcher: *</span></div></div>
+<div style="display: flex; gap: 10px; padding: 10px; margin-top: 6px; border-radius: 6px; background: var(--danger-s)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--danger); margin-top: 2px"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; color: var(--danger)">Insecure MCP (http)</span><span class="muted" style="font-size: 13px">Connects to a remote server without encryption.</span><span class="mono" style="font-size: 12px; color: var(--link)">review-api · http://review.example.net</span></div></div>
+<p class="subtle" style="margin: 10px 0 0; font-size: 12px; line-height: 18px">Badges are derived automatically from the plugin files and are not a security guarantee. Review the source before installing. <a href="https://github.com/malinovskiy-alex/dev-digest-ai-marketplace/blob/main/SECURITY.md">SECURITY.md</a></p>
+</div>
+</div>
+
+<div class="grp">
+<h3 class="lbl" style="margin: 0">Form input · error, counter</h3>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="{{t.id}}" style="font-weight: 500; font-size: 13px">Plugin name</label>
+<input id="{{t.id}}" class="in mono" value="claude-notes" aria-invalid="true" style="border-color: var(--danger)">
+<div style="display: flex; justify-content: space-between; font-size: 12px"><span style="color: var(--danger)">Names can't start with claude-, anthropic- or cc-plugin-.</span><span class="mono subtle">12/64</span></div>
+</div>
+</div>
+</section>
+</sc-for>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2700}}'>
+class Component extends DCLogic {
+renderVals() {
+return { themes: [{ label: 'Dark (default)', cls: 'dark', id: 'pn-d' }, { label: 'Light', cls: '', id: 'pn-l' }] };
+}
+}
+</script>
+</body>
+</html>
