@@ -8,6 +8,7 @@ import { TYPE_ORDER, typeCount } from './types.js';
 
 export const bumpOf = (from, to, sum) => {
   if (/^Rollback:/.test(sum)) return 'Rollback';
+  if (from === '0.0.0') return 'Initial'; // first release of a plugin, not a breaking change
   const a = from.split('.').map(Number), b = to.split('.').map(Number);
   if (b[0] !== a[0]) return 'Major';
   if (b[1] !== a[1]) return 'Minor';

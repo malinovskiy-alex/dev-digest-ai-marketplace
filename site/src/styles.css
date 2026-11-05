@@ -35,7 +35,7 @@ a.badge:hover{text-decoration:none;filter:brightness(1.12)}
 .sb .ico{width:13px;height:13px}
 .s-info{color:var(--info);background:var(--info-s)}.s-success{color:var(--success);background:var(--success-s)}.s-warning{color:var(--warning);background:var(--warning-s)}.s-danger{color:var(--danger);background:var(--danger-s)}.s-more{color:var(--text-muted);background:var(--sunken)}
 .bb{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.03em;line-height:1}
-.b-Major{color:var(--warning);background:var(--warning-s)}.b-Minor{color:var(--info);background:var(--info-s)}.b-Patch{color:var(--plugin);background:var(--plugin-s)}.b-Rollback{color:var(--danger);background:var(--danger-s)}
+.b-Major{color:var(--warning);background:var(--warning-s)}.b-Minor{color:var(--info);background:var(--info-s)}.b-Patch{color:var(--plugin);background:var(--plugin-s)}.b-Rollback{color:var(--danger);background:var(--danger-s)}.b-Initial{color:var(--success);background:var(--success-s)}
 .chip{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:0 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;cursor:pointer;text-align:left;white-space:nowrap;transition:border-color .15s ease-out,background-color .15s ease-out}
 .chip:hover{border-color:var(--border-strong)}
 .chip .n{font-family:'Geist Mono',monospace;font-size:12px;color:var(--text-subtle)}

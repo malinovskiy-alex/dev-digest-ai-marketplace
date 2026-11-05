@@ -8,7 +8,7 @@ import { t } from '../i18n/index.js';
 import { R, releaseUrl } from '../lib/routes.js';
 import { useApp } from '../state/AppState.jsx';
 
-const KINDS = ['All', 'Major', 'Minor', 'Patch', 'Rollback'];
+const KINDS = ['All', 'Initial', 'Major', 'Minor', 'Patch', 'Rollback'];
 
 export default function ChangelogPage() {
   const { copied, copy } = useApp();

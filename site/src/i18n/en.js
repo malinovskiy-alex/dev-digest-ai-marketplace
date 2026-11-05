@@ -86,7 +86,7 @@ export default {
     scripts: { label: 'Scripts', tip: 'Ships scripts that hooks or MCP servers run.', expl: 'Ships scripts that hooks or MCP servers run.' },
     restricted: { label: 'Restricted tools', tip: 'Every skill and agent limits which tools it can use.', expl: 'Every skill and agent limits which tools it can use.' },
   },
-  bump: { All: 'All', Major: 'Major', Minor: 'Minor', Patch: 'Patch', Rollback: 'Rollback' },
+  bump: { All: 'All', Major: 'Major', Minor: 'Minor', Patch: 'Patch', Rollback: 'Rollback', Initial: 'Initial' },
   nav: {
     main: 'Main',
     menu: 'Menu',
@@ -115,7 +115,7 @@ export default {
     contributing: 'Contributing',
     security: 'Security',
     releases: 'Releases',
-    feed: 'Atom feed',
+    feed: 'RSS feed',
     request: 'Request a plugin ↗',
     shortcuts: 'Keyboard shortcuts',
   },
@@ -310,7 +310,7 @@ export default {
   changelog: {
     title: 'What\'s new',
     sub: 'Every plugin version change, newest first.',
-    subscribe: 'Subscribe (Atom feed)',
+    subscribe: 'Subscribe (RSS feed)',
     plugin: 'Plugin',
     allPlugins: 'All plugins',
     bumpAria: 'Bump type',

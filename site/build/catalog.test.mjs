@@ -20,6 +20,7 @@ function fixture(t) {
   w('plugins/demo/hooks/hooks.json', { hooks: { PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'node ${CLAUDE_PLUGIN_ROOT}/scripts/g.mjs --key ${API_KEY}' }] }] } });
   w('plugins/demo/.mcp.json', { mcpServers: { svc: { type: 'http', url: 'https://svc.example.com/mcp', headers: { Authorization: 'Bearer ${SVC_TOKEN}' }, env: { LITERAL_SECRET: 'sk-live-DO-NOT-LEAK' } } } });
   w('plugins/demo/scripts/g.mjs', '');
+  w('plugins/demo/skills/sum/scripts/stats.mjs', '');
   w('plugins/demo/CHANGELOG.md', '# Changelog\n\n## [1.2.0] - 2026-11-03\n\n- Add sum skill\n\n## [1.0.0] - 2026-10-01\n\n- First\n');
   return root;
 }
@@ -31,7 +32,7 @@ test('builds plugins, components and history from the repo files only', (t) => {
   assert.equal(p.version, '1.2.0');
   assert.equal(p.author, 'Dev');
   assert.deepEqual(p.deps, ['other']);
-  assert.deepEqual(p.scripts, ['scripts/g.mjs']);
+  assert.deepEqual(p.scripts, ['scripts/g.mjs', 'skills/sum/scripts/stats.mjs'], 'skill-bundled scripts are part of the security surface');
   assert.deepEqual(p.readme[0], ['p', 'Does things.'], 'H1 title skipped, inline markdown stripped');
   const by = (type) => c.arts.filter((a) => a.type === type);
   assert.deepEqual(by('skill')[0].meta.allowedTools, ['Read', 'Grep']);

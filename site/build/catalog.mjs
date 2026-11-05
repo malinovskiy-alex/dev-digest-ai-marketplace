@@ -172,10 +172,13 @@ function readMcp(dir, plugin, manifest) {
   }
   return out;
 }
+// Executable content shipped with the plugin: <plugin>/scripts/** and scripts bundled with a skill
+// (skills/<name>/scripts/**, run by Claude via Bash), plus package.json. Eval fixtures are not runtime code.
 function scriptFiles(dir) {
   const found = [];
   const walk = (d) => list(d).forEach((f) => { const p = join(d, f); if (isDir(p)) walk(p); else found.push(posix(relative(dir, p))); });
   walk(join(dir, 'scripts'));
+  list(join(dir, 'skills')).forEach((s) => walk(join(dir, 'skills', s, 'scripts')));
   if (existsSync(join(dir, 'package.json'))) found.push('package.json');
   return found;
 }
