@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>dev-digest-ai catalog prototype</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+*,*::before,*::after{box-sizing:border-box}
+.app{--bg:#0E0F11;--surface:#16181B;--raised:#1D2024;--sunken:#0A0B0D;--overlay:rgba(0,0,0,.6);--text:#ECEDEF;--text-muted:#B0B4BC;--text-subtle:#8E939C;--on-accent:#0E0F11;--link:#9AA8FF;--border:#2A2D33;--border-strong:#40444C;--focus:#9AA8FF;--accent:#9AA8FF;--accent-hover:#B6C0FF;--accent-s:#1D2342;--accent-text:#B6C0FF;--mark-bg:#5C4A0E;--mark-text:#FFF0B3;--info:#94B8E6;--info-s:#15223A;--success:#74D19C;--success-s:#0F2A1B;--warning:#F0C46C;--warning-s:#30240B;--danger:#FF8D84;--danger-s:#3A1614;--plugin:#B8C1CE;--plugin-s:#22262D;--skill:#BBA4FF;--skill-s:#251C3E;--agent:#6CD2DB;--agent-s:#0D2A2D;--command:#D9BC8E;--command-s:#2C2519;--hook:#F393CE;--hook-s:#381730;--mcp:#86B2FF;--mcp-s:#132340;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.45);min-height:100vh;display:flex;flex-direction:column;font-family:'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:20px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.app.light{--bg:#F7F7F5;--surface:#FFFFFF;--raised:#FFFFFF;--sunken:#F1F1ED;--overlay:rgba(16,17,19,.48);--text:#16171A;--text-muted:#4E5157;--text-subtle:#676A71;--on-accent:#FFFFFF;--link:#3346CC;--border:#E2E1DC;--border-strong:#C6C4BC;--focus:#3346CC;--accent:#3346CC;--accent-hover:#2836A8;--accent-s:#ECEEFC;--accent-text:#2836A8;--mark-bg:#FFE380;--mark-text:#16171A;--info:#2A5687;--info-s:#E8F0F9;--success:#1B6B3E;--success-s:#E4F3EA;--warning:#7E5300;--warning-s:#FCEFD6;--danger:#B42318;--danger-s:#FDECEA;--plugin:#46505F;--plugin-s:#ECEEF2;--skill:#6237C2;--skill-s:#F0EAFD;--agent:#0D6B73;--agent-s:#E1F2F3;--command:#735730;--command-s:#F3EDE3;--hook:#A12D73;--hook-s:#FBE9F3;--mcp:#1E5BC6;--mcp-s:#E6EEFB;--shadow:0 1px 2px rgba(16,17,19,.06),0 8px 24px rgba(16,17,19,.12)}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.muted{color:var(--text-muted)}.subtle{color:var(--text-subtle)}.strong{font-weight:600}
+.sm{font-size:13px}.xs{font-size:12px;line-height:16px}.grow{flex:1;min-width:0}.min0{min-width:0}.nowrap{white-space:nowrap}.break{overflow-wrap:anywhere}
+a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ico{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.i12{width:12px;height:12px}.i20{width:20px;height:20px}.i24{width:24px;height:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;font-weight:500;line-height:1;cursor:pointer;white-space:nowrap;text-decoration:none;transition:background-color .15s ease-out,border-color .15s ease-out}
+.btn:hover{background:var(--sunken);text-decoration:none}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--text-muted)}
+.btn.ghost:hover{background:var(--sunken);color:var(--text)}
+.btn.on{background:var(--accent-s);border-color:var(--accent);color:var(--accent-text)}
+.btn.danger{background:var(--danger-s);border-color:var(--danger);color:var(--danger)}
+.btn.ok{color:var(--success)}
+.btn.dim{opacity:.6}
+.btn:disabled{color:var(--text-subtle);background:transparent;border-style:dashed;cursor:not-allowed}
+.btn.sm{height:28px;padding:0 10px;font-size:12px}
+.btn.icon{width:32px;padding:0}.btn.sm.icon{width:28px}
+.linkbtn{background:none;border:0;padding:0;color:var(--link);font-family:inherit;font-size:12px;cursor:pointer}
+.linkbtn:hover{text-decoration:underline}
+kbd{font-family:'Geist Mono',monospace;font-size:11px;line-height:16px;border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--text-subtle);background:var(--surface)}
+.badge{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 6px;border-radius:4px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:.04em;line-height:1;white-space:nowrap}
+.badge .ico{width:12px;height:12px;stroke-width:2}
+a.badge:hover{text-decoration:none;filter:brightness(1.12)}
+.t-plugin{color:var(--plugin);background:var(--plugin-s)}.t-skill{color:var(--skill);background:var(--skill-s)}.t-agent{color:var(--agent);background:var(--agent-s)}.t-command{color:var(--command);background:var(--command-s)}.t-hook{color:var(--hook);background:var(--hook-s)}.t-mcp{color:var(--mcp);background:var(--mcp-s)}
+.sb{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:4px;font-size:12px;font-weight:500;line-height:1;white-space:nowrap}
+.sb .ico{width:13px;height:13px}
+.s-info{color:var(--info);background:var(--info-s)}.s-success{color:var(--success);background:var(--success-s)}.s-warning{color:var(--warning);background:var(--warning-s)}.s-danger{color:var(--danger);background:var(--danger-s)}.s-more{color:var(--text-muted);background:var(--sunken)}
+.bb{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.03em;line-height:1}
+.b-Major{color:var(--warning);background:var(--warning-s)}.b-Minor{color:var(--info);background:var(--info-s)}.b-Patch{color:var(--plugin);background:var(--plugin-s)}.b-Rollback{color:var(--danger);background:var(--danger-s)}
+.chip{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:0 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;cursor:pointer;text-align:left;white-space:nowrap;transition:border-color .15s ease-out,background-color .15s ease-out}
+.chip:hover{border-color:var(--border-strong)}
+.chip .n{font-family:'Geist Mono',monospace;font-size:12px;color:var(--text-subtle)}
+.chip.on{background:var(--accent-s);border-color:var(--accent);color:var(--accent-text)}.chip.on .n{color:var(--accent-text)}
+.chip:disabled{color:var(--text-subtle);background:transparent;border-style:dashed;cursor:default}
+.chip.sm{min-height:26px;font-size:12px}
+.chl{display:flex;align-items:center;gap:6px}
+.auto{font-family:'Geist Mono',monospace;font-size:10px;line-height:14px;border:1px solid currentColor;border-radius:3px;padding:0 3px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:border-color .15s ease-out}
+.card:hover{border-color:var(--border-strong)}
+.card.sel{outline:2px solid var(--focus);outline-offset:2px}
+.card.instack{border-color:var(--accent)}
+.card.mini{gap:6px;padding:14px;color:var(--text)}
+a.card:hover{text-decoration:none}
+.ctop{display:flex;align-items:center;gap:8px;min-width:0}
+.cname{font-weight:600;color:var(--text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ver{margin-left:auto;font-size:12px;color:var(--text-subtle);flex:none}
+.cparent{font-size:12px;line-height:16px;color:var(--text-subtle)}
+.cdesc{margin:0;color:var(--text-muted)}
+.cdesc.gen{color:var(--text-subtle);font-size:13px}
+.clamp3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.clamp1{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctags{display:flex;gap:10px;flex-wrap:wrap}
+.cbadges{display:flex;gap:6px;flex-wrap:wrap}
+.cact{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.cdet{margin-left:auto}
+.tag{font-family:'Geist Mono',monospace;font-size:12px;color:var(--text-muted)}
+mark{background:var(--mark-bg);color:var(--mark-text);border-radius:2px;padding:0 1px}
+.lbl{margin:0;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle)}
+.h1{margin:0;font-size:28px;line-height:36px;font-weight:600;letter-spacing:-.01em}
+.h2{margin:0;font-size:18px;line-height:26px;font-weight:600}
+.h3{margin:0;font-size:15px;line-height:22px;font-weight:600}
+.lead{margin:0;font-size:16px;line-height:25px;max-width:68ch}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding-left:24px;padding-right:24px}
+.hdr{border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:20}
+.hrow{min-height:56px;display:flex;align-items:center;gap:20px}
+.logo{display:flex;align-items:center;gap:8px;color:var(--text);font-weight:600;font-size:15px;white-space:nowrap}
+.logo:hover{text-decoration:none}
+.logo-m{width:22px;height:22px;border-radius:5px;background:var(--text);color:var(--bg);display:grid;place-items:center;font-size:12px}
+.navd{display:flex;gap:2px}
+.navl{display:flex;align-items:center;min-height:32px;padding:0 10px;border-radius:6px;color:var(--text-muted);font-size:13px;font-weight:500}
+.navl:hover{color:var(--text);background:var(--sunken);text-decoration:none}
+.navl.on{color:var(--text);background:var(--sunken)}
+.hright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.hsearch{gap:16px;color:var(--text-subtle);min-width:150px;justify-content:space-between}
+.cnt{font-family:'Geist Mono',monospace;font-size:11px;line-height:14px;border-radius:10px;padding:1px 6px;background:var(--accent);color:var(--on-accent)}
+.cnt.zero{background:var(--sunken);color:var(--text-subtle)}
+.menub{display:none}
+.sheet{border-top:1px solid var(--border);padding:8px 16px 16px;display:flex;flex-direction:column;gap:2px}
+.sheet .navl{min-height:44px;font-size:15px}
+.main{flex:1;width:100%}
+.page{padding-top:28px;padding-bottom:64px;display:flex;flex-direction:column;gap:24px}
+.narrow{max-width:880px}
+.hero{padding-top:48px;padding-bottom:20px;display:flex;flex-direction:column;gap:14px}
+.display{margin:0;font-size:36px;line-height:44px;font-weight:600;letter-spacing:-.02em;text-wrap:balance}
+.sbox{display:flex;align-items:center;gap:10px;height:56px;padding:0 8px 0 16px;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;transition:border-color .15s ease-out,box-shadow .15s ease-out}
+.sbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-s)}
+.sbox input{flex:1;min-width:0;border:0;background:transparent;font-family:inherit;font-size:17px;color:var(--text);outline:none}
+.sbox input::placeholder{color:var(--text-subtle)}
+.herosub{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}
+.ring{width:16px;height:16px}.ring circle{fill:none;stroke-width:2.5}.ring-bg{stroke:var(--border-strong)}.ring-fg{stroke:var(--accent)}
+.layout{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;padding-bottom:48px}
+.filters{flex:1 1 200px;max-width:240px;display:flex;flex-direction:column;gap:20px}
+.fgrp{display:flex;flex-direction:column;gap:6px}
+.fhead{display:flex;justify-content:space-between;align-items:center;min-height:20px}
+.chipcol{display:flex;flex-direction:column;gap:6px}
+.chipwrap{display:flex;flex-wrap:wrap;gap:6px}
+.fmore{display:flex;flex-direction:column;gap:20px}
+.fbtn{display:none}
+.results{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.rhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rcount{margin:0;font-weight:500}
+.smartm{font-size:11px;color:var(--accent-text);background:var(--accent-s);border-radius:4px;padding:2px 6px}
+.sort{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:16px}
+.gridc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:10px}
+.center{display:flex;justify-content:center}
+.khint{margin:0;font-size:12px;color:var(--text-subtle);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.callout{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;font-size:13px;line-height:19px}
+.callout .ico{margin-top:1px}
+.c-info{background:var(--info-s);color:var(--info)}.c-success{background:var(--success-s);color:var(--success)}.c-warning{background:var(--warning-s);color:var(--warning)}.c-danger{background:var(--danger-s);color:var(--danger)}.c-accent{background:var(--accent-s);color:var(--accent-text);align-items:center}
+.empty{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:48px 16px;border:1px dashed var(--border-strong);border-radius:8px}
+.empty p{margin:0;max-width:46ch}
+.between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.wrapc{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rowb{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.stackv{display:flex;flex-direction:column;gap:12px}
+.stackv4{display:flex;flex-direction:column;gap:4px}
+.band{border-top:1px solid var(--border);background:var(--surface)}
+.bandin{padding-top:28px;padding-bottom:32px;display:flex;flex-direction:column;gap:16px}
+.crumbs{display:flex;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--text-subtle)}
+.phead{display:flex;flex-direction:column;gap:10px}
+.titlerow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.metaline{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px}
+.self-start{align-self:flex-start}
+.cols{display:flex;flex-wrap:wrap;flex-direction:row-reverse;gap:32px;align-items:flex-start}
+.colmain{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:32px}
+.colside{flex:1 1 320px;max-width:380px;display:flex;flex-direction:column;gap:16px}
+@media (min-width:1024px){.colside{position:sticky;top:72px}}
+.cols2{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.col-a,.col-b{flex:1 1 420px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.pad{padding:16px;display:flex;flex-direction:column;gap:12px}
+.padx{padding:8px 16px 12px}
+.stepc{display:flex;flex-direction:column;gap:6px}
+.code{display:flex;align-items:center;gap:8px;background:var(--sunken);border:1px solid var(--border);border-radius:6px;padding:3px 3px 3px 12px;font-family:'Geist Mono',monospace;font-size:12.5px;min-width:0}
+.code .c{flex:1;min-width:0;overflow-x:auto;white-space:nowrap;padding:6px 0}
+.cbox{overflow:hidden;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
+.cbar{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+pre.cb{margin:0;font-family:'Geist Mono',monospace;font-size:12.5px;line-height:20px;padding:14px 16px;overflow-x:auto;white-space:pre;background:var(--sunken);color:var(--text)}
+.kv{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--border);font-size:13px;margin:0}
+.kv dt{color:var(--text-subtle)}.kv dd{margin:0;overflow-wrap:anywhere}
+dl.kvl{margin:8px 0 0}
+.srow{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--border)}
+.srow.hl-w{background:var(--warning-s);border-radius:6px;padding:10px;border-top-color:transparent;margin-top:4px}
+.srow.hl-d{background:var(--danger-s);border-radius:6px;padding:10px;border-top-color:transparent;margin-top:4px}
+.sicon{width:26px;height:22px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:4px}
+.sbody{display:flex;flex-direction:column;gap:3px;min-width:0}
+.disc{margin:0;padding-top:10px;border-top:1px solid var(--border);font-size:12px;line-height:18px;color:var(--text-subtle)}
+.list{overflow:hidden}
+.plain{list-style:none;margin:0;padding:0}
+.lrow{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:12px 16px;border-top:1px solid var(--border);color:var(--text)}
+.lrow:first-child{border-top:0}
+.lrow:hover{background:var(--sunken);text-decoration:none}
+.lbadge{flex:0 0 128px}
+.lname{flex:0 1 300px;color:var(--link);min-width:0;overflow-wrap:anywhere}
+.ldesc{flex:1 1 200px;min-width:0;display:flex;gap:8px;align-items:center;color:var(--text-muted)}
+.hrow2{display:flex;gap:14px;align-items:center;padding:10px 16px;border-top:1px solid var(--border);flex-wrap:wrap}
+.hrow2:first-child{border-top:0}
+.w64{width:64px}
+.prose{max-width:75ch;font-size:15px;line-height:24px}
+.prose h3{font-size:16px;line-height:24px;margin:16px 0 6px}
+.prose p{margin:0 0 12px}.prose ul{margin:0;padding-left:20px}.prose li{margin:3px 0}
+.prose blockquote{margin:12px 0;padding-left:14px;border-left:2px solid var(--border-strong);color:var(--text-muted)}
+.prose pre{font-family:'Geist Mono',monospace;font-size:13px;line-height:20px;background:var(--sunken);border:1px solid var(--border);border-radius:6px;padding:12px 14px;overflow-x:auto;margin:0 0 12px}
+.activ{display:flex;flex-direction:column;gap:10px;padding:20px;border-radius:8px}
+.act-skill{background:var(--skill-s)}.act-skill .lbl{color:var(--skill)}
+.act-agent{background:var(--agent-s)}.act-agent .lbl{color:var(--agent)}
+.pill{font-size:12px;border:1px solid var(--border-strong);border-radius:4px;padding:2px 8px;background:var(--sunken)}
+.sitem{display:flex;gap:12px;padding:14px 16px;border-top:1px solid var(--border);align-items:flex-start}
+.sitem:first-child{border-top:0}
+.sitem.dep{padding-left:40px;background:var(--sunken);border-top-style:dashed}
+.agg{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--border);align-items:baseline}
+.fbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.vsep{width:1px;height:20px;background:var(--border)}
+.feed{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.entry{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:4px 20px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:8px;align-items:baseline}
+.rail-Major{box-shadow:inset 3px 0 0 var(--warning);background:var(--warning-s);border-color:transparent}
+.rail-Rollback{box-shadow:inset 3px 0 0 var(--danger);background:var(--danger-s);border-color:transparent}
+.startl{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
+.toc{flex:1 1 200px;max-width:230px;display:flex;flex-direction:column;gap:2px}
+@media (min-width:1024px){.toc{position:sticky;top:72px}}
+.toc a{display:block;padding:6px 10px;border-radius:6px;color:var(--text-muted);font-size:13px}
+.toc a:hover{background:var(--sunken);color:var(--text);text-decoration:none}
+.startm{flex:999 1 520px;min-width:0;max-width:700px;display:flex;flex-direction:column;gap:36px}
+.types{margin:0;display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px 16px}
+.types dd{margin:0;color:var(--text-muted)}
+.body15{margin:0;font-size:15px;line-height:24px}
+.tl{display:flex;flex-direction:column;border-left:2px solid var(--border);margin:0 0 0 6px;padding:0;list-style:none}
+.tlnode{position:relative;padding:0 0 28px 24px}
+.tldot{position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--bg)}
+.tlnode.none .tldot{background:var(--border-strong)}
+.tlnode.none .h3{color:var(--text-muted)}
+.f{display:flex;flex-direction:column;gap:6px}
+.f label{font-weight:500;font-size:13px}
+.in{height:36px;padding:0 10px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit;font-size:14px;width:100%}
+textarea.in{height:auto;min-height:84px;padding:8px 10px;line-height:20px;resize:vertical}
+.in.err{border-color:var(--danger)}
+.in::placeholder,.tagfield::placeholder{color:var(--text-subtle)}
+.help{font-size:12px;line-height:16px;color:var(--text-subtle);display:flex;justify-content:space-between;gap:12px}
+.m-err{color:var(--danger)}.m-warn{color:var(--warning)}.m-ok{color:var(--success)}
+.tagin{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:4px 6px;height:auto;min-height:36px}
+.tchip{display:inline-flex;align-items:center;gap:2px;font-size:12px;background:var(--sunken);border:1px solid var(--border);border-radius:4px;padding:0 2px 0 6px}
+.tx{background:none;border:0;color:var(--text-subtle);cursor:pointer;font-size:14px;line-height:1;padding:2px 4px}
+.tagfield{flex:1;min-width:80px;border:0;background:transparent;color:var(--text);font-family:inherit;font-size:14px;outline:none;height:26px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:16px}
+.hr{height:1px;background:var(--border)}
+.tabs{display:flex;gap:2px;padding:0 8px;border-bottom:1px solid var(--border);overflow-x:auto}
+.tab{height:36px;padding:0 10px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--text-muted);font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;white-space:nowrap}
+.tab.on{color:var(--text);border-bottom-color:var(--accent)}
+.nf{align-items:center;text-align:center;padding-top:80px;padding-bottom:96px}
+.nfbox{width:min(460px,100%);height:48px}
+.ftr{border-top:1px solid var(--border)}
+.ftrin{padding-top:28px;padding-bottom:28px;display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-start;font-size:13px}
+.fnav{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;min-height:44px;padding:0 8px 0 16px;border-radius:8px;background:var(--text);color:var(--bg);box-shadow:var(--shadow);font-size:13px;z-index:60;max-width:calc(100% - 32px);animation:tin .2s ease-out}
+@keyframes tin{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+.tundo{background:none;border:0;color:var(--bg);font-family:inherit;font-size:13px;font-weight:600;text-decoration:underline;cursor:pointer;min-height:36px;padding:0 8px}
+.scrim{position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.dialog{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:24px;width:min(460px,100%);display:flex;flex-direction:column;gap:14px}
+.dialog p{margin:0}
+.dacts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.keys{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;align-items:center;font-size:13px}
+@media (max-width:760px){
+.wrap{padding-left:16px;padding-right:16px}
+.navd,.hide-m{display:none!important}
+.menub{display:inline-flex}
+.display{font-size:28px;line-height:34px}
+.hero{padding-top:28px}
+.filters{max-width:none;flex-basis:100%;gap:12px}
+.chipcol{flex-direction:row;overflow-x:auto;padding-bottom:4px}
+.chipcol .chip{min-height:40px;flex:none}
+.fbtn{display:inline-flex;align-self:flex-start}
+.fmore{display:none}.fmore.open{display:flex}
+.colside,.toc{max-width:none}
+.entry{grid-template-columns:minmax(0,1fr)}
+.sort{margin-left:0}
+.agg{grid-template-columns:minmax(0,1fr)}
+.cact .btn{height:40px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div class="app {{themeCls}}">
+
+<header class="hdr">
+<div class="wrap hrow">
+<a class="logo mono" href="{{homeHref}}" onClick="{{goHome}}"><span class="logo-m" aria-hidden="true">d</span>dev-digest-ai</a>
+<nav class="navd" aria-label="Main">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="5"><a class="navl {{n.cls}}" href="{{n.href}}" onClick="{{n.go}}" aria-current="{{n.cur}}">{{n.label}}</a></sc-for>
+</nav>
+<div class="hright">
+<sc-if value="{{notHome}}" hint-placeholder-val="{{ false }}"><button class="btn sm hsearch hide-m" onClick="{{goSearch}}"><span class="wrapc"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.search}}"/></svg>Search</span><kbd>/</kbd></button></sc-if>
+<button class="btn sm {{stackBtnCls}}" onClick="{{goStack}}" aria-label="{{stackAria}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.stack}}"/></svg><span class="hide-m">Stack</span><span class="cnt {{cntCls}}">{{stackCount}}</span></button>
+<button class="btn sm icon" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" title="{{themeLabel}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{themeIcon}}"/></svg></button>
+<a class="btn sm icon hide-m" href="{{gh}}" target="_blank" rel="noopener" aria-label="GitHub repository" title="GitHub repository"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.repo}}"/></svg></a>
+<button class="btn icon menub" onClick="{{toggleMenu}}" aria-label="Menu" aria-expanded="{{menu}}"><svg class="ico i20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{menuIcon}}"/></svg></button>
+</div>
+</div>
+<sc-if value="{{menu}}" hint-placeholder-val="{{ false }}">
+<nav class="sheet" aria-label="Menu">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="5"><a class="navl {{n.cls}}" href="{{n.href}}" onClick="{{n.go}}">{{n.label}}</a></sc-for>
+<a class="navl" href="{{gh}}" target="_blank" rel="noopener">GitHub ↗</a>
+</nav>
+</sc-if>
+</header>
+
+<main id="main" class="main">
+
+<sc-if value="{{is.home}}" hint-placeholder-val="{{ true }}">
+<section class="wrap hero">
+<h1 class="display">Find skills, agents and plugins for Claude Code</h1>
+<div class="sbox">
+<svg class="ico i20 subtle" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.search}}"/></svg>
+<label for="q" class="sr">Search the catalog</label>
+<input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Describe what you need — e.g. &quot;review architecture&quot;" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}" aria-describedby="rcount">
+<sc-if value="{{hasQText}}" hint-placeholder-val="{{ false }}"><button class="btn ghost icon" onClick="{{clearQ}}" aria-label="Clear search"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.close}}"/></svg></button></sc-if>
+<sc-if value="{{noQText}}" hint-placeholder-val="{{ true }}"><kbd class="hide-m">/</kbd></sc-if>
+<button class="btn sm {{smart.cls}}" onClick="{{toggleSmart}}" aria-pressed="{{smart.isOn}}" disabled="{{smart.unsupported}}" title="{{smart.tip}}">
+<sc-if value="{{smart.loading}}" hint-placeholder-val="{{ false }}"><svg class="ring" viewBox="0 0 20 20" aria-hidden="true"><circle class="ring-bg" cx="10" cy="10" r="7"/><circle class="ring-fg" cx="10" cy="10" r="7" stroke-dasharray="44" stroke-dashoffset="{{smart.dash}}" transform="rotate(-90 10 10)"/></svg><span class="mono">{{smart.pct}}%</span></sc-if>
+<sc-if value="{{smart.idle}}" hint-placeholder-val="{{ true }}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.sparkle}}"/></svg><span>Smart</span></sc-if>
+</button>
+</div>
+<div class="herosub"><a href="{{startHref}}" onClick="{{goStart}}">New here? Getting started →</a><span class="mono subtle">{{totals}}</span></div>
+</section>
+
+<div class="wrap layout">
+<aside class="filters" aria-label="Filters">
+<div class="fgrp">
+<div class="fhead"><h2 class="lbl">Type</h2><sc-if value="{{anyFilter}}" hint-placeholder-val="{{ false }}"><button class="linkbtn" onClick="{{clearFilters}}">Clear all</button></sc-if></div>
+<div class="chipcol">
+<sc-for list="{{typeChips}}" as="c" hint-placeholder-count="6"><button class="chip {{c.cls}}" onClick="{{c.toggle}}" disabled="{{c.disabled}}" aria-pressed="{{c.on}}" title="{{c.tip}}"><span class="chl">{{c.label}}<sc-if value="{{c.auto}}" hint-placeholder-val="{{ false }}"><span class="auto">auto</span></sc-if></span><span class="n">{{c.count}}</span></button></sc-for>
+</div>
+</div>
+<button class="btn sm fbtn" onClick="{{toggleFilters}}" aria-expanded="{{filtersOpen}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.filter}}"/></svg>Category and tags</button>
+<div class="fmore {{fmoreCls}}">
+<div class="fgrp">
+<h2 class="lbl">Category</h2>
+<div class="chipcol"><sc-for list="{{catChips}}" as="c" hint-placeholder-count="4"><button class="chip {{c.cls}}" onClick="{{c.toggle}}" disabled="{{c.disabled}}" aria-pressed="{{c.on}}">{{c.label}}<span class="n">{{c.count}}</span></button></sc-for></div>
+</div>
+<div class="fgrp">
+<h2 class="lbl">Tags</h2>
+<div class="chipwrap"><sc-for list="{{tagChips}}" as="c" hint-placeholder-count="6"><button class="chip sm mono {{c.cls}}" onClick="{{c.toggle}}" disabled="{{c.disabled}}" aria-pressed="{{c.on}}">#{{c.label}}<span class="n">{{c.count}}</span></button></sc-for></div>
+</div>
+</div>
+</aside>
+
+<section class="results" aria-label="Results">
+<div class="rhead">
+<p id="rcount" class="rcount" aria-live="polite">{{countText}}</p>
+<sc-if value="{{softChip}}" hint-placeholder-val="{{ false }}"><button class="chip sm on" onClick="{{removeSoft}}" title="Selected from your query. Click to remove."><span class="chl"><span class="auto">auto</span>{{softLabel}}</span><svg class="ico i12" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.close}}"/></svg></button></sc-if>
+<sc-if value="{{smart.isOn}}" hint-placeholder-val="{{ false }}"><span class="smartm mono">Smart</span></sc-if>
+<div class="sort"><label for="sort" class="subtle">Sort</label><select id="sort" class="btn sm" value="{{sort}}" onChange="{{onSort}}"><option value="rel">Relevance</option><option value="upd">Recently updated</option><option value="name">Name</option></select></div>
+</div>
+<sc-if value="{{partial}}" hint-placeholder-val="{{ false }}"><div class="callout c-info" role="status"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.info}}"/></svg><span>No exact matches — showing partial matches.</span></div></sc-if>
+<sc-if value="{{hasResults}}" hint-placeholder-val="{{ true }}">
+<div class="grid">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="4">
+<article class="card {{c.cardCls}}">
+<div class="ctop">
+<span class="badge {{c.typeCls}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.typeIcon}}"/></svg>{{c.typeLabel}}</span>
+<a class="cname mono" href="{{c.href}}" onClick="{{c.open}}"><sc-for list="{{c.nameSeg}}" as="s" hint-placeholder-count="1"><sc-if value="{{s.m}}" hint-placeholder-val="{{ false }}"><mark>{{s.t}}</mark></sc-if><sc-if value="{{s.n}}" hint-placeholder-val="{{ true }}"><span>{{s.t}}</span></sc-if></sc-for></a>
+<span class="ver mono">v{{c.version}}</span>
+</div>
+<div class="cparent">{{c.parent}}</div>
+<p class="cdesc clamp3 {{c.descCls}}"><sc-for list="{{c.descSeg}}" as="s" hint-placeholder-count="1"><sc-if value="{{s.m}}" hint-placeholder-val="{{ false }}"><mark>{{s.t}}</mark></sc-if><sc-if value="{{s.n}}" hint-placeholder-val="{{ true }}"><span>{{s.t}}</span></sc-if></sc-for></p>
+<sc-if value="{{c.hasTags}}" hint-placeholder-val="{{ true }}"><div class="ctags"><sc-for list="{{c.tags}}" as="t" hint-placeholder-count="2"><span class="tag">{{t.t}}</span></sc-for></div></sc-if>
+<sc-if value="{{c.hasBadges}}" hint-placeholder-val="{{ false }}"><div class="cbadges"><sc-for list="{{c.badges}}" as="b" hint-placeholder-count="1"><span class="sb {{b.cls}}" title="{{b.tip}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{b.icon}}"/></svg>{{b.label}}</span></sc-for><sc-if value="{{c.hasMore}}" hint-placeholder-val="{{ false }}"><span class="sb s-more" title="{{c.moreTip}}">{{c.more}}</span></sc-if></div></sc-if>
+<div class="cact">
+<button class="btn sm {{c.copyCls}}" onClick="{{c.copy}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.copyIcon}}"/></svg>{{c.copyLabel}}</button>
+<button class="btn sm {{c.stackCls}}" onClick="{{c.toggleStack}}" aria-pressed="{{c.inStack}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.stackIcon}}"/></svg>{{c.stackLabel}}</button>
+<a class="btn sm ghost cdet" href="{{c.href}}" onClick="{{c.open}}" aria-label="{{c.detAria}}">Details →</a>
+</div>
+</article>
+</sc-for>
+</div>
+<sc-if value="{{showMore}}" hint-placeholder-val="{{ false }}"><div class="center"><button class="btn" onClick="{{more}}">Show more</button></div></sc-if>
+<p class="khint hide-m"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> clear</span><button class="linkbtn" onClick="{{openKeys}}">All shortcuts</button></p>
+</sc-if>
+<sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}">
+<div class="empty">
+<svg class="ico i24 subtle" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.search}}"/></svg>
+<h2 class="h2">Nothing matches “{{qShown}}”.</h2>
+<p class="muted">Try fewer words, check the spelling, or describe the task instead of a tool name.</p>
+<div class="wrapc" style="justify-content: center">
+<sc-if value="{{anyFilter}}" hint-placeholder-val="{{ false }}"><button class="btn" onClick="{{clearFilters}}">Clear filters</button></sc-if>
+<sc-if value="{{smart.canTry}}" hint-placeholder-val="{{ false }}"><button class="btn" onClick="{{toggleSmart}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.sparkle}}"/></svg>Try Smart search</button></sc-if>
+<a class="btn primary" href="{{requestHref}}" target="_blank" rel="noopener">Request a plugin<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.ext}}"/></svg></a>
+</div>
+</div>
+</sc-if>
+</section>
+</div>
+
+<sc-if value="{{showRecent}}" hint-placeholder-val="{{ true }}">
+<section class="band" aria-labelledby="recent-h">
+<div class="wrap bandin">
+<div class="between"><h2 id="recent-h" class="h2">Recently updated</h2><a class="sm" href="{{clHref}}" onClick="{{goChangelog}}">What's new →</a></div>
+<div class="gridc">
+<sc-for list="{{recent}}" as="e" hint-placeholder-count="5"><a class="card mini" href="{{e.href}}" onClick="{{e.open}}"><span class="between"><span class="mono strong clamp1">{{e.plugin}}</span><span class="bb {{e.bcls}}">{{e.bump}}</span></span><span class="mono muted sm">{{e.from}} → {{e.to}}</span><span class="subtle xs clamp1">{{e.date}} · {{e.summary}}</span></a></sc-for>
+</div>
+</div>
+</section>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{is.plugins}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page">
+<div class="between">
+<div class="stackv4"><h1 class="h1">All plugins</h1><p class="muted" style="margin: 0">{{pluginsSub}}</p></div>
+<a class="btn" href="{{homeHref}}" onClick="{{goSearch}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.search}}"/></svg>Search inside plugins →</a>
+</div>
+<div class="chipwrap" role="group" aria-label="Category"><sc-for list="{{pCatChips}}" as="c" hint-placeholder-count="4"><button class="chip {{c.cls}}" onClick="{{c.toggle}}" aria-pressed="{{c.on}}">{{c.label}}<span class="n">{{c.count}}</span></button></sc-for></div>
+<sc-for list="{{pgroups}}" as="g" hint-placeholder-count="2">
+<section class="stackv">
+<h2 class="lbl">{{g.cat}}</h2>
+<div class="grid">
+<sc-for list="{{g.cards}}" as="c" hint-placeholder-count="2">
+<article class="card {{c.cardCls}}">
+<div class="ctop"><span class="badge {{c.typeCls}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.typeIcon}}"/></svg>{{c.typeLabel}}</span><a class="cname mono" href="{{c.href}}" onClick="{{c.open}}">{{c.name}}</a><span class="ver mono">v{{c.version}}</span></div>
+<div class="cparent">{{c.parent}}</div>
+<p class="cdesc clamp3">{{c.desc}}</p>
+<sc-if value="{{c.hasTags}}" hint-placeholder-val="{{ true }}"><div class="ctags"><sc-for list="{{c.tags}}" as="t" hint-placeholder-count="2"><span class="tag">{{t.t}}</span></sc-for></div></sc-if>
+<sc-if value="{{c.hasBadges}}" hint-placeholder-val="{{ false }}"><div class="cbadges"><sc-for list="{{c.badges}}" as="b" hint-placeholder-count="1"><span class="sb {{b.cls}}" title="{{b.tip}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{b.icon}}"/></svg>{{b.label}}</span></sc-for><sc-if value="{{c.hasMore}}" hint-placeholder-val="{{ false }}"><span class="sb s-more" title="{{c.moreTip}}">{{c.more}}</span></sc-if></div></sc-if>
+<div class="cact">
+<button class="btn sm {{c.copyCls}}" onClick="{{c.copy}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.copyIcon}}"/></svg>{{c.copyLabel}}</button>
+<button class="btn sm {{c.stackCls}}" onClick="{{c.toggleStack}}" aria-pressed="{{c.inStack}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.stackIcon}}"/></svg>{{c.stackLabel}}</button>
+<a class="btn sm ghost cdet" href="{{c.href}}" onClick="{{c.open}}" aria-label="{{c.detAria}}">Details →</a>
+</div>
+</article>
+</sc-for>
+</div>
+</section>
+</sc-for>
+<div class="callout c-accent between"><span>Didn't find what you need?</span><a class="btn sm" href="{{requestHrefPlain}}" target="_blank" rel="noopener">Request a plugin<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.ext}}"/></svg></a></div>
+</div>
+</sc-if>
+
+<sc-if value="{{is.plugin}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{pluginsHref}}" onClick="{{goPlugins}}">Plugins</a><span aria-hidden="true">/</span><span class="mono" aria-current="page">{{pv.name}}</span></nav>
+<section class="phead">
+<div class="titlerow"><span class="badge t-plugin"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.plugin}}"/></svg>PLUGIN</span><h1 class="h1 mono break">{{pv.name}}</h1><span class="mono subtle">v{{pv.version}}</span></div>
+<p class="lead">{{pv.description}}</p>
+<div class="metaline"><span class="muted">{{pv.category}}</span><sc-for list="{{pv.tags}}" as="t" hint-placeholder-count="2"><span class="tag">{{t.t}}</span></sc-for></div>
+<div class="muted sm">{{pv.byline}}</div>
+<div class="wrapc">
+<a class="btn sm" href="{{pv.sourceUrl}}" target="_blank" rel="noopener">View source on GitHub<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.ext}}"/></svg></a>
+<a class="btn sm" href="{{pv.issueUrl}}" target="_blank" rel="noopener">Report an issue<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.ext}}"/></svg></a>
+<button class="btn sm {{pv.shareCls}}" onClick="{{pv.share}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{pv.shareIcon}}"/></svg>Share</button>
+<a class="xs" href="{{securityHref}}" target="_blank" rel="noopener">Security problem? Report it privately →</a>
+</div>
+</section>
+<div class="cols">
+<aside class="colside">
+<section class="panel pad" aria-labelledby="inst-h">
+<h2 id="inst-h" class="h3">Install</h2>
+<sc-for list="{{pv.install}}" as="s" hint-placeholder-count="2"><div class="stepc"><span class="muted xs">{{s.label}}</span><div class="code"><span class="c">{{s.text}}</span><button class="btn sm icon ghost {{s.okCls}}" onClick="{{s.copy}}" aria-label="Copy command" title="Copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{s.icon}}"/></svg></button></div></div></sc-for>
+<div class="wrapc"><button class="btn {{pv.stackBtnCls}}" onClick="{{pv.toggleStack}}" aria-pressed="{{pv.inStack}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{pv.stackIcon}}"/></svg>{{pv.stackLabel}}</button><a class="sm" href="{{startUpdateHref}}" onClick="{{goStartUpdate}}">Updating and removing →</a></div>
+</section>
+<section class="panel pad" aria-labelledby="sec-h">
+<h2 id="sec-h" class="h3">What this plugin can do on your machine</h2>
+<sc-if value="{{pv.secNone}}" hint-placeholder-val="{{ false }}"><div class="callout c-success"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.shield}}"/></svg><span>No hooks, MCP servers or scripts. This plugin only adds prompts (skills/agents).</span></div></sc-if>
+<div>
+<sc-for list="{{pv.sec}}" as="r" hint-placeholder-count="2">
+<div class="srow {{r.rowCls}}">
+<span class="sicon {{r.tone}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{r.icon}}"/></svg></span>
+<div class="sbody"><span class="strong">{{r.label}}</span><span class="muted sm">{{r.expl}}</span>
+<sc-for list="{{r.items}}" as="it" hint-placeholder-count="1"><sc-if value="{{it.isInt}}" hint-placeholder-val="{{ false }}"><a class="mono xs break" href="{{it.href}}" onClick="{{it.open}}">{{it.t}}</a></sc-if><sc-if value="{{it.isExt}}" hint-placeholder-val="{{ false }}"><a class="mono xs break" href="{{it.href}}" target="_blank" rel="noopener">{{it.t}} ↗</a></sc-if><sc-if value="{{it.isPlain}}" hint-placeholder-val="{{ true }}"><span class="mono xs break">{{it.t}}</span></sc-if></sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+<p class="disc">Badges are derived automatically from the plugin files and are not a security guarantee. Review the source before installing. <a href="{{securityHref}}" target="_blank" rel="noopener">SECURITY.md</a></p>
+</section>
+<section class="panel padx" aria-labelledby="meta-h">
+<h2 id="meta-h" class="lbl" style="margin-top: 8px">Metadata</h2>
+<dl class="kvl"><sc-for list="{{pv.meta}}" as="m" hint-placeholder-count="5"><div class="kv"><dt>{{m.k}}</dt><dd class="{{m.cls}}"><sc-if value="{{m.isLink}}" hint-placeholder-val="{{ false }}"><a href="{{m.href}}" target="_blank" rel="noopener">{{m.v}} ↗</a></sc-if><sc-if value="{{m.isText}}" hint-placeholder-val="{{ true }}"><span>{{m.v}}</span></sc-if></dd></div></sc-for></dl>
+</section>
+</aside>
+<div class="colmain">
+<section class="stackv">
+<h2 class="h2">Components <span class="mono subtle" style="font-size: 14px; font-weight: 400">{{pv.compCount}}</span></h2>
+<div class="panel list">
+<sc-for list="{{pv.comps}}" as="a" hint-placeholder-count="3"><a class="lrow" href="{{a.href}}" onClick="{{a.open}}"><span class="lbadge"><span class="badge {{a.typeCls}}">{{a.typeLabel}}</span></span><span class="mono lname">{{a.inv}}</span><span class="ldesc"><sc-if value="{{a.hasBadge}}" hint-placeholder-val="{{ false }}"><span class="sb s-info">{{a.badge}}</span></sc-if><span class="clamp1">{{a.desc}}</span></span></a></sc-for>
+</div>
+</section>
+<sc-if value="{{pv.hasDeps}}" hint-placeholder-val="{{ false }}">
+<section class="stackv">
+<h2 class="h2">Dependencies</h2>
+<div class="wrapc"><sc-for list="{{pv.deps}}" as="d" hint-placeholder-count="1"><sc-if value="{{d.internal}}" hint-placeholder-val="{{ true }}"><a class="badge t-plugin" href="{{d.href}}" onClick="{{d.open}}">{{d.name}}</a></sc-if><sc-if value="{{d.external}}" hint-placeholder-val="{{ false }}"><span class="badge t-plugin">{{d.name}}</span></sc-if></sc-for></div>
+<p class="subtle xs" style="margin: 0">Added to your stack automatically with this plugin.</p>
+</section>
+</sc-if>
+<section class="stackv">
+<h2 class="h2">README</h2>
+<sc-if value="{{pv.hasReadme}}" hint-placeholder-val="{{ true }}"><div class="prose"><sc-for list="{{pv.readme}}" as="b" hint-placeholder-count="3"><sc-if value="{{b.h}}" hint-placeholder-val="{{ false }}"><h3>{{b.t}}</h3></sc-if><sc-if value="{{b.p}}" hint-placeholder-val="{{ true }}"><p>{{b.t}}</p></sc-if><sc-if value="{{b.li}}" hint-placeholder-val="{{ false }}"><ul><li>{{b.t}}</li></ul></sc-if><sc-if value="{{b.q}}" hint-placeholder-val="{{ false }}"><blockquote>{{b.t}}</blockquote></sc-if><sc-if value="{{b.pre}}" hint-placeholder-val="{{ false }}"><pre>{{b.t}}</pre></sc-if></sc-for></div></sc-if>
+<sc-if value="{{pv.noReadme}}" hint-placeholder-val="{{ false }}"><p class="muted" style="margin: 0">This plugin has no README yet.</p></sc-if>
+</section>
+<section class="stackv">
+<div class="between"><h2 class="h2">Version history</h2><a class="sm" href="{{clHref}}" onClick="{{pv.openHistory}}">All releases →</a></div>
+<ol class="panel list plain"><sc-for list="{{pv.history}}" as="e" hint-placeholder-count="3"><li class="hrow2"><span class="mono w64">{{e.to}}</span><span class="bb {{e.bcls}}">{{e.bump}}</span><span class="muted grow">{{e.summary}}</span><span class="mono subtle xs">{{e.date}}</span></li></sc-for></ol>
+</section>
+<section class="stackv">
+<h2 class="h2">Discussion</h2>
+<p class="muted sm" style="margin: 0">Comments use GitHub Discussions. Sign in with GitHub to comment.</p>
+<div class="panel pad"><span class="muted sm">The comment thread loads here when you scroll near it.</span><a class="sm" href="{{discussionsHref}}" target="_blank" rel="noopener">Open it on GitHub ↗</a></div>
+</section>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{is.artifact}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{pluginsHref}}" onClick="{{goPlugins}}">Plugins</a><span aria-hidden="true">/</span><a class="mono" href="{{av.pluginHref}}" onClick="{{av.openPlugin}}">{{av.plugin}}</a><span aria-hidden="true">/</span><span class="mono" aria-current="page">{{av.name}}</span></nav>
+<section class="phead">
+<span class="badge {{av.typeCls}} self-start"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{av.typeIcon}}"/></svg>{{av.typeLabel}}</span>
+<h1 class="h1 mono break">{{av.title}}</h1>
+<div class="metaline muted">in <a class="mono" href="{{av.pluginHref}}" onClick="{{av.openPlugin}}">{{av.plugin}}</a><span class="subtle">·</span><span class="mono">v{{av.version}}</span><span class="subtle">·</span><span>{{av.category}}</span></div>
+</section>
+<div class="cols">
+<aside class="colside">
+<section class="panel pad" aria-labelledby="ainst-h">
+<h2 id="ainst-h" class="h3">Install</h2>
+<sc-for list="{{av.install}}" as="s" hint-placeholder-count="2"><div class="stepc"><span class="muted xs">{{s.label}}</span><div class="code"><span class="c">{{s.text}}</span><button class="btn sm icon ghost {{s.okCls}}" onClick="{{s.copy}}" aria-label="Copy command" title="Copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{s.icon}}"/></svg></button></div></div></sc-for>
+<sc-if value="{{av.hasUseNote}}" hint-placeholder-val="{{ false }}"><div class="stepc"><span class="muted xs">3 · Use it</span><p class="sm" style="margin: 0">{{av.useNote}}</p></div></sc-if>
+<div class="wrapc"><button class="btn {{av.stackBtnCls}}" onClick="{{av.toggleStack}}" aria-pressed="{{av.inStack}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{av.stackIcon}}"/></svg>{{av.stackLabel}}</button><a class="sm" href="{{startUpdateHref}}" onClick="{{goStartUpdate}}">Updating and removing →</a></div>
+</section>
+<section class="panel padx" aria-labelledby="ameta-h">
+<h2 id="ameta-h" class="lbl" style="margin-top: 8px">Metadata</h2>
+<dl class="kvl"><sc-for list="{{av.meta}}" as="m" hint-placeholder-count="5"><div class="kv"><dt>{{m.k}}</dt><dd class="{{m.cls}}"><sc-if value="{{m.isLink}}" hint-placeholder-val="{{ false }}"><a href="{{m.href}}" target="_blank" rel="noopener">{{m.v}} ↗</a></sc-if><sc-if value="{{m.isText}}" hint-placeholder-val="{{ true }}"><span>{{m.v}}</span></sc-if></dd></div></sc-for></dl>
+</section>
+</aside>
+<div class="colmain">
+<sc-for list="{{av.sections}}" as="s" hint-placeholder-count="3">
+<sc-if value="{{s.isCallout}}" hint-placeholder-val="{{ false }}"><section class="activ {{s.cls}}"><h2 class="lbl">{{s.title}}</h2><p class="lead">{{s.text}}</p><sc-if value="{{s.note}}" hint-placeholder-val="{{ false }}"><p class="xs muted" style="margin: 0">{{s.note}}</p></sc-if></section></sc-if>
+<sc-if value="{{s.isLegacy}}" hint-placeholder-val="{{ false }}"><div class="callout c-warning"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.legacy}}"/></svg><span>This is a legacy command. New capabilities are written as skills.</span></div></sc-if>
+<sc-if value="{{s.isText}}" hint-placeholder-val="{{ false }}"><section class="stackv"><h2 class="h2">{{s.title}}</h2><p class="body15 {{s.textCls}}">{{s.text}}</p><sc-if value="{{s.sub}}" hint-placeholder-val="{{ false }}"><p class="mono xs subtle break" style="margin: 0">{{s.sub}}</p></sc-if></section></sc-if>
+<sc-if value="{{s.isPills}}" hint-placeholder-val="{{ false }}"><section class="stackv"><h2 class="h2">{{s.title}}</h2><div class="wrapc"><sc-for list="{{s.pills}}" as="p" hint-placeholder-count="2"><span class="pill mono">{{p.t}}</span></sc-for></div></section></sc-if>
+<sc-if value="{{s.isCode}}" hint-placeholder-val="{{ false }}"><section class="stackv"><h2 class="h2">{{s.title}}</h2><div class="cbox"><div class="cbar"><span class="mono xs subtle grow">{{s.file}}</span><button class="btn sm ghost icon {{s.okCls}}" onClick="{{s.copy}}" aria-label="Copy command" title="Copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{s.icon}}"/></svg></button></div><pre class="cb">{{s.text}}</pre></div></section></sc-if>
+<sc-if value="{{s.isProse}}" hint-placeholder-val="{{ false }}"><section class="stackv"><div class="between"><h2 class="h2">{{s.title}}</h2><a class="mono xs" href="{{av.sourceUrl}}" target="_blank" rel="noopener">{{av.file}} ↗</a></div><div class="prose"><sc-for list="{{s.blocks}}" as="b" hint-placeholder-count="3"><sc-if value="{{b.h}}" hint-placeholder-val="{{ false }}"><h3>{{b.t}}</h3></sc-if><sc-if value="{{b.p}}" hint-placeholder-val="{{ true }}"><p>{{b.t}}</p></sc-if><sc-if value="{{b.li}}" hint-placeholder-val="{{ false }}"><ul><li>{{b.t}}</li></ul></sc-if><sc-if value="{{b.q}}" hint-placeholder-val="{{ false }}"><blockquote>{{b.t}}</blockquote></sc-if><sc-if value="{{b.pre}}" hint-placeholder-val="{{ false }}"><pre>{{b.t}}</pre></sc-if></sc-for></div></section></sc-if>
+<sc-if value="{{s.isSecurity}}" hint-placeholder-val="{{ false }}"><section class="panel pad"><h2 class="h3">What this component can do on your machine</h2><div><sc-for list="{{s.rows}}" as="r" hint-placeholder-count="1"><div class="srow {{r.rowCls}}"><span class="sicon {{r.tone}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{r.icon}}"/></svg></span><div class="sbody"><span class="strong">{{r.label}}</span><span class="muted sm">{{r.expl}}</span><sc-for list="{{r.items}}" as="it" hint-placeholder-count="1"><span class="mono xs break">{{it.t}}</span></sc-for></div></div></sc-for></div><p class="disc">Badges are derived automatically from the plugin files and are not a security guarantee. Review the source before installing. <a href="{{securityHref}}" target="_blank" rel="noopener">SECURITY.md</a></p></section></sc-if>
+</sc-for>
+<section class="stackv" style="padding-top: 8px; border-top: 1px solid var(--border)">
+<h2 class="h2">Other components in this plugin</h2>
+<sc-if value="{{av.hasOthers}}" hint-placeholder-val="{{ true }}"><div class="panel list"><sc-for list="{{av.others}}" as="a" hint-placeholder-count="2"><a class="lrow" href="{{a.href}}" onClick="{{a.open}}"><span class="lbadge"><span class="badge {{a.typeCls}}">{{a.typeLabel}}</span></span><span class="mono lname">{{a.inv}}</span></a></sc-for></div></sc-if>
+<sc-if value="{{av.noOthers}}" hint-placeholder-val="{{ false }}"><p class="muted" style="margin: 0">This is the only component in <span class="mono">{{av.plugin}}</span>.</p></sc-if>
+<div class="wrapc"><a class="btn sm" href="{{av.issueUrl}}" target="_blank" rel="noopener">Report an issue<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.ext}}"/></svg></a><a class="xs" href="{{securityHref}}" target="_blank" rel="noopener">Security problem? Report it privately →</a></div>
+</section>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{is.stack}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page">
+<div class="between"><h1 class="h1">Your stack <span class="mono subtle" style="font-weight: 400">({{sv.count}})</span></h1><sc-if value="{{sv.has}}" hint-placeholder-val="{{ true }}"><div class="wrapc"><button class="btn {{sv.shareCls}}" onClick="{{sv.share}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{sv.shareIcon}}"/></svg>Share stack</button><button class="btn danger" onClick="{{sv.clear}}">Clear</button></div></sc-if></div>
+<sc-if value="{{storageBlocked}}" hint-placeholder-val="{{ false }}"><div class="callout c-info"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.info}}"/></svg><span>Your browser blocks local storage, so the stack won't be remembered after you leave. Use Share stack to keep a link.</span></div></sc-if>
+<sc-if value="{{sv.empty}}" hint-placeholder-val="{{ false }}"><div class="empty"><svg class="ico i24 subtle" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.stack}}"/></svg><p>Your stack is empty. Add plugins from search or any plugin page.</p><a class="btn primary" href="{{pluginsHref}}" onClick="{{goPlugins}}">Browse plugins</a></div></sc-if>
+<sc-if value="{{sv.has}}" hint-placeholder-val="{{ true }}">
+<div class="cols2">
+<section class="col-a stackv">
+<ul class="panel list plain">
+<sc-for list="{{sv.items}}" as="it" hint-placeholder-count="2"><li class="sitem {{it.cls}}"><div class="grow stackv4"><div class="rowb"><sc-if value="{{it.isDep}}" hint-placeholder-val="{{ false }}"><span class="subtle mono" aria-hidden="true">└</span></sc-if><a class="mono strong" href="{{it.href}}" onClick="{{it.open}}">{{it.name}}</a><span class="mono subtle xs">v{{it.version}}</span></div><span class="muted sm">{{it.desc}}</span><sc-if value="{{it.isDep}}" hint-placeholder-val="{{ false }}"><span class="subtle xs">Added as dependency of <span class="mono">{{it.depOf}}</span></span></sc-if></div><button class="btn sm icon" onClick="{{it.remove}}" disabled="{{it.locked}}" aria-label="{{it.aria}}" title="{{it.tip}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.minus}}"/></svg></button></li></sc-for>
+</ul>
+<section class="panel pad">
+<h2 class="h3">Combined security surface</h2>
+<sc-if value="{{sv.secNone}}" hint-placeholder-val="{{ false }}"><div class="callout c-success"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.shield}}"/></svg><span>No hooks, MCP servers or scripts in this stack. It only adds prompts (skills/agents).</span></div></sc-if>
+<div><sc-for list="{{sv.sec}}" as="r" hint-placeholder-count="2"><div class="agg"><span class="sb {{r.tone}}" style="justify-self: start"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{r.icon}}"/></svg>{{r.label}} · {{r.count}}</span><span class="mono xs muted break">{{r.detail}}</span></div></sc-for></div>
+<p class="disc">Badges are derived automatically from the plugin files and are not a security guarantee. Review the source before installing. <a href="{{securityHref}}" target="_blank" rel="noopener">SECURITY.md</a></p>
+</section>
+<a class="sm wrapc" href="{{homeHref}}" onClick="{{goSearch}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.plus}}"/></svg>Add more plugins</a>
+</section>
+<section class="col-b stackv">
+<div class="cbox">
+<div class="cbar"><span class="mono xs subtle grow">.claude/settings.json</span><button class="btn sm {{sv.copyCls}}" onClick="{{sv.copy}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{sv.copyIcon}}"/></svg>Copy</button><button class="btn sm primary" onClick="{{sv.download}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.download}}"/></svg>Download settings.json</button></div>
+<pre class="cb">{{sv.json}}</pre>
+</div>
+<div class="callout c-info"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.info}}"/></svg><div class="stackv4"><span class="strong">Where to put it: <span class="mono">&lt;project&gt;/.claude/settings.json</span></span><span>Commit this file to your project. When teammates open the project in Claude Code, they're asked to trust the marketplace and install these plugins.</span></div></div>
+</section>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{is.changelog}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page narrow">
+<div class="between">
+<div class="stackv4"><h1 class="h1">What's new</h1><p class="muted" style="margin: 0">Every plugin version change, newest first.</p></div>
+<div class="feed"><button class="btn {{cv.feedCls}}" onClick="{{cv.copyFeed}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.rss}}"/></svg>Subscribe (Atom feed)</button><span class="mono subtle xs break">{{cv.feedUrl}}</span></div>
+</div>
+<div class="fbar">
+<label for="clp" class="subtle sm">Plugin</label>
+<select id="clp" class="btn sm" value="{{cv.plugin}}" onChange="{{cv.onPlugin}}"><sc-for list="{{cv.options}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}">{{o.label}}</option></sc-for></select>
+<span class="vsep hide-m" aria-hidden="true"></span>
+<div class="wrapc" role="group" aria-label="Bump type"><sc-for list="{{cv.kinds}}" as="k" hint-placeholder-count="5"><button class="btn sm {{k.cls}}" aria-pressed="{{k.on}}" onClick="{{k.pick}}">{{k.label}}</button></sc-for></div>
+</div>
+<sc-if value="{{cv.empty}}" hint-placeholder-val="{{ false }}"><p class="muted" style="margin: 0">No releases yet.</p></sc-if>
+<sc-for list="{{cv.months}}" as="m" hint-placeholder-count="2">
+<section class="stackv">
+<h2 class="lbl" style="margin-top: 8px">{{m.label}}</h2>
+<sc-for list="{{m.items}}" as="e" hint-placeholder-count="3"><article class="entry {{e.rail}}"><span class="mono subtle xs">{{e.date}}</span><div class="stackv4 min0"><div class="wrapc"><a class="mono strong" href="{{e.href}}" onClick="{{e.open}}">{{e.plugin}}</a><span class="mono muted sm">{{e.from}} → {{e.to}}</span><span class="bb {{e.bcls}}">{{e.bump}}</span></div><span class="muted">{{e.summary}}</span></div><a class="sm nowrap" href="{{e.release}}" target="_blank" rel="noopener">View release ↗</a></article></sc-for>
+</section>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{is.start}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page">
+<div class="startl">
+<nav class="toc" aria-label="On this page"><span class="lbl" style="padding: 0 10px 8px">On this page</span><sc-for list="{{sg.toc}}" as="t" hint-placeholder-count="8"><a href="#{{t.id}}">{{t.n}}. {{t.title}}</a></sc-for></nav>
+<div class="startm">
+<div class="stackv4"><h1 class="h1">Getting started</h1><p class="lead muted">From zero to your first plugin in Claude Code, then a shared setup for your team.</p></div>
+<section id="s-what" class="stackv">
+<h2 class="h2">1. What is a plugin marketplace?</h2>
+<p class="body15">A marketplace is a Git repository that lists Claude Code plugins. You add it once, then install any plugin from it by name. A plugin bundles one or more of these:</p>
+<dl class="types">
+<dt><span class="badge t-skill">SKILL</span></dt><dd>Instructions Claude loads when your request matches their description.</dd>
+<dt><span class="badge t-agent">AGENT</span></dt><dd>A subagent with its own prompt and tools that Claude can delegate to.</dd>
+<dt><span class="badge t-hook">HOOK</span></dt><dd>A command that runs automatically on a Claude Code event, such as after a tool call.</dd>
+<dt><span class="badge t-mcp">MCP</span></dt><dd>A server that gives Claude new tools, locally or over the network.</dd>
+</dl>
+</section>
+<sc-for list="{{sg.steps}}" as="s" hint-placeholder-count="6">
+<section id="{{s.id}}" class="stackv">
+<h2 class="h2">{{s.n}}. {{s.title}}</h2>
+<p class="body15">{{s.text}}</p>
+<sc-for list="{{s.cmds}}" as="c" hint-placeholder-count="1"><div class="stepc"><span class="subtle xs">{{c.label}}</span><div class="code"><span class="c">{{c.text}}</span><button class="btn sm icon ghost {{c.okCls}}" onClick="{{c.copy}}" aria-label="Copy command" title="Copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.icon}}"/></svg></button></div></div></sc-for>
+<sc-if value="{{s.hasLink}}" hint-placeholder-val="{{ false }}"><a href="{{s.href}}" onClick="{{s.go}}">{{s.link}}</a></sc-if>
+</section>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{is.course}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page narrow">
+<div class="stackv4"><h1 class="h1">Course map</h1><p class="muted" style="margin: 0">Plugins built in each lesson of the GoIT course.</p></div>
+<ol class="tl">
+<sc-for list="{{course.lessons}}" as="l" hint-placeholder-count="4">
+<li class="tlnode {{l.cls}}"><span class="tldot" aria-hidden="true"></span>
+<div class="stackv">
+<div class="stackv4"><span class="mono subtle xs">Lesson {{l.n}}</span><h2 class="h3">{{l.title}}</h2><p class="muted sm" style="margin: 0">{{l.desc}}</p></div>
+<sc-if value="{{l.none}}" hint-placeholder-val="{{ false }}"><p class="subtle sm" style="margin: 0">No plugin in this lesson</p></sc-if>
+<div class="gridc"><sc-for list="{{l.cards}}" as="c" hint-placeholder-count="1"><a class="card mini" href="{{c.href}}" onClick="{{c.open}}"><span class="wrapc"><span class="badge t-plugin">PLUGIN</span><span class="mono strong clamp1">{{c.name}}</span></span><span class="muted sm clamp1">{{c.desc}}</span></a></sc-for></div>
+</div>
+</li>
+</sc-for>
+</ol>
+<sc-if value="{{course.hasOther}}" hint-placeholder-val="{{ true }}"><section class="stackv"><h2 class="h2">Other plugins</h2><div class="gridc"><sc-for list="{{course.other}}" as="c" hint-placeholder-count="2"><a class="card mini" href="{{c.href}}" onClick="{{c.open}}"><span class="wrapc"><span class="badge t-plugin">PLUGIN</span><span class="mono strong clamp1">{{c.name}}</span></span><span class="muted sm clamp1">{{c.desc}}</span></a></sc-for></div></section></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{is.newp}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page">
+<div class="stackv4"><h1 class="h1">Build a plugin</h1><p class="lead muted">Fill in the basics and download a ZIP with the files a new plugin needs. Nothing leaves your browser.</p></div>
+<div class="cols2">
+<form class="col-a stackv" style="gap: 20px" onSubmit="{{nv.submit}}" novalidate="">
+<sc-if value="{{nv.showSummary}}" hint-placeholder-val="{{ false }}"><div class="callout c-danger" role="alert"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.warning}}"/></svg><div class="stackv4"><span class="strong">{{nv.summaryTitle}}</span><sc-for list="{{nv.errList}}" as="e" hint-placeholder-count="2"><span>{{e.t}}</span></sc-for></div></div></sc-if>
+<div class="f"><label for="fn">Plugin name</label><input id="fn" class="in mono {{nv.name.cls}}" value="{{f.name}}" onChange="{{nv.set.name}}" placeholder="my-plugin" aria-invalid="{{nv.name.bad}}" aria-describedby="fn-h"><div id="fn-h" class="help"><span class="{{nv.name.msgCls}}">{{nv.name.msg}}</span><span class="mono">{{nv.name.count}}</span></div><span class="help">Permanent. You can't rename a plugin later.</span></div>
+<div class="f"><label for="fdn">Display name <span class="subtle" style="font-weight: 400">(optional)</span></label><input id="fdn" class="in" value="{{f.displayName}}" onChange="{{nv.set.displayName}}"></div>
+<div class="f"><label for="fd">Description</label><textarea id="fd" class="in {{nv.description.cls}}" rows="3" value="{{f.description}}" onChange="{{nv.set.description}}" aria-invalid="{{nv.description.bad}}"></textarea><div class="help"><span class="{{nv.description.msgCls}}">{{nv.description.msg}}</span><span class="mono">{{nv.description.count}}</span></div></div>
+<div class="grid2">
+<div class="f"><label for="fc">Category</label><select id="fc" class="in" value="{{f.category}}" onChange="{{nv.set.category}}"><sc-for list="{{nv.cats}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}">{{o.label}}</option></sc-for></select><sc-if value="{{nv.isOther}}" hint-placeholder-val="{{ false }}"><input class="in {{nv.category.cls}}" aria-label="New category" placeholder="new-category" value="{{f.catOther}}" onChange="{{nv.set.catOther}}"></sc-if><sc-if value="{{nv.category.bad}}" hint-placeholder-val="{{ false }}"><span class="help m-err">{{nv.category.msg}}</span></sc-if></div>
+<div class="f"><label for="ft">Tags</label><div class="in tagin"><sc-for list="{{nv.tags}}" as="t" hint-placeholder-count="0"><span class="tchip mono">{{t.t}}<button type="button" class="tx" onClick="{{t.remove}}" aria-label="{{t.aria}}">×</button></span></sc-for><input id="ft" class="tagfield" value="{{f.tagDraft}}" onChange="{{nv.onTagChange}}" onKeyDown="{{nv.onTagKey}}" placeholder="Add tag"></div><span class="help">Comma or Enter to add</span></div>
+</div>
+<div class="grid2">
+<div class="f"><label for="fa">Author name</label><input id="fa" class="in" value="{{f.authorName}}" onChange="{{nv.set.authorName}}"></div>
+<div class="f"><label for="fu">Author URL</label><input id="fu" class="in {{nv.authorUrl.cls}}" placeholder="https://" value="{{f.authorUrl}}" onChange="{{nv.set.authorUrl}}"><sc-if value="{{nv.authorUrl.bad}}" hint-placeholder-val="{{ false }}"><span class="help m-err">{{nv.authorUrl.msg}}</span></sc-if></div>
+</div>
+<div class="hr"></div>
+<div class="f"><label for="fsn">First skill name</label><input id="fsn" class="in mono {{nv.skillName.cls}}" placeholder="my-skill" value="{{f.skillName}}" onChange="{{nv.set.skillName}}"><div class="help"><span class="{{nv.skillName.msgCls}}">{{nv.skillName.msg}}</span><span class="mono">{{nv.invocation}}</span></div></div>
+<div class="f"><label for="fsd">First skill description</label><textarea id="fsd" class="in {{nv.skillDesc.cls}}" rows="3" value="{{f.skillDesc}}" onChange="{{nv.set.skillDesc}}"></textarea><div class="help"><span class="{{nv.skillDesc.msgCls}}">{{nv.skillDesc.msg}}</span><span class="mono">{{nv.skillDesc.count}}</span></div></div>
+<div class="wrapc">
+<button type="submit" class="btn primary {{nv.dlCls}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.download}}"/></svg>Download ZIP</button>
+<button type="button" class="btn {{nv.entryCls}}" onClick="{{nv.copyEntry}}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{nv.entryIcon}}"/></svg>Copy marketplace entry</button>
+</div>
+</form>
+<section class="col-b stackv" aria-label="Preview">
+<div class="panel pad"><h2 class="lbl">{{nv.zipName}}</h2><pre class="mono muted" style="margin: 0; font-size: 12.5px; line-height: 21px; overflow-x: auto">{{nv.tree}}</pre></div>
+<div class="cbox">
+<div class="tabs" role="tablist"><sc-for list="{{nv.tabs}}" as="t" hint-placeholder-count="5"><button type="button" role="tab" class="tab {{t.cls}}" aria-selected="{{t.on}}" onClick="{{t.pick}}">{{t.label}}</button></sc-for></div>
+<pre class="cb" style="min-height: 240px">{{nv.body}}</pre>
+</div>
+<sc-if value="{{nv.downloaded}}" hint-placeholder-val="{{ false }}">
+<div class="panel pad" style="background: var(--success-s); border-color: transparent">
+<h2 class="h3" style="color: var(--success)">Next steps</h2>
+<ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px">
+<li>Unzip into the repository root.</li>
+<li>Paste the marketplace entry into <span class="mono">.claude-plugin/marketplace.json</span>, {{nv.insertAt}}.</li>
+<li>Validate both, then open a pull request. See <a href="{{contribHref}}" target="_blank" rel="noopener">CONTRIBUTING</a>.</li>
+</ol>
+<sc-for list="{{nv.validate}}" as="c" hint-placeholder-count="2"><div class="code" style="background: var(--surface)"><span class="c">{{c.text}}</span><button class="btn sm icon ghost {{c.okCls}}" onClick="{{c.copy}}" aria-label="Copy command" title="Copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.icon}}"/></svg></button></div></sc-for>
+</div>
+</sc-if>
+</section>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{is.nf}}" hint-placeholder-val="{{ false }}">
+<div class="wrap page nf">
+<span class="mono subtle sm break">{{nf.path}}</span>
+<h1 class="h1">{{nf.title}}</h1>
+<div class="sbox nfbox"><svg class="ico subtle" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.search}}"/></svg><label for="q404" class="sr">Search the catalog</label><input id="q404" type="search" placeholder="Describe what you need, then press Enter" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{nfKey}}" style="font-size: 15px"></div>
+<div class="wrapc" style="justify-content: center; gap: 20px"><sc-if value="{{nf.removed}}" hint-placeholder-val="{{ false }}"><a href="{{clHref}}" onClick="{{goChangelog}}">See What's new →</a></sc-if><a href="{{pluginsHref}}" onClick="{{goPlugins}}">Browse all plugins →</a></div>
+</div>
+</sc-if>
+</main>
+
+<footer class="ftr">
+<div class="wrap ftrin">
+<div class="stackv4 grow" style="flex-basis: 260px"><span class="mono strong">dev-digest-ai</span><span class="muted">Claude Code plugins built lesson by lesson in the GoIT course.</span><span class="mono subtle xs">Built from {{build}}</span></div>
+<nav class="fnav" aria-label="Footer">
+<a href="{{gh}}" target="_blank" rel="noopener">Repository</a>
+<a href="{{contribHref}}" target="_blank" rel="noopener">Contributing</a>
+<a href="{{securityHref}}" target="_blank" rel="noopener">Security</a>
+<a href="{{releasesHref}}" target="_blank" rel="noopener">Releases</a>
+<a href="{{feedHref}}" class="wrapc" style="gap: 4px"><svg class="ico i12" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.rss}}"/></svg>Atom feed</a>
+<a href="{{requestHrefPlain}}" target="_blank" rel="noopener">Request a plugin ↗</a>
+<button class="linkbtn" style="font-size: 13px" onClick="{{openKeys}}">Keyboard shortcuts</button>
+</nav>
+</div>
+</footer>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}"><div class="toast" role="status" aria-live="polite"><span>{{toastMsg}}</span><sc-if value="{{toastUndo}}" hint-placeholder-val="{{ false }}"><button class="tundo" onClick="{{undo}}">Undo</button></sc-if></div></sc-if>
+
+<sc-if value="{{dlg.smart}}" hint-placeholder-val="{{ false }}">
+<div class="scrim"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-smart">
+<div class="wrapc" style="gap: 10px"><svg class="ico i20" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--accent)"><path d="{{ic.sparkle}}"/></svg><h2 id="dlg-smart" class="h2">Turn on Smart search?</h2></div>
+<p class="muted" style="line-height: 21px">Smart search understands what you mean, not just the words you type, and works with questions in other languages. It downloads a language model (about 100 MB) once and runs entirely in your browser. Nothing you type leaves your device.</p>
+<div class="dacts"><button class="btn" onClick="{{closeDialog}}">Not now</button><button class="btn primary" onClick="{{startSmart}}">Download and turn on</button></div>
+</div></div>
+</sc-if>
+<sc-if value="{{dlg.clear}}" hint-placeholder-val="{{ false }}">
+<div class="scrim"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-clear">
+<h2 id="dlg-clear" class="h2">Clear your stack?</h2>
+<p class="muted">All {{sv.count}} plugins are removed from this browser. Links you already shared keep working.</p>
+<div class="dacts"><button class="btn" onClick="{{closeDialog}}">Cancel</button><button class="btn danger" onClick="{{confirmClear}}">Clear stack</button></div>
+</div></div>
+</sc-if>
+<sc-if value="{{dlg.keys}}" hint-placeholder-val="{{ false }}">
+<div class="scrim"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-keys">
+<h2 id="dlg-keys" class="h2">Keyboard shortcuts</h2>
+<div class="keys"><kbd>/</kbd><span>Focus search from any page</span><kbd>Esc</kbd><span>Clear the query, then leave search</span><kbd>↑ ↓</kbd><span>Move through results</span><kbd>Enter</kbd><span>Open the selected result</span><kbd>c</kbd><span>Copy install for the selected result</span><kbd>s</kbd><span>Add or remove the selected result's plugin</span><kbd>?</kbd><span>Show this list</span></div>
+<div class="dacts"><button class="btn" onClick="{{closeDialog}}">Close</button></div>
+</div></div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":1440,"height":1700}}'>
+const DD = (function () {
+const BASE = '/dev-digest-ai-marketplace/';
+const SITE = 'https://malinovskiy-alex.github.io' + BASE;
+const REPO = 'malinovskiy-alex/dev-digest-ai-marketplace';
+const GH = 'https://github.com/' + REPO;
+const MKT = 'dev-digest-ai';
+const I = {
+search: 'M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14ZM20 20l-3.5-3.5', close: 'M6 6l12 12M18 6 6 18', copy: 'M11 9h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2ZM5 15V5a2 2 0 0 1 2-2h8', check: 'm5 12 5 5 9-10',
+ext: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5', repo: 'M6 4a2 2 0 1 0 0 4a2 2 0 1 0 0-4ZM6 16a2 2 0 1 0 0 4a2 2 0 1 0 0-4ZM18 6a2 2 0 1 0 0 4a2 2 0 1 0 0-4ZM6 8v8M18 10c0 4-6 3-11 6.5',
+sun: 'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8ZM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4', moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z',
+stack: 'm12 3 9 5-9 5-9-5 9-5ZM3 13l9 5 9-5', plus: 'M12 5v14M5 12h14', minus: 'M5 12h14', download: 'M12 4v11M7 10l5 5 5-5M5 20h14',
+link: 'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1', warning: 'M12 4 2.5 20h19L12 4ZM12 10v4M12 17h.01', shield: 'M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3ZM9 12l2 2 4-4',
+plug: 'M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0V8ZM12 17v4', globe: 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18ZM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18', insecure: 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18ZM5.6 5.6l12.8 12.8', key: 'M8 11a4 4 0 1 0 0 8a4 4 0 1 0 0-8ZM11 12l9-9M17 6l3 3',
+script: 'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8l-5-5ZM10 13l-2 2 2 2M14 13l2 2-2 2', sparkle: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3ZM19 16v4M17 18h4', rss: 'M5 5a14 14 0 0 1 14 14M5 11a8 8 0 0 1 8 8M6 17.5a.5.5 0 1 0 0 1a.5.5 0 1 0 0-1Z',
+filter: 'M4 5h16l-6 8v6l-4-1v-5L4 5Z', info: 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18ZM12 11v5M12 8h.01', legacy: 'M4 4h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1ZM5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4', menu: 'M4 7h16M4 12h16M4 17h16',
+plugin: 'M7 4h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3ZM4 12h16M12 4v16', skill: 'M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4ZM9 9h6', agent: 'M8 8h8a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-5a3 3 0 0 1 3-3ZM12 4v4M9 13h.01M15 13h.01', command: 'm5 7 5 5-5 5M12 19h7', hook: 'M15 4v9a5 5 0 0 1-10 0v-2M15 4h4'
+};
+const TYPES = {
+plugin: { label: 'PLUGIN', cls: 't-plugin', icon: I.plugin, one: 'plugin', many: 'plugins', chip: 'Plugin', name: 'Plugin' },
+skill: { label: 'SKILL', cls: 't-skill', icon: I.skill, one: 'skill', many: 'skills', chip: 'Skill', name: 'Skill' },
+agent: { label: 'AGENT', cls: 't-agent', icon: I.agent, one: 'agent', many: 'agents', chip: 'Agent', name: 'Agent' },
+command: { label: 'COMMAND', cls: 't-command', icon: I.command, one: 'command', many: 'commands', chip: 'Command', name: 'Command (legacy)' },
+hook: { label: 'HOOK', cls: 't-hook', icon: I.hook, one: 'hook', many: 'hooks', chip: 'Hook', name: 'Hook' },
+mcp: { label: 'MCP', cls: 't-mcp', icon: I.plug, one: 'MCP server', many: 'MCP servers', chip: 'MCP', name: 'MCP server' }
+};
+const TYPE_ORDER = ['plugin', 'skill', 'agent', 'command', 'hook', 'mcp'];
+// Real data only: generated from the repository by site/build/catalog.mjs (no sample data on the site).
+const DATA = (typeof window !== "undefined" && window.DD_DATA) || null;
+if (!DATA) throw new Error("Catalog data is missing (window.DD_DATA). Run: node site/build/catalog.mjs");
+const PLUGINS = DATA.plugins;
+const ARTS = DATA.arts;
+const LOGRAW = DATA.log;
+const LESSONS = DATA.lessons;
+const BUILD = DATA.build;
+const SYN = { tldr: ['summarize', 'summary', 'digest'], summary: ['summarize', 'digest', 'tldr'], changelog: ['release', 'notes', 'changes'], release: ['changelog', 'version'], pr: ['pull', 'request', 'review'] };
+const STOP = new Set('i me my we our you your need needs want wants looking look for a an the to that which can could help me something tool tools plugin plugins skill skills agent agents please is are was be of on in with and or it this that how do does find some any would like should will from by at as get make'.split(' '));
+const TYPEW = { skill: 'skill', skills: 'skill', agent: 'agent', agents: 'agent', hook: 'hook', hooks: 'hook', mcp: 'mcp', command: 'command', commands: 'command' };
+const LEX = { 'резюме': 'summarize', 'підсумок': 'summarize', 'підсумуй': 'summarize', 'зведення': 'summarize', 'саммари': 'summarize', 'резюмировать': 'summarize', 'zusammenfassung': 'summarize', 'resumen': 'summarize', 'реліз': 'release', 'релізу': 'release', 'релиз': 'release', 'нотатки': 'notes', 'заметки': 'notes', 'нотаток': 'notes' };
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const fmt = (s) => { const d = new Date(s + 'T00:00:00Z'); return MONTHS[d.getUTCMonth()].slice(0, 3) + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear(); };
+const fmtShort = (s) => { const d = new Date(s + 'T00:00:00Z'); return MONTHS[d.getUTCMonth()].slice(0, 3) + ' ' + d.getUTCDate(); };
+const monthOf = (s) => { const d = new Date(s + 'T00:00:00Z'); return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); };
+const toks = (s) => String(s || '').toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+const lev = (a, b) => { const m = a.length, n = b.length; if (!m) return n; if (!n) return m; let prev = []; for (let j = 0; j <= n; j++) prev[j] = j; for (let i = 1; i <= m; i++) { const cur = [i]; for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; } return prev[n]; };
+const wscore = (term, word) => { if (word === term) return 1; if (word.startsWith(term)) return 0.85; if (term.length >= 4) { const m = Math.max(1, Math.round(term.length * 0.2)); if (Math.abs(word.length - term.length) <= m + 1 && lev(term, word) <= m) return 0.6; if (word.length > term.length && lev(term, word.slice(0, term.length)) <= m) return 0.5; } return 0; };
+const hostOf = (u) => { try { return new URL(u).host; } catch (e) { return u; } };
+const hookPlain = (m) => { const any = !m.matcher || m.matcher === '*'; if (m.event === 'PreToolUse') return 'Before every ' + (any ? '' : m.matcher + ' ') + 'tool call'; if (m.event === 'PostToolUse') return 'After every ' + (any ? '' : m.matcher + ' ') + 'tool call'; if (m.event === 'UserPromptSubmit') return 'Every time you submit a prompt'; return m.event; };
+const PM = {};
+PLUGINS.forEach((p) => { PM[p.name] = p; p.author = p.author || ''; p.license = p.license || ''; });
+ARTS.forEach((a) => {
+a.id = a.plugin + ':' + a.name;
+if (a.type === 'hook') { const mt = a.meta.matcher || '*'; a.label = a.meta.event + ' hook · matcher: ' + mt; a.description = a.meta.event + ' hook (matcher: ' + mt + ')'; a.file = 'hooks/hooks.json'; }
+else if (a.type === 'mcp') { a.label = 'MCP server ' + a.name + ' · ' + a.meta.transport; a.description = 'MCP server ' + a.name + ' (' + a.meta.transport + ')'; a.file = '.mcp.json'; }
+else if (a.type === 'skill') a.file = 'skills/' + a.name + '/SKILL.md';
+else if (a.type === 'agent') a.file = 'agents/' + a.name + '.md';
+else a.file = 'commands/' + a.name + '.md';
+a.invocation = (a.type === 'skill' || a.type === 'command') ? '/' + a.id : (a.type === 'agent' ? a.id : a.label);
+});
+const security = (p) => {
+const arts = p.arts;
+const hooks = arts.filter((a) => a.type === 'hook'), mcps = arts.filter((a) => a.type === 'mcp');
+const skills = arts.filter((a) => a.type === 'skill'), agents = arts.filter((a) => a.type === 'agent');
+const broad = hooks.filter((h) => ['UserPromptSubmit', 'PreToolUse', 'PostToolUse'].indexOf(h.meta.event) >= 0 && (!h.meta.matcher || h.meta.matcher === '*'));
+const remote = mcps.filter((m) => m.meta.transport === 'http' || m.meta.transport === 'sse');
+const insecure = remote.filter((m) => /^http:\/\//.test(m.meta.url) && !/^http:\/\/(localhost|127\.0\.0\.1)/.test(m.meta.url));
+const sec = [];
+mcps.forEach((m) => (m.meta.envVars || []).forEach((v) => sec.push(v)));
+hooks.forEach((h) => (h.meta.command.match(/\$\{([A-Z0-9_]+)\}/g) || []).forEach((x) => { const n = x.slice(2, -1); if (n.indexOf('CLAUDE_') !== 0) sec.push(n); }));
+const secrets = sec.filter((v, i) => sec.indexOf(v) === i);
+const restricted = (skills.length + agents.length) > 0 && skills.every((s) => s.meta.allowedTools && s.meta.allowedTools.length) && agents.every((a) => a.meta.tools && a.meta.tools.length);
+const b = [];
+if (hooks.length) b.push({ k: 'hooks', label: 'Runs hooks', tone: 's-info', icon: I.hook, tip: 'Runs commands automatically on Claude Code events once the plugin is enabled.', expl: 'Hooks run on every matching event once the plugin is enabled.', items: hooks.map((h) => ({ t: h.label, a: h })) });
+if (broad.length) b.push({ k: 'broad', label: 'Broad hook', tone: 's-warning', icon: I.warning, tip: 'A hook runs on every prompt or tool call, not only in specific cases.', expl: 'A hook runs on every prompt or tool call, not only in specific cases.', items: broad.map((h) => ({ t: h.label, a: h })) });
+if (mcps.length) b.push({ k: 'mcp', label: 'MCP', tone: 's-info', icon: I.plug, tip: 'Connects Claude to an external tool server.', expl: 'Connects Claude to an external tool server.', items: mcps.map((m) => ({ t: m.name + ' · ' + m.meta.transport + ' · ' + (m.meta.url || m.meta.command), a: m })) });
+if (remote.length) b.push({ k: 'remote', label: 'Remote MCP', tone: 's-warning', icon: I.globe, tip: 'Connects to a server on the internet: ' + remote.map((m) => hostOf(m.meta.url)).join(', ') + '.', expl: 'Connects to a server on the internet.', items: remote.map((m) => ({ t: hostOf(m.meta.url), a: m })) });
+if (insecure.length) b.push({ k: 'insecure', label: 'Insecure MCP (http)', tone: 's-danger', icon: I.insecure, tip: 'Connects to a remote server without encryption.', expl: 'Connects to a remote server without encryption.', items: insecure.map((m) => ({ t: m.meta.url, a: m })) });
+if (secrets.length) b.push({ k: 'secrets', label: 'Needs secrets', tone: 's-info', icon: I.key, tip: 'Needs API keys or credentials: ' + secrets.join(', ') + '.', expl: 'Needs API keys or credentials in your environment.', items: secrets.map((v) => ({ t: v })) });
+if (p.scripts && p.scripts.length) b.push({ k: 'scripts', label: 'Scripts', tone: 's-info', icon: I.script, tip: 'Ships scripts that hooks or MCP servers run.', expl: 'Ships scripts that hooks or MCP servers run.', items: p.scripts.map((s) => ({ t: s, href: GH + '/blob/main/plugins/' + p.name + '/' + s })) });
+if (restricted) b.push({ k: 'restricted', label: 'Restricted tools', tone: 's-success', icon: I.shield, tip: 'Every skill and agent limits which tools it can use.', expl: 'Every skill and agent limits which tools it can use.', items: skills.map((s) => ({ t: s.name + ': ' + s.meta.allowedTools.join(', '), a: s })).concat(agents.map((a) => ({ t: a.name + ': ' + a.meta.tools.join(', '), a }))) });
+return b;
+};
+PLUGINS.forEach((p) => { p.arts = ARTS.filter((a) => a.plugin === p.name); p.sec = security(p); });
+const countLine = (p) => TYPE_ORDER.slice(1).map((t) => { const n = p.arts.filter((a) => a.type === t).length; return n ? n + ' ' + (n === 1 ? TYPES[t].one : TYPES[t].many) : ''; }).filter(Boolean).join(' · ');
+const DOCS = [];
+PLUGINS.forEach((p) => DOCS.push({ id: 'plugin:' + p.name, type: 'plugin', name: p.name, plugin: p.name, description: p.description, tags: p.tags, category: p.category, text: p.readme.map((b) => b[1]).join(' '), p, a: null, updatedAt: p.updatedAt }));
+ARTS.forEach((a) => { const p = PM[a.plugin]; const gen = a.type === 'hook' || a.type === 'mcp'; DOCS.push({ id: a.id, type: a.type, name: a.name, plugin: a.plugin, description: a.description + (gen ? ' ' + p.description : ''), tags: p.tags, category: p.category, text: (a.body || []).map((b) => b[1]).join(' ').slice(0, 2000), p, a, updatedAt: p.updatedAt }); });
+DOCS.forEach((d) => { d.f = [[toks(d.name), 4], [toks(d.tags.join(' ')), 3], [toks(d.description), 2], [toks(d.plugin), 1.5], [toks(d.category), 1], [toks(d.text), 1]]; });
+const analyze = (q, smart) => { const raw = toks(q); let soft = null; const terms = []; raw.forEach((w) => { if (TYPEW[w] && !soft) soft = TYPEW[w]; if (STOP.has(w) || TYPEW[w]) return; const t = smart && LEX[w] ? LEX[w] : w; if (terms.indexOf(t) < 0) terms.push(t); }); return { terms, soft }; };
+const scoreDoc = (d, groups, mode) => { let total = 0, hit = 0; groups.forEach((g) => { let gs = 0; g.forEach(([term, gw]) => { let best = 0; d.f.forEach(([ws, fw]) => ws.forEach((w) => { const s = wscore(term, w); if (s * fw > best) best = s * fw; })); gs += best * gw; }); if (gs > 0) hit++; total += gs; }); if (mode === 'and' && hit < groups.length) return 0; return hit ? total : 0; };
+const seg = (text, terms) => { if (!terms.length) return [{ t: text, m: false, n: true }]; const out = []; String(text).split(/([\p{L}\p{N}]+)/u).forEach((part) => { if (!part) return; const m = /[\p{L}\p{N}]/u.test(part) && terms.some((t) => wscore(t, part.toLowerCase()) > 0); const last = out[out.length - 1]; if (!m && last && !last.m) last.t += part; else out.push({ t: part, m, n: !m }); }); return out; };
+const bumpOf = (from, to, sum) => { if (/^Rollback:/.test(sum)) return 'Rollback'; const a = from.split('.').map(Number), b = to.split('.').map(Number); if (b[0] !== a[0]) return 'Major'; if (b[1] !== a[1]) return 'Minor'; return 'Patch'; };
+const LOG = LOGRAW.map(([plugin, from, to, date, summary]) => { const bump = bumpOf(from, to, summary); return { plugin, from, to, dateIso: date, date: fmtShort(date), month: monthOf(date), summary, bump, bcls: 'b-' + bump, rail: (bump === 'Major' || bump === 'Rollback') ? 'rail-' + bump : '' }; });
+const url = (r) => { switch (r.n) { case 'plugins': return BASE + 'plugins/'; case 'plugin': return BASE + 'plugins/' + r.p + '/'; case 'artifact': return BASE + 'plugins/' + r.p + '/' + r.t + '/' + r.a + '/'; case 'stack': return BASE + 'stack/'; case 'changelog': return BASE + 'changelog/' + (r.plugin ? '?plugin=' + r.plugin : ''); case 'start': return BASE + 'start/'; case 'course': return BASE + 'course/'; case 'newp': return BASE + 'new/'; case 'nf': return BASE + '404'; default: return BASE; } };
+const installText = (name) => '/plugin marketplace add ' + REPO + '\n/plugin install ' + name + '@' + MKT;
+const settingsJson = (names) => { const enabled = {}; names.slice().sort().forEach((n) => { enabled[n + '@' + MKT] = true; }); return JSON.stringify({ extraKnownMarketplaces: { [MKT]: { source: { source: 'github', repo: REPO } } }, enabledPlugins: enabled }, null, 2); };
+return { BASE, SITE, REPO, GH, MKT, I, TYPES, TYPE_ORDER, PLUGINS, ARTS, PM, LOG, LESSONS, BUILD, SYN, DOCS, analyze, scoreDoc, seg, fmt, url, installText, settingsJson, countLine, security, hookPlain, hostOf };
+})();
+
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { route: { n: 'home' }, theme: null, q: '', type: null, cat: null, tag: null, softOff: null, sort: 'rel', limit: 20, sel: -1, stack: [], toast: null, copied: null, smart: 'off', smartPct: 0, smartConsent: false, dialog: null, menu: false, filtersOpen: false, pcat: null, clPlugin: 'all', clBump: 'All', f: { name: '', displayName: '', description: '', category: 'productivity', catOther: '', tags: [], tagDraft: '', authorName: '', authorUrl: '', skillName: '', skillDesc: '' }, submitted: false, downloaded: false, tab: 'plugin.json', storageBlocked: false };
+this.undoFn = null;
+this._cards = [];
+}
+componentDidMount() {
+try {
+const ls = window.localStorage; const up = {};
+const s = ls.getItem('ddai:stack'); if (s) { const v = JSON.parse(s); if (Array.isArray(v)) up.stack = v.filter((x) => x && DD.PM[x.name]); }
+const th = ls.getItem('ddai:theme'); if (th === 'light' || th === 'dark') up.theme = th;
+if (ls.getItem('ddai:smart') === 'on') { up.smart = 'on'; up.smartConsent = true; }
+this.setState(up);
+} catch (e) { this.setState({ storageBlocked: true }); }
+}
+componentWillUnmount() { clearTimeout(this.tt); clearTimeout(this.ct); clearInterval(this.si); }
+save(k, v) { try { window.localStorage.setItem('ddai:' + k, typeof v === 'string' ? v : JSON.stringify(v)); } catch (e) {} }
+nav(e, r, after) { if (e && e.preventDefault) e.preventDefault(); this.setState({ route: r, menu: false, sel: -1, dialog: null }); try { window.scrollTo(0, 0); } catch (x) {} if (after) setTimeout(after, 40); }
+toast(msg, undo) { clearTimeout(this.tt); this.undoFn = undo || null; this.setState({ toast: { msg, undo: !!undo } }); this.tt = setTimeout(() => this.setState({ toast: null }), undo ? 5000 : 3000); }
+copy(text, key, msg) { const ok = () => { clearTimeout(this.ct); this.setState({ copied: key }); this.ct = setTimeout(() => this.setState({ copied: null }), 2000); this.toast(msg || 'Copied to clipboard'); }; const fail = () => this.toast('Press Ctrl+C to copy'); try { navigator.clipboard.writeText(text).then(ok, fail); } catch (e) { fail(); } }
+download(text, file, type) { try { const blob = new Blob([text], { type: type || 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); this.toast('Downloaded ' + file); } catch (e) { this.toast('Download was blocked. Copy the file instead.'); } }
+setStack(stack) { this.setState({ stack }); this.save('stack', stack); }
+addPlugin(name) { const s = this.state.stack.slice(); const ex = s.find((x) => x.name === name); if (ex) { if (ex.dep) this.setStack(s.map((x) => x.name === name ? { name, dep: null } : x)); return; } s.push({ name, dep: null }); (DD.PM[name].deps || []).forEach((d) => { if (DD.PM[d] && !s.find((x) => x.name === d)) s.push({ name: d, dep: name }); }); this.setStack(s); this.toast('Added ' + name + ' to your stack'); }
+removePlugin(name) { const prev = this.state.stack; const it = prev.find((x) => x.name === name); if (!it) return; if (it.dep && prev.find((x) => x.name === it.dep)) { this.toast(name + ' is required by ' + it.dep); return; } const s = prev.filter((x) => x.name !== name && x.dep !== name); this.setStack(s); this.toast('Removed ' + name, () => this.setStack(prev)); }
+toggleStack(name) { if (this.state.stack.find((x) => x.name === name)) this.removePlugin(name); else this.addPlugin(name); }
+themeVal() { return this.state.theme || this.props.theme || 'dark'; }
+toggleSmart() { const s = this.state.smart; if (typeof WebAssembly === 'undefined') return; if (s === 'on') { this.setState({ smart: 'off' }); this.save('smart', 'off'); return; } if (s === 'downloading') return; if (this.state.smartConsent) this.startSmart(); else this.setState({ dialog: 'smart' }); }
+startSmart() { clearInterval(this.si); this.setState({ dialog: null, smart: 'downloading', smartPct: 0 }); this.si = setInterval(() => { const p = Math.min(100, this.state.smartPct + 9); if (p >= 100) { clearInterval(this.si); this.setState({ smart: 'on', smartPct: 100, smartConsent: true }); this.save('smart', 'on'); this.toast('Smart search is on'); } else this.setState({ smartPct: p }); }, 150); }
+focusQ() { try { const el = document.getElementById('q'); if (el) el.focus(); } catch (e) {} }
+
+renderVals() {
+const st = this.state, I = DD.I, T = DD.TYPES, PM = DD.PM;
+const theme = this.themeVal();
+const r = st.route;
+const go = (route, after) => (e) => this.nav(e, route, after);
+const href = DD.url;
+const inStack = (n) => !!st.stack.find((x) => x.name === n);
+const cmd = (key, text, label) => ({ key, text, label: label || '', copy: () => this.copy(text, key), icon: st.copied === key ? I.check : I.copy, okCls: st.copied === key ? 'ok' : '' });
+const plugR = (n) => ({ n: 'plugin', p: n });
+const artR = (a) => ({ n: 'artifact', p: a.plugin, t: a.type, a: a.name });
+const stackBits = (name) => { const on = inStack(name); return { inStack: on, stackLabel: on ? 'In stack' : 'Add to stack', stackIcon: on ? I.check : I.plus, stackCls: on ? 'on' : '', toggleStack: () => this.toggleStack(name) }; };
+const blocks = (b) => (b || []).map((x) => ({ h: x[0] === 'h', p: x[0] === 'p', li: x[0] === 'li', q: x[0] === 'q', pre: x[0] === 'pre', t: x[1] }));
+const secRows = (badges, linkItems) => badges.map((b) => ({ label: b.label, tone: b.tone, icon: b.icon, expl: b.expl, rowCls: b.k === 'broad' ? 'hl-w' : (b.k === 'insecure' ? 'hl-d' : ''), items: b.items.map((it) => { if (it.a && linkItems) { const ar = artR(it.a); return { t: it.t, isInt: true, isExt: false, isPlain: false, href: href(ar), open: go(ar) }; } if (it.href) return { t: it.t, isInt: false, isExt: true, isPlain: false, href: it.href }; return { t: it.t, isInt: false, isExt: false, isPlain: true }; }) }));
+const ghFile = (p, file) => DD.GH + '/blob/main/plugins/' + p + '/' + file;
+const issueUrl = (p) => DD.GH + '/issues/new?template=plugin-bug.yml&title=' + encodeURIComponent('[' + p.name + '@' + p.version + '] ');
+
+const mkCard = (d, i, terms) => {
+const p = d.p, a = d.a, t = T[d.type];
+const gen = !!a && (a.type === 'hook' || a.type === 'mcp');
+const legacy = !!a && a.type === 'command';
+const route = d.type === 'plugin' ? plugR(p.name) : artR(a);
+const name = gen ? a.label : d.name;
+const tags = p.tags.slice(0, 4).map((x) => ({ t: '#' + x })); if (p.tags.length > 4) tags.push({ t: '+' + (p.tags.length - 4) });
+const badges = p.sec.slice(0, 3).map((b) => ({ label: b.label, cls: b.tone, icon: b.icon, tip: b.tip }));
+const key = 'card:' + d.id;
+return Object.assign({ key, route, name, desc: d.type === 'plugin' ? p.description : (gen ? p.description : a.description), typeLabel: legacy ? 'LEGACY COMMAND' : t.label, typeCls: t.cls, typeIcon: legacy ? I.legacy : t.icon, nameSeg: DD.seg(name, gen ? [] : terms), descSeg: DD.seg(gen ? p.description : (a ? a.description : p.description), gen ? [] : terms), descCls: gen ? 'gen' : '', version: p.version, parent: d.type === 'plugin' ? p.category + ' · ' + DD.countLine(p) : 'in ' + p.name + ' · ' + p.category, hasTags: tags.length > 0, tags, hasBadges: badges.length > 0, badges, hasMore: p.sec.length > 3, more: '+' + (p.sec.length - 3), moreTip: p.sec.slice(3).map((b) => b.label).join(', '), cardCls: (inStack(p.name) ? 'instack ' : '') + (i === st.sel ? 'sel' : ''), href: href(route), open: go(route), detAria: 'Details for ' + name, copy: () => this.copy(DD.installText(p.name), key), copyLabel: st.copied === key ? 'Copied' : 'Copy install', copyIcon: st.copied === key ? I.check : I.copy, copyCls: st.copied === key ? 'ok' : '' }, stackBits(p.name));
+};
+
+// ---------- search ----------
+const an = DD.analyze(st.q, st.smart === 'on');
+const hasQ = an.terms.length > 0;
+const softType = (!st.type && an.soft && st.softOff !== st.q.trim()) ? an.soft : null;
+const effType = st.type || softType;
+const groups = an.terms.map((t) => [[t, 1]].concat((DD.SYN[t] || []).map((s) => [s, 0.5])));
+const hlTerms = []; groups.forEach((g) => g.forEach(([t]) => { if (hlTerms.indexOf(t) < 0) hlTerms.push(t); }));
+let base, partial = false;
+if (hasQ) { base = DD.DOCS.map((d) => ({ d, s: DD.scoreDoc(d, groups, 'and') })).filter((x) => x.s > 0); if (!base.length) { base = DD.DOCS.map((d) => ({ d, s: DD.scoreDoc(d, groups, 'or') })).filter((x) => x.s > 0); partial = base.length > 0; } }
+else base = DD.DOCS.map((d) => ({ d, s: 0 }));
+const fT = (x) => !effType || x.d.type === effType, fC = (x) => !st.cat || x.d.category === st.cat, fG = (x) => !st.tag || x.d.tags.indexOf(st.tag) >= 0;
+const anyFilter = !!(st.type || softType || st.cat || st.tag);
+let list = base.filter((x) => fT(x) && fC(x) && fG(x));
+if (!hasQ && !anyFilter) list = list.filter((x) => x.d.type === 'plugin');
+const sortKey = (!hasQ && st.sort === 'rel') ? 'upd' : st.sort;
+list.sort((a, b) => sortKey === 'name' ? a.d.name.localeCompare(b.d.name) : (sortKey === 'upd' ? (b.d.updatedAt.localeCompare(a.d.updatedAt) || a.d.name.localeCompare(b.d.name)) : (b.s - a.s || a.d.name.localeCompare(b.d.name))));
+const cards = list.slice(0, st.limit).map((x, i) => mkCard(x.d, i, hlTerms));
+this._cards = cards;
+const typeCounts = {}; base.filter((x) => fC(x) && fG(x)).forEach((x) => { typeCounts[x.d.type] = (typeCounts[x.d.type] || 0) + 1; });
+const typeChips = DD.TYPE_ORDER.map((t) => { const on = effType === t; const auto = on && !st.type && softType === t; const count = typeCounts[t] || 0; return { label: T[t].chip, count, on, auto, cls: on ? 'on' : '', disabled: count === 0 && !on, tip: auto ? 'Selected from your query. Click to remove.' : '', toggle: () => { if (auto) this.setState({ softOff: st.q.trim(), sel: -1 }); else this.setState({ type: st.type === t ? null : t, softOff: st.q.trim(), sel: -1, limit: 20 }); } }; });
+const cats = []; DD.PLUGINS.forEach((p) => { if (cats.indexOf(p.category) < 0) cats.push(p.category); }); cats.sort();
+const catCounts = {}; base.filter((x) => fT(x) && fG(x)).forEach((x) => { catCounts[x.d.category] = (catCounts[x.d.category] || 0) + 1; });
+const catChips = cats.map((c) => { const on = st.cat === c; const count = catCounts[c] || 0; return { label: c, count, on, cls: on ? 'on' : '', disabled: count === 0 && !on, toggle: () => this.setState({ cat: on ? null : c, sel: -1, limit: 20 }) }; });
+const tagFreq = {}; DD.PLUGINS.forEach((p) => p.tags.forEach((t) => { tagFreq[t] = (tagFreq[t] || 0) + 1; }));
+const tagCounts = {}; base.filter((x) => fT(x) && fC(x)).forEach((x) => x.d.tags.forEach((t) => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
+const tagChips = Object.keys(tagFreq).sort((a, b) => (tagFreq[b] - tagFreq[a]) || a.localeCompare(b)).slice(0, 12).map((t) => { const on = st.tag === t; const count = tagCounts[t] || 0; return { label: t, count, on, cls: on ? 'on' : '', disabled: count === 0 && !on, toggle: () => this.setState({ tag: on ? null : t, sel: -1, limit: 20 }) }; });
+const n = list.length;
+const countText = hasQ ? n + (n === 1 ? ' result' : ' results') + ' for “' + an.terms.join(' ') + '”' : (anyFilter ? n + (n === 1 ? ' item' : ' items') : 'All plugins · ' + n);
+const smartUnsupported = typeof WebAssembly === 'undefined';
+const smart = { isOn: st.smart === 'on', loading: st.smart === 'downloading', idle: st.smart !== 'downloading', pct: st.smartPct, dash: String(44 * (1 - st.smartPct / 100)), cls: st.smart === 'on' ? 'on' : '', unsupported: smartUnsupported, tip: smartUnsupported ? 'Smart search isn\'t supported in this browser.' : (st.smart === 'on' ? 'Smart search: on' : (st.smart === 'downloading' ? 'Downloading the language model' : 'Smart search: off')), canTry: st.smart === 'off' && !smartUnsupported };
+const requestHrefPlain = DD.GH + '/issues/new?template=plugin-request.yml';
+const requestHref = requestHrefPlain + '&title=' + encodeURIComponent('Plugin request: ' + st.q.trim());
+
+// ---------- nav ----------
+const navDef = [['Plugins', { n: 'plugins' }, ['plugins', 'plugin', 'artifact']], ['Getting started', { n: 'start' }, ['start']], ['What\'s new', { n: 'changelog' }, ['changelog']], ['Course', { n: 'course' }, ['course']], ['Build a plugin', { n: 'newp' }, ['newp']]];
+const nav = navDef.map(([label, rt, m]) => { const on = m.indexOf(r.n) >= 0; return { label, href: href(rt), go: go(rt), cls: on ? 'on' : '', cur: on ? 'page' : 'false' }; });
+
+// ---------- routes ----------
+const plug = (r.n === 'plugin' || r.n === 'artifact') ? PM[r.p] : null;
+const art = (r.n === 'artifact' && plug) ? DD.ARTS.find((a) => a.plugin === r.p && a.type === r.t && a.name === r.a) : null;
+const is = { home: r.n === 'home', plugins: r.n === 'plugins', plugin: r.n === 'plugin' && !!plug, artifact: r.n === 'artifact' && !!art, stack: r.n === 'stack', changelog: r.n === 'changelog', start: r.n === 'start', course: r.n === 'course', newp: r.n === 'newp', nf: r.n === 'nf' || ((r.n === 'plugin' || r.n === 'artifact') && (!plug || (r.n === 'artifact' && !art))) };
+const nf = { removed: (r.n === 'plugin' || r.n === 'artifact') && !plug, path: href(r), title: ((r.n === 'plugin' || r.n === 'artifact') && !plug) ? 'This plugin was removed from the marketplace.' : 'This page doesn\'t exist.' };
+
+// plugins page
+const pcats = cats.map((c) => { const on = st.pcat === c; return { label: c, count: DD.PLUGINS.filter((p) => p.category === c).length, on, cls: on ? 'on' : '', toggle: () => this.setState({ pcat: on ? null : c }) }; });
+const pgroups = cats.filter((c) => !st.pcat || st.pcat === c).map((c) => ({ cat: c, cards: DD.DOCS.filter((d) => d.type === 'plugin' && d.category === c).sort((a, b) => a.name.localeCompare(b.name)).map((d) => mkCard(d, -1, [])) }));
+
+// plugin page
+let pv = { install: [], sec: [], meta: [], comps: [], deps: [], readme: [], history: [], tags: [] };
+if (is.plugin) {
+const p = plug; const sb = stackBits(p.name);
+const hist = DD.LOG.filter((e) => e.plugin === p.name).slice(0, 5);
+pv = Object.assign({ name: p.name, version: p.version, description: p.description, category: p.category, tags: p.tags.map((t) => ({ t: '#' + t })), byline: p.author + ' · ' + p.license + ' · Updated ' + DD.fmt(p.updatedAt), sourceUrl: DD.GH + '/tree/main/plugins/' + p.name, issueUrl: issueUrl(p), share: () => this.copy(DD.SITE + 'plugins/' + p.name + '/', 'share', 'Link copied'), shareIcon: st.copied === 'share' ? I.check : I.link, shareCls: st.copied === 'share' ? 'ok' : '',
+install: [cmd('i1', '/plugin marketplace add ' + DD.REPO, '1 · Add the marketplace (once)'), cmd('i2', '/plugin install ' + p.name + '@' + DD.MKT, '2 · Install the plugin')],
+stackBtnCls: sb.inStack ? 'on' : 'primary', secNone: p.sec.length === 0, sec: secRows(p.sec, true),
+meta: [{ k: 'Version', v: p.version, cls: 'mono' }, { k: 'Category', v: p.category }, { k: 'Author', v: p.author }, { k: 'License', v: p.license, cls: 'mono' }, { k: 'Updated', v: DD.fmt(p.updatedAt) }, { k: 'Source', v: 'plugins/' + p.name, cls: 'mono', isLink: true, href: DD.GH + '/tree/main/plugins/' + p.name }].map((m) => Object.assign({ cls: '', isLink: false }, m, { isText: !m.isLink })),
+compCount: p.arts.length, comps: p.arts.map((a) => { const gen = a.type === 'hook' || a.type === 'mcp'; const ar = artR(a); return { typeLabel: a.type === 'command' ? 'LEGACY COMMAND' : T[a.type].label, typeCls: T[a.type].cls, inv: a.invocation, desc: a.type === 'hook' ? DD.hookPlain(a.meta) : (a.type === 'mcp' ? DD.hostOf(a.meta.url || a.meta.command) : a.description), hasBadge: gen, badge: a.type === 'hook' ? 'Runs hooks' : 'MCP', href: href(ar), open: go(ar) }; }),
+hasDeps: p.deps.length > 0, deps: p.deps.map((d) => ({ name: PM[d] ? d : d + '@other-marketplace', internal: !!PM[d], external: !PM[d], href: href(plugR(d)), open: go(plugR(d)) })),
+hasReadme: p.readme.length > 0, noReadme: p.readme.length === 0, readme: blocks(p.readme),
+history: hist, openHistory: (e) => { this.setState({ clPlugin: p.name, clBump: 'All' }); this.nav(e, { n: 'changelog', plugin: p.name }); }
+}, sb);
+}
+
+// artifact page
+let av = { install: [], meta: [], sections: [], others: [] };
+if (is.artifact) {
+const a = art, p = plug; const sb = stackBits(p.name); const S = (o) => Object.assign({ isCallout: false, isLegacy: false, isText: false, isPills: false, isCode: false, isProse: false, isSecurity: false, note: '', sub: '', cls: '', textCls: '', pills: [], rows: [], blocks: [], file: '' }, o);
+let sections = [];
+if (a.type === 'skill') sections = [S({ isCallout: true, title: 'When it activates', text: a.description, cls: 'act-skill', note: 'Claude reads this description to decide when to use the skill.' }), a.meta.allowedTools ? S({ isPills: true, title: 'Allowed tools', pills: a.meta.allowedTools.map((t) => ({ t })) }) : S({ isText: true, title: 'Allowed tools', text: 'Not restricted — can use any tool you allow.', textCls: 'muted' }), S({ isProse: true, title: 'Instructions', blocks: blocks(a.body) })];
+if (a.type === 'agent') sections = [S({ isCallout: true, title: 'When Claude uses it', text: a.description, cls: 'act-agent' }), S({ isPills: true, title: 'Tools', pills: (a.meta.tools || []).map((t) => ({ t })) }), S({ isText: true, title: 'Model', text: a.meta.model || 'Inherits the session model', textCls: 'mono' }), S({ isProse: true, title: 'System prompt', blocks: blocks(a.body) })];
+if (a.type === 'command') sections = [S({ isLegacy: true }), S({ isText: true, title: 'Description', text: a.description }), S({ isProse: true, title: 'Body', blocks: blocks(a.body) })];
+if (a.type === 'hook') { const c = cmd('hookcmd', a.meta.command); sections = [S({ isText: true, title: 'Runs on', text: DD.hookPlain(a.meta), sub: 'event: ' + a.meta.event + ' · matcher: ' + (a.meta.matcher || '*') }), S({ isCode: true, title: 'Command', file: 'hooks/hooks.json', text: a.meta.command, copy: c.copy, icon: c.icon, okCls: c.okCls }), S({ isSecurity: true, rows: secRows(DD.security({ name: p.name, scripts: [], arts: [a] }), false) })]; }
+if (a.type === 'mcp') { const env = a.meta.envVars || []; sections = [S({ isText: true, title: 'Connection', text: (a.meta.transport === 'stdio' ? 'Local process' : 'Remote server') + ' over ' + a.meta.transport, sub: a.meta.url || a.meta.command }), env.length ? S({ isPills: true, title: 'Needs', pills: env.map((t) => ({ t })) }) : S({ isText: true, title: 'Needs', text: 'No environment variables or user config.', textCls: 'muted' }), S({ isSecurity: true, rows: secRows(DD.security({ name: p.name, scripts: [], arts: [a] }), false) })]; }
+const install = [cmd('i1', '/plugin marketplace add ' + DD.REPO, '1 · Add the marketplace (once)'), cmd('i2', '/plugin install ' + p.name + '@' + DD.MKT, '2 · Install the plugin')];
+if (a.type === 'skill' || a.type === 'command') install.push(cmd('i3', a.invocation, '3 · Use it'));
+const useNote = a.type === 'agent' ? 'Claude delegates to ' + a.id + ' automatically, or ask for it by name.' : ((a.type === 'hook' || a.type === 'mcp') ? 'Active automatically once the plugin is enabled.' : '');
+const metaRows = [{ k: 'Type', v: T[a.type].name }, { k: 'Plugin', v: p.name, cls: 'mono' }, { k: 'Version', v: p.version, cls: 'mono' }];
+if (a.type === 'skill') metaRows.push({ k: 'Allowed tools', v: a.meta.allowedTools ? a.meta.allowedTools.join(', ') : 'Not restricted', cls: 'mono' });
+if (a.type === 'agent') { metaRows.push({ k: 'Tools', v: (a.meta.tools || []).join(', '), cls: 'mono' }); metaRows.push({ k: 'Model', v: a.meta.model, cls: 'mono' }); }
+if (a.type === 'hook') { metaRows.push({ k: 'Event', v: a.meta.event, cls: 'mono' }); metaRows.push({ k: 'Matcher', v: a.meta.matcher || '*', cls: 'mono' }); }
+if (a.type === 'mcp') { metaRows.push({ k: 'Transport', v: a.meta.transport, cls: 'mono' }); metaRows.push({ k: a.meta.url ? 'URL' : 'Command', v: a.meta.url || a.meta.command, cls: 'mono' }); metaRows.push({ k: 'Env vars', v: (a.meta.envVars || []).join(', ') || 'None', cls: 'mono' }); }
+metaRows.push({ k: 'Updated', v: DD.fmt(p.updatedAt) });
+metaRows.push({ k: 'Source', v: a.file, cls: 'mono', isLink: true, href: ghFile(p.name, a.file) });
+const others = p.arts.filter((x) => x !== a).slice(0, 6).map((x) => { const ar = artR(x); return { typeLabel: x.type === 'command' ? 'LEGACY COMMAND' : T[x.type].label, typeCls: T[x.type].cls, inv: x.invocation, href: href(ar), open: go(ar) }; });
+av = Object.assign({ name: a.name, plugin: p.name, version: p.version, category: p.category, pluginHref: href(plugR(p.name)), openPlugin: go(plugR(p.name)), typeLabel: a.type === 'command' ? 'LEGACY COMMAND' : T[a.type].label, typeCls: T[a.type].cls, typeIcon: a.type === 'command' ? I.legacy : T[a.type].icon, title: a.invocation, sections, install, hasUseNote: !!useNote, useNote, stackBtnCls: sb.inStack ? 'on' : 'primary', meta: metaRows.map((m) => Object.assign({ cls: '', isLink: false }, m, { isText: !m.isLink })), others, hasOthers: others.length > 0, noOthers: others.length === 0, issueUrl: issueUrl(p), sourceUrl: ghFile(p.name, a.file), file: a.file }, sb, { stackLabel: sb.inStack ? 'Plugin in stack' : 'Add plugin to stack' });
+}
+
+// stack
+const ordered = []; st.stack.filter((x) => !x.dep).forEach((x) => { ordered.push(x); st.stack.filter((y) => y.dep === x.name).forEach((y) => ordered.push(y)); }); st.stack.filter((x) => x.dep && !st.stack.find((y) => y.name === x.dep)).forEach((x) => ordered.push(x));
+const agg = {}; const aggOrder = [];
+ordered.forEach((x) => PM[x.name].sec.forEach((b) => { if (!agg[b.k]) { agg[b.k] = { label: b.label, tone: b.tone, icon: b.icon, count: 0, parts: [] }; aggOrder.push(b.k); } agg[b.k].count += b.items.length; agg[b.k].parts.push(x.name + ': ' + b.items.map((it) => it.t).join(', ')); }));
+const names = ordered.map((x) => x.name);
+const json = DD.settingsJson(names);
+const shareUrl = DD.SITE + 'stack/?plugins=' + names.join(',');
+const sv = { count: names.length, has: names.length > 0, empty: names.length === 0, items: ordered.map((x) => { const p = PM[x.name]; const locked = !!x.dep && !!st.stack.find((y) => y.name === x.dep && !y.dep); return { name: p.name, version: p.version, desc: p.description, isDep: !!x.dep, depOf: x.dep || '', cls: x.dep ? 'dep' : '', locked, aria: locked ? 'Can\'t remove ' + p.name + ': required by ' + x.dep : 'Remove ' + p.name + ' from stack', tip: locked ? 'Required by ' + x.dep + '. Remove ' + x.dep + ' first.' : 'Remove', remove: () => this.removePlugin(p.name), href: href(plugR(p.name)), open: go(plugR(p.name)) }; }), sec: aggOrder.map((k) => ({ label: agg[k].label, tone: agg[k].tone, icon: agg[k].icon, count: agg[k].count, detail: agg[k].parts.join(' · ') })), secNone: aggOrder.length === 0, json, copy: () => this.copy(json, 'settings'), copyIcon: st.copied === 'settings' ? I.check : I.copy, copyCls: st.copied === 'settings' ? 'ok' : '', download: () => this.download(json, 'settings.json'), share: () => this.copy(shareUrl, 'stackshare', 'Link copied'), shareIcon: st.copied === 'stackshare' ? I.check : I.link, shareCls: st.copied === 'stackshare' ? 'ok' : '', clear: () => this.setState({ dialog: 'clear' }) };
+
+// changelog
+const logPlugins = []; DD.LOG.forEach((e) => { if (logPlugins.indexOf(e.plugin) < 0) logPlugins.push(e.plugin); }); logPlugins.sort();
+const clList = DD.LOG.filter((e) => (st.clPlugin === 'all' || e.plugin === st.clPlugin) && (st.clBump === 'All' || e.bump === st.clBump));
+const months = []; clList.forEach((e) => { let g = months.find((m) => m.label === e.month); if (!g) { g = { label: e.month, items: [] }; months.push(g); } g.items.push(Object.assign({}, e, { href: href(plugR(e.plugin)), open: go(plugR(e.plugin)), release: DD.GH + '/releases/tag/' + e.plugin + '-v' + e.to })); });
+const feedUrl = DD.SITE + 'feed.xml';
+const cv = { plugin: st.clPlugin, onPlugin: (e) => this.setState({ clPlugin: e.target.value }), options: [{ v: 'all', label: 'All plugins' }].concat(logPlugins.map((p) => ({ v: p, label: p }))), kinds: ['All', 'Major', 'Minor', 'Patch', 'Rollback'].map((k) => ({ label: k, on: st.clBump === k, cls: st.clBump === k ? 'on' : '', pick: () => this.setState({ clBump: k }) })), months, empty: clList.length === 0, feedUrl, copyFeed: () => this.copy(feedUrl, 'feed', 'Feed URL copied'), feedCls: st.copied === 'feed' ? 'ok' : '' };
+const recent = DD.LOG.slice(0, 5).map((e) => Object.assign({}, e, { href: href(plugR(e.plugin)), open: go(plugR(e.plugin)) }));
+
+// getting started
+const stepsDef = [
+{ id: 's-add', title: 'Add the marketplace', text: 'Run this once in Claude Code. It registers dev-digest-ai so you can install its plugins by name.', cmds: [['g1', 'In Claude Code', '/plugin marketplace add ' + DD.REPO]] },
+{ id: 's-install', title: 'Find and install a plugin', text: 'Search the catalog by describing your task, open a result and copy its install command.', cmds: [['g2', 'Install', '/plugin install <plugin>@' + DD.MKT]], link: 'Search the catalog →', rt: { n: 'home' } },
+{ id: 's-use', title: 'Use it', text: 'Skills run when your request matches their description, or when you call them by their namespaced name. Agents are picked automatically, or you can ask for one by name.', cmds: [['g3', 'Call a skill directly', '/<plugin>:<skill>']] },
+{ id: 's-update', title: 'Update', text: 'Refresh the marketplace to see new versions, then update the plugin and reload so the running session picks up the change.', cmds: [['g4', 'Refresh the marketplace', '/plugin marketplace update ' + DD.MKT], ['g5', 'Update a plugin', '[update command from RELEASES.md]'], ['g6', 'Reload plugins', '/reload-plugins']] },
+{ id: 's-remove', title: 'Remove a plugin', text: 'Uninstalling removes the plugin together with its hooks and MCP servers.', cmds: [['g7', 'Uninstall', '/plugin uninstall <plugin>@' + DD.MKT]] },
+{ id: 's-team', title: 'Set up your team', text: 'Pick plugins with Add to stack, download settings.json and commit it to your project. Teammates are asked to trust the marketplace and install the same plugins.', cmds: [], link: 'Open the stack builder →', rt: { n: 'stack' } },
+{ id: 's-contribute', title: 'Contribute a plugin', text: 'Generate a plugin skeleton, then open a pull request. The plugin appears on this site within minutes of merging.', cmds: [], link: 'Build a plugin →', rt: { n: 'newp' } }
+];
+const steps = stepsDef.map((s, i) => ({ id: s.id, n: i + 2, title: s.title, text: s.text, cmds: s.cmds.map(([k, label, text]) => cmd(k, text, label)), hasLink: !!s.link, link: s.link || '', href: s.rt ? href(s.rt) : '', go: s.rt ? go(s.rt) : null }));
+const sg = { steps, toc: [{ id: 's-what', n: 1, title: 'What is a marketplace?' }].concat(steps.map((s) => ({ id: s.id, n: s.n, title: s.title }))) };
+
+// course
+const mini = (name) => { const p = PM[name]; return { name: p.name, desc: p.description, href: href(plugR(p.name)), open: go(plugR(p.name)) }; };
+const mapped = []; DD.LESSONS.forEach((l) => l.plugins.forEach((p) => mapped.push(p)));
+const otherP = DD.PLUGINS.filter((p) => mapped.indexOf(p.name) < 0).map((p) => mini(p.name));
+const course = { lessons: DD.LESSONS.map((l) => ({ n: l.n, title: l.title, desc: l.desc, none: l.plugins.length === 0, cls: l.plugins.length ? '' : 'none', cards: l.plugins.filter((x) => PM[x]).map(mini) })), other: otherP, hasOther: otherP.length > 0 };
+
+// build a plugin
+const f = st.f;
+const kebab = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const errs = {};
+if (!f.name) errs.name = 'Enter a plugin name.'; else if (!kebab.test(f.name)) errs.name = 'Use kebab-case: lowercase letters, digits and single hyphens.'; else if (f.name.length < 2 || f.name.length > 64) errs.name = 'Use 2–64 characters.'; else if (/^(claude-|anthropic-|cc-plugin-)/.test(f.name)) errs.name = 'Names can\'t start with claude-, anthropic- or cc-plugin-.';
+const dl = f.description.trim().length; if (dl < 10 || f.description.length > 2000) errs.description = 'Use 10–2000 characters.';
+if (f.category === '__other' && !kebab.test(f.catOther)) errs.category = 'Enter a kebab-case category.';
+if (f.authorUrl && !/^https?:\/\//.test(f.authorUrl)) errs.authorUrl = 'Start the URL with https://';
+if (!f.skillName) errs.skillName = 'Enter a skill name.'; else if (!kebab.test(f.skillName)) errs.skillName = 'Use kebab-case.';
+if (f.skillDesc.trim().length < 10) errs.skillDesc = 'Say what it does and when Claude should use it (10+ characters).';
+const errKeys = Object.keys(errs);
+const valid = errKeys.length === 0;
+const fld = (k, help, okMsg, count) => { const show = !!errs[k] && (st.submitted || (typeof f[k] === 'string' && f[k].length > 0)); return { bad: show, cls: show ? 'err' : '', msg: show ? errs[k] : (okMsg && !errs[k] ? okMsg : help), msgCls: show ? 'm-err' : (okMsg && !errs[k] ? 'm-ok' : ''), count: count || '' }; };
+const nameF = fld('name', 'kebab-case, 2–64 characters', 'Valid name', f.name.length + '/64');
+if (!errs.name && f.name && PM[f.name]) { nameF.msg = 'A plugin with this name already exists in the marketplace.'; nameF.msgCls = 'm-warn'; }
+const setF = (k) => (e) => this.setState({ f: Object.assign({}, this.state.f, { [k]: e.target.value }), downloaded: false });
+const addTag = (raw) => { const parts = raw.split(',').map((x) => x.trim().toLowerCase()).filter(Boolean); const cur = this.state.f.tags.slice(); parts.forEach((p) => { if (cur.indexOf(p) < 0) cur.push(p); }); this.setState({ f: Object.assign({}, this.state.f, { tags: cur, tagDraft: '' }) }); };
+const nm = f.name || 'your-plugin', sk = f.skillName || 'your-skill', catVal = f.category === '__other' ? (f.catOther || 'other') : f.category;
+const descV = f.description.trim() || '[What the plugin does]';
+const pluginJson = { name: nm }; if (f.displayName) pluginJson.displayName = f.displayName; pluginJson.version = '0.1.0'; pluginJson.description = descV; pluginJson.author = f.authorUrl ? { name: f.authorName || '[Author]', url: f.authorUrl } : { name: f.authorName || '[Author]' }; pluginJson.license = 'MIT'; pluginJson.keywords = f.tags;
+const entry = { name: nm, source: './plugins/' + nm, description: descV, version: '0.1.0', category: catVal, tags: f.tags };
+const files = {
+'plugin.json': JSON.stringify(pluginJson, null, 2),
+'SKILL.md': '---\nname: ' + sk + '\ndescription: ' + (f.skillDesc.trim() || '[What it does and when Claude should use it]') + '\n---\n\n# ' + sk + '\n\n[Instructions Claude follows when this skill runs.]\n',
+'README.md': '# ' + (f.displayName || nm) + '\n\n' + descV + '\n\n## Install\n\n/plugin marketplace add ' + DD.REPO + '\n/plugin install ' + nm + '@' + DD.MKT + '\n\n## Components\n\n- /' + nm + ':' + sk + ' — ' + (f.skillDesc.trim() || '[skill description]') + '\n\n## Security\n\nNo hooks, MCP servers or scripts.\n\n## Changelog\n\n- 0.1.0 — First release\n\n## License\n\nMIT\n',
+'LICENSE': 'MIT License\n\nCopyright (c) 2026 ' + (f.authorName || '[Author]') + '\n\n[Full MIT licence text]\n',
+'marketplace-entry.json': JSON.stringify(entry, null, 2)
+};
+const sortedNames = DD.PLUGINS.map((p) => p.name).sort();
+const after = sortedNames.find((x) => x.localeCompare(nm) > 0);
+const insertAt = after ? 'right before ' + after : 'at the end of the list';
+const tab = files[st.tab] ? st.tab : 'plugin.json';
+const nv = {
+name: nameF, description: fld('description', '10–2000 characters', '', f.description.length + '/2000'), category: { bad: !!errs.category && (st.submitted || !!f.catOther), cls: errs.category && (st.submitted || f.catOther) ? 'err' : '', msg: errs.category || '' }, authorUrl: fld('authorUrl', '', ''), skillName: fld('skillName', 'kebab-case', 'Valid name'), skillDesc: fld('skillDesc', 'Say what it does and when Claude should use it. This text decides when the skill triggers.', '', f.skillDesc.length + '/1024'),
+invocation: '/' + nm + ':' + sk,
+set: { name: setF('name'), displayName: setF('displayName'), description: setF('description'), category: setF('category'), catOther: setF('catOther'), authorName: setF('authorName'), authorUrl: setF('authorUrl'), skillName: setF('skillName'), skillDesc: setF('skillDesc') },
+cats: cats.map((c) => ({ v: c, label: c })).concat([{ v: '__other', label: 'Other…' }]), isOther: f.category === '__other',
+tags: f.tags.map((t) => ({ t, aria: 'Remove tag ' + t, remove: () => this.setState({ f: Object.assign({}, this.state.f, { tags: this.state.f.tags.filter((x) => x !== t) }) }) })),
+onTagChange: (e) => { const v = e.target.value; if (v.indexOf(',') >= 0) addTag(v); else this.setState({ f: Object.assign({}, this.state.f, { tagDraft: v }) }); },
+onTagKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(this.state.f.tagDraft); } else if (e.key === 'Backspace' && !this.state.f.tagDraft && this.state.f.tags.length) { this.setState({ f: Object.assign({}, this.state.f, { tags: this.state.f.tags.slice(0, -1) }) }); } },
+showSummary: st.submitted && !valid, summaryTitle: 'Fix ' + errKeys.length + (errKeys.length === 1 ? ' field' : ' fields') + ' to download the ZIP', errList: errKeys.map((k) => ({ t: errs[k] })),
+submit: (e) => { if (e && e.preventDefault) e.preventDefault(); if (!valid) { this.setState({ submitted: true }); return; } this.setState({ downloaded: true, submitted: false }); this.toast(nm + '.zip downloaded'); },
+dlCls: valid ? '' : 'dim', copyEntry: () => this.copy(files['marketplace-entry.json'], 'entry'), entryIcon: st.copied === 'entry' ? I.check : I.copy, entryCls: st.copied === 'entry' ? 'ok' : '',
+zipName: nm + '.zip', tree: 'plugins/' + nm + '/\n├── .claude-plugin/plugin.json\n├── skills/' + sk + '/SKILL.md\n├── README.md\n└── LICENSE\nmarketplace-entry.json',
+tabs: Object.keys(files).map((k) => ({ label: k, on: k === tab, cls: k === tab ? 'on' : '', pick: () => this.setState({ tab: k }) })), body: files[tab],
+downloaded: st.downloaded, insertAt, validate: [cmd('v1', 'claude plugin validate . --strict'), cmd('v2', 'claude plugin validate plugins/' + nm + ' --strict')]
+};
+
+const stackCount = st.stack.length;
+return {
+themeCls: theme === 'light' ? 'light' : '', build: DD.BUILD, ic: I, nav, is, nf, menu: st.menu, menuIcon: st.menu ? I.close : I.menu, toggleMenu: () => this.setState({ menu: !st.menu }),
+homeHref: href({ n: 'home' }), goHome: go({ n: 'home' }), notHome: r.n !== 'home', goSearch: go({ n: 'home' }, () => this.focusQ()),
+stackCount, cntCls: stackCount ? '' : 'zero', stackBtnCls: (stackCount ? '' : 'hide-m') + (r.n === 'stack' ? ' on' : ''), stackAria: 'Stack, ' + stackCount + (stackCount === 1 ? ' plugin' : ' plugins'), goStack: go({ n: 'stack' }),
+toggleTheme: () => { const next = theme === 'dark' ? 'light' : 'dark'; this.setState({ theme: next }); this.save('theme', next); }, themeLabel: theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme', themeIcon: theme === 'dark' ? I.sun : I.moon,
+gh: DD.GH, contribHref: DD.GH + '/blob/main/CONTRIBUTING.md', securityHref: DD.GH + '/blob/main/docs/SECURITY.md#5-reporting-a-vulnerability', releasesHref: DD.GH + '/blob/main/docs/RELEASES.md', discussionsHref: DD.GH + '/discussions/categories/plugins', feedHref: DD.BASE + 'feed.xml', requestHref, requestHrefPlain,
+q: st.q, onQ: (e) => this.setState({ q: e.target.value, sel: -1, limit: 20 }), hasQText: st.q.length > 0, noQText: st.q.length === 0, clearQ: () => { this.setState({ q: '', sel: -1 }); this.focusQ(); },
+onQKey: (e) => { const len = this._cards.length; if (e.key === 'ArrowDown') { e.preventDefault(); this.setState({ sel: Math.min(this.state.sel + 1, len - 1) }); } else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState({ sel: Math.max(this.state.sel - 1, -1) }); } else if (e.key === 'Enter') { const c = this._cards[Math.max(this.state.sel, 0)]; if (c) { e.preventDefault(); this.nav(null, c.route); } } else if (e.key === 'Escape') { if (this.state.q) this.setState({ q: '', sel: -1 }); else e.target.blur(); } },
+nfKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); this.nav(null, { n: 'home' }, () => this.focusQ()); } },
+smart, toggleSmart: () => this.toggleSmart(), startSmart: () => this.startSmart(),
+startHref: href({ n: 'start' }), goStart: go({ n: 'start' }), startUpdateHref: href({ n: 'start' }) + '#s-update', goStartUpdate: go({ n: 'start' }, () => { try { document.getElementById('s-update').scrollIntoView(); } catch (x) {} }),
+totals: DD.PLUGINS.length + ' plugins · ' + DD.ARTS.length + ' components',
+anyFilter, clearFilters: () => this.setState({ type: null, cat: null, tag: null, softOff: st.q.trim(), sel: -1 }), typeChips, catChips, tagChips, toggleFilters: () => this.setState({ filtersOpen: !st.filtersOpen }), filtersOpen: st.filtersOpen, fmoreCls: st.filtersOpen ? 'open' : '',
+countText, softChip: !!softType, softLabel: softType ? T[softType].chip : '', removeSoft: () => this.setState({ softOff: st.q.trim() }),
+sort: st.sort, onSort: (e) => this.setState({ sort: e.target.value }), partial, hasResults: n > 0, noResults: n === 0, cards, showMore: n > st.limit, more: () => this.setState({ limit: st.limit + 20 }), qShown: st.q.trim(),
+showRecent: !hasQ && !anyFilter, recent, clHref: href({ n: 'changelog' }), goChangelog: go({ n: 'changelog' }),
+pluginsHref: href({ n: 'plugins' }), goPlugins: go({ n: 'plugins' }), pCatChips: pcats, pgroups, pluginsSub: DD.PLUGINS.length + ' plugins in ' + cats.length + ' categories',
+pv, av, sv, storageBlocked: st.storageBlocked, cv, sg, course, f, nv,
+hasToast: !!st.toast, toastMsg: st.toast ? st.toast.msg : '', toastUndo: !!(st.toast && st.toast.undo), undo: () => { if (this.undoFn) this.undoFn(); this.undoFn = null; this.setState({ toast: null }); },
+dlg: { smart: st.dialog === 'smart', clear: st.dialog === 'clear', keys: st.dialog === 'keys' }, closeDialog: () => this.setState({ dialog: null }), openKeys: () => this.setState({ dialog: 'keys' }),
+confirmClear: () => { const prev = this.state.stack; this.setStack([]); this.setState({ dialog: null }); this.toast('Stack cleared', () => this.setStack(prev)); }
+};
+}
+}
+</script>
+</body>
+</html>

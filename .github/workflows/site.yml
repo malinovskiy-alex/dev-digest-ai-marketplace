@@ -1,0 +1,62 @@
+name: Site
+
+# Catalog site (site/): tests and build on every PR, separate from marketplace validation.
+# No path filter on purpose: the catalog is generated from plugins/, so any plugin change can break
+# the site, and a required check with a path filter would hang PRs at "Expected — waiting".
+# Deploy to GitHub Pages happens in pages.yml after merge to main.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: site
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # commit dates and release tags for the catalog
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - name: Build site (generates the catalog from plugins/)
+        run: npm run build
+      - name: Summary
+        run: |
+          {
+            echo "### Site build"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Files | $(find dist -type f | wc -l) |"
+            echo "| Size | $(du -sh dist | cut -f1) |"
+          } >> "$GITHUB_STEP_SUMMARY"
