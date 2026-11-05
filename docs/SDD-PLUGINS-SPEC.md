@@ -200,6 +200,5 @@ plugins/
 ## 9. Open questions
 
 1. **Third-party skill licenses.** `fastify-best-practices` (has `tile.json`), `next-best-practices`, `react-best-practices`, `react-testing-library` look imported from other authors. The repo is public: confirm each license and record attribution in `NOTICE`, or drop the skill.
-2. **`example-plugin`.** Keep it as a sample or remove it now that the real plugins have landed?
 
 Resolved: `mermaid-diagram` goes to `engineering-paved-path`; evals use `evals/<case>/prompt.md` + `graders/*.md` (`claude plugin eval`); running `/run-plan` on a plan counts as approving it, as in the source.
