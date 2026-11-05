@@ -42,3 +42,27 @@ jobs:
             claude plugin validate "$p" --strict
             echo "::endgroup::"
           done
+
+  versions:
+    name: Version bumps and release scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needs the base commit and all release tags
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Test release scripts
+        run: node --test "scripts/test/*.test.mjs"
+
+      # Every changed plugin must bump its version, or users never get the change (docs/RELEASES.md).
+      - name: Check version bumps (PR)
+        if: github.event_name == 'pull_request'
+        run: node scripts/check-versions.mjs --base "origin/${{ github.base_ref }}" --check-tags
+
+      - name: Check version bumps (push)
+        if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
+        run: node scripts/check-versions.mjs --base "${{ github.event.before }}"

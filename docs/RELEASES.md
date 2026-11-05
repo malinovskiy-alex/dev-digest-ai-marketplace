@@ -27,18 +27,37 @@ Pre-1.0 (`0.x.y`) plugins may break in MINOR bumps.
 ## Release process
 
 1. Make the change in `plugins/<plugin-name>/`.
-2. Bump `version` in `plugins/<plugin-name>/.claude-plugin/plugin.json`.
-3. Add an entry to `plugins/<plugin-name>/CHANGELOG.md` (optional but recommended).
-4. Open a PR; CI must pass; CODEOWNER approves.
-5. After merge to `main`, tag the release:
+2. Bump the version and add a changelog entry in one step:
+
+   ```
+   node scripts/release.mjs <plugin-name> <major|minor|patch> --note "What changed"
+   ```
+
+   This updates `version` in `plugins/<plugin-name>/.claude-plugin/plugin.json` (keeping the file's formatting) and adds a `## [X.Y.Z] - YYYY-MM-DD` section to `plugins/<plugin-name>/CHANGELOG.md`. It refuses versions that are not greater than the current version or any released tag. Use `--dry-run` to preview, and repeat `--note` for several lines.
+3. Open a PR; CI must pass; CODEOWNER approves. CI (`validate.yml` → `versions` job) fails if a changed plugin has no version bump or reuses a released version, and warns if `CHANGELOG.md` has no entry for the new version. Run the same check locally with:
+
+   ```
+   node scripts/check-versions.mjs --base origin/main --check-tags
+   ```
+
+4. After merge to `main`, `.github/workflows/release.yml` tags the release automatically: `<plugin-name>--v<version>` (e.g. `example-plugin--v0.2.0`), pointing at the last commit that touched the plugin folder. It runs `scripts/tag-releases.mjs`, which skips existing tags. To tag by hand instead (same format, also checks that plugin.json and the marketplace entry agree):
 
    ```
    claude plugin tag plugins/<plugin-name> --push
    ```
 
-   This creates the tag `<plugin-name>--v<version>` (e.g. `example-plugin--v0.2.0`) after checking that plugin.json and the marketplace entry agree.
+Tags are required for plugins that other plugins depend on via semver ranges, and for pinning and rollback.
 
-Tags are required for plugins that other plugins depend on via semver ranges, and are useful for pinning and rollback.
+### Release scripts
+
+| Script | Who runs it | What it does |
+|---|---|---|
+| `scripts/release.mjs` | Author, before the PR | Bump version + changelog entry |
+| `scripts/rollback.mjs` | Maintainer, on a bad release | Restore an earlier release as a new version (see [Rollback](#rollback)) |
+| `scripts/check-versions.mjs` | CI on every PR and push; author locally | Fail on changed plugins without a version bump or with a reused version |
+| `scripts/tag-releases.mjs` | CI after every push to `main` | Create and push missing `<plugin>--v<version>` tags |
+
+All scripts are plain Node (≥ 20, no dependencies) and work on Windows, macOS and Linux. Each accepts `--help`. Tests: `node --test "scripts/test/*.test.mjs"`.
 
 ## Updating (users)
 
@@ -67,12 +86,20 @@ For release channels (stable / beta) use two marketplaces with different `name`s
 
 ## Rollback
 
-Claude Code only installs a version that is **different** from the installed one, so a rollback is a **new forward release**:
+Claude Code only installs a version that is **different** from the installed one, so a rollback is a **new forward release** (e.g. bad `1.3.0` → `1.3.1` containing the `1.2.0` code). Never reuse a version number.
 
-1. Revert the faulty change: `git revert <commit>`.
-2. Bump `version` to a **new** number (e.g. bad `1.3.0` → `1.3.1` containing the `1.2.x` code). Never reuse a version number.
-3. Release as usual (PR → merge → tag).
-4. Announce that users should run `claude plugin update <plugin-name>@dev-digest-ai`.
+1. Restore the last good release as a new version:
+
+   ```
+   node scripts/rollback.mjs <plugin-name> --to <good-version> --note "Why"
+   ```
+
+   `--to` takes a released version (uses the tag `<plugin-name>--v<good-version>`) or any git ref. The script restores `plugins/<plugin-name>/` exactly as it was at that point (files added since are removed), keeps the current `CHANGELOG.md`, sets the version to the next patch (override with `--version X.Y.Z`), adds a `Rollback: …` changelog entry and stages the changes. It refuses to run if the plugin folder has uncommitted changes. Use `--dry-run` to preview.
+
+   For a small fix, `git revert <commit>` followed by `node scripts/release.mjs <plugin-name> patch --note "Revert …"` also works.
+2. Review (`git diff --cached`), run `claude plugin validate plugins/<plugin-name> --strict`, commit on a branch and open a PR.
+3. After merge the release workflow tags the new version.
+4. Announce that users should run `/plugin marketplace update dev-digest-ai` and `claude plugin update <plugin-name>@dev-digest-ai`.
 
 Emergency options:
 

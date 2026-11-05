@@ -17,7 +17,7 @@ Read first: [Plugin Guidelines](docs/PLUGIN-GUIDELINES.md) · [Security](docs/SE
 
 ## Rules
 
-- **Bump `version` in `plugin.json` on every change to a plugin** — otherwise users will not receive the update.
+- **Bump `version` in `plugin.json` on every change to a plugin** — otherwise users will not receive the update. Use `node scripts/release.mjs <plugin-name> <major|minor|patch> --note "..."`; CI rejects changed plugins without a bump. See [Releases](docs/RELEASES.md).
 - Never rename a plugin; use `displayName` for cosmetic changes, or add the old name to `renames` in `marketplace.json`.
 - Do not reference files outside the plugin folder (`../`) — only the plugin folder is copied on install.
 - Reference plugin files via `${CLAUDE_PLUGIN_ROOT}`; store persistent state in `${CLAUDE_PLUGIN_DATA}`.
