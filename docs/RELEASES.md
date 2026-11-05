@@ -70,6 +70,16 @@ claude plugin update <plugin-name>@dev-digest-ai  # update an installed plugin
 
 Or enable auto-update: `/plugin` → Marketplaces → `dev-digest-ai` → Enable auto-update.
 
+**The two commands do different things.** `marketplace update` refreshes only the catalog: the installed copy does not change. `plugin update` installs the newer version from the refreshed catalog. Verified with Claude Code 2.1.318 on `research-tools` 1.0.0 → 1.0.1 (see [VERIFICATION.md](VERIFICATION.md#update-catalog-vs-update-plugin)):
+
+| Step | Catalog offers | Installed (`installed_plugins.json`) |
+|---|---|---|
+| install while the catalog is at `research-tools--v1.0.0` | 1.0.0 | 1.0.0 |
+| `claude plugin marketplace update dev-digest-ai` | 1.0.1 | **1.0.0** |
+| `claude plugin update research-tools@dev-digest-ai` | 1.0.1 | 1.0.1 |
+
+Note: after the catalog update, `claude plugin list` already prints `Version: 1.0.1`, the catalog version, while 1.0.0 is still the installed copy. To see what is actually installed, run `claude plugin update`; it reports `updated from 1.0.0 to 1.0.1`.
+
 After an update in a running session, run `/reload-plugins` (hooks and MCP servers keep the old path until then).
 
 If an update does not arrive: check that `version` was bumped, run `/plugin marketplace update dev-digest-ai`, and as a last resort remove `~/.claude/plugins/cache/dev-digest-ai/<plugin-name>/`.
