@@ -65,6 +65,8 @@ claude plugin install <plugin-name>@dev-digest-ai
 - [docs/PLUGIN-GUIDELINES.md](docs/PLUGIN-GUIDELINES.md) — plugin structure, manifest, dependency requirements
 - [docs/SECURITY.md](docs/SECURITY.md) — permissions, secrets policy, script review
 - [docs/RELEASES.md](docs/RELEASES.md) — SemVer, tags, updates, rollback
+- [docs/COST.md](docs/COST.md) — cost baseline: what we measure, quality gate, experiment protocol
+- [docs/VERIFICATION.md](docs/VERIFICATION.md) — evidence that install, dependencies, cache and updates work
 - [docs/SDD-PLUGINS-SPEC.md](docs/SDD-PLUGINS-SPEC.md) — design of the SDD plugin family
 
 ## Access (private repository)

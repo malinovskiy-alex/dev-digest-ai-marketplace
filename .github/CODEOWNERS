@@ -2,3 +2,11 @@
 **/hooks/**                       @malinovskiy-alex
 **/.mcp.json                      @malinovskiy-alex
 /.github/workflows/               @malinovskiy-alex
+
+# Plugins: each plugin folder has an explicit owner (boundary = the folder).
+/plugins/engineering-paved-path/  @malinovskiy-alex
+/plugins/research-tools/          @malinovskiy-alex
+/plugins/architecture-review/     @malinovskiy-alex
+/plugins/sdd-engineering/         @malinovskiy-alex
+/docs/                            @malinovskiy-alex
+/scripts/                         @malinovskiy-alex

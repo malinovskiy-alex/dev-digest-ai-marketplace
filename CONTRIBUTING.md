@@ -1,6 +1,6 @@
 # Contributing
 
-Read first: [Plugin Guidelines](docs/PLUGIN-GUIDELINES.md) · [Security](docs/SECURITY.md) · [Releases](docs/RELEASES.md).
+Read first: [Plugin Guidelines](docs/PLUGIN-GUIDELINES.md) · [Security](docs/SECURITY.md) · [Releases](docs/RELEASES.md) · [Cost](docs/COST.md).
 
 ## Adding a plugin
 
