@@ -110,6 +110,19 @@ main session (or you) does it.
   no scripts and contacts nothing on its own.
 - **Telemetry:** none.
 
+## Updating
+
+Auto-update is off by default for third-party marketplaces. Update by hand:
+
+```
+/plugin marketplace update dev-digest-ai
+/plugin update research-tools@dev-digest-ai
+```
+
+Or turn on auto-update once: `/plugin` → **Marketplaces** → `dev-digest-ai` →
+**Enable auto-update**. Claude Code then checks for new versions at startup.
+After an update inside a running session, run `/reload-plugins`.
+
 ## Versioning
 
 See [CHANGELOG.md](CHANGELOG.md). Versions follow SemVer and are released as
