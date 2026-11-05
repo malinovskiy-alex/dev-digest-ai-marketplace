@@ -156,7 +156,7 @@ export default {
   },
   home: {
     title: 'Find skills, agents and plugins for Claude Code',
-    placeholder: 'Describe what you need — e.g. "summarize release notes"',
+    placeholder: 'Describe what you need — e.g. "review architecture"',
     clear: 'Clear search',
     newHere: 'New here? Getting started →',
     totals: '{plugins} · {components}',

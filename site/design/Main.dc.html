@@ -292,7 +292,7 @@ textarea.in{height:auto;min-height:84px;padding:8px 10px;line-height:20px;resize
 <div class="sbox">
 <svg class="ico i20 subtle" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.search}}"/></svg>
 <label for="q" class="sr">Search the catalog</label>
-<input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Describe what you need — e.g. &quot;summarize release notes&quot;" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}" aria-describedby="rcount">
+<input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Describe what you need — e.g. &quot;review architecture&quot;" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}" aria-describedby="rcount">
 <sc-if value="{{hasQText}}" hint-placeholder-val="{{ false }}"><button class="btn ghost icon" onClick="{{clearQ}}" aria-label="Clear search"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.close}}"/></svg></button></sc-if>
 <sc-if value="{{noQText}}" hint-placeholder-val="{{ true }}"><kbd class="hide-m">/</kbd></sc-if>
 <button class="btn sm {{smart.cls}}" onClick="{{toggleSmart}}" aria-pressed="{{smart.isOn}}" disabled="{{smart.unsupported}}" title="{{smart.tip}}">
