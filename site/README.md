@@ -12,6 +12,7 @@ site/
 ├── index.html              # app shell (also copied to 404.html at deploy, for deep links)
 ├── .nojekyll               # serve files as-is, no Jekyll
 ├── runtime/dc-lite.js      # renderer for .dc.html files (no dependencies)
+├── serve.mjs, package.json # local dev / preview server (not deployed)
 └── design/                 # the Design canvas project, imported as-is
     ├── canvas.json         # canvas index (artboards, titles)
     ├── Main.dc.html        # prototype: all screens
@@ -35,13 +36,17 @@ All paths are absolute under `/dev-digest-ai-marketplace/` — that is the Pages
 2. Replace the files in `site/design/` — do not edit the runtime for design changes.
 3. Preview locally (see below) and open a PR. `.github/workflows/pages.yml` deploys on merge to `main`.
 
-## Preview locally
+## Local development
 
-Pages serves this folder under `/dev-digest-ai-marketplace/`, so the local server must too:
+Pages serves this folder under `/dev-digest-ai-marketplace/`, so the local server does too, with the same 404 → app-shell fallback. No dependencies, Node ≥ 20.
 
 ```
-node site/serve.mjs          # http://localhost:8080/dev-digest-ai-marketplace/
+cd site
+npm run dev        # live reload: any change in site/ reloads open tabs
+npm run preview    # exactly what Pages serves, no reload script
 ```
+
+Open <http://localhost:8080/dev-digest-ai-marketplace/>. Another port: `PORT=3000 npm run dev` (PowerShell: `$env:PORT=3000; npm run dev`).
 
 ## Status
 

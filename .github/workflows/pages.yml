@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -R site/. _site/
-          rm -f _site/serve.mjs _site/README.md
+          rm -f _site/serve.mjs _site/README.md _site/package.json
           # GitHub Pages has no server-side routing: serve the app shell for every deep link.
           cp _site/index.html _site/404.html
 

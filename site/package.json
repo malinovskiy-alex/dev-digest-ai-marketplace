@@ -1,0 +1,13 @@
+{
+  "name": "dev-digest-ai-site",
+  "private": true,
+  "description": "Catalog site for the dev-digest-ai marketplace (GitHub Pages). No dependencies.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node serve.mjs --dev",
+    "preview": "node serve.mjs"
+  }
+}
