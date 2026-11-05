@@ -30,7 +30,6 @@ Or enable auto-update: `/plugin` → Marketplaces → `dev-digest-ai` → Enable
 | [architecture-review](plugins/architecture-review) | Read-only architecture reviewer agent | engineering-paved-path |
 | [research-tools](plugins/research-tools) | Read-only researcher agent with cited evidence | — |
 | [engineering-paved-path](plugins/engineering-paved-path) | Shared skills: React, Next.js, Fastify, architecture, testing, security, diagrams | — |
-| [example-plugin](plugins/example-plugin) | Summarizes text into a short developer digest | — |
 
 Installing a plugin installs its dependencies too. Start with `sdd-engineering` for the full workflow: see its [README](plugins/sdd-engineering/README.md).
 

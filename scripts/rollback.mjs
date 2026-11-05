@@ -21,7 +21,7 @@ keeps the current CHANGELOG.md, sets the new version and adds a "Rollback" chang
 Changes are staged, not committed.
 
 Example:
-  node scripts/rollback.mjs example-plugin --to 1.2.0 --note "1.3.0 broke summarize on Windows"`;
+  node scripts/rollback.mjs sdd-engineering --to 1.0.0 --note "1.1.0 broke run-plan on Windows"`;
 
 run(() => {
   const { positional, flags } = parseArgs(process.argv.slice(2), { booleans: ['dry-run', 'help'] });

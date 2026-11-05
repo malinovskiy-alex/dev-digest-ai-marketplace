@@ -22,13 +22,6 @@
       "tags": ["skills", "react", "nextjs", "fastify", "architecture", "security"]
     },
     {
-      "name": "example-plugin",
-      "source": "./plugins/example-plugin",
-      "description": "Example plugin: summarizes text into a short developer digest",
-      "category": "productivity",
-      "tags": ["digest", "summary"]
-    },
-    {
       "name": "research-tools",
       "source": "./plugins/research-tools",
       "description": "Read-only researcher agent that answers questions about a codebase or external docs with cited evidence",
@@ -42,5 +35,8 @@
       "category": "development",
       "tags": ["sdd", "spec", "planning", "workflow"]
     }
-  ]
+  ],
+  "renames": {
+    "example-plugin": null
+  }
 }

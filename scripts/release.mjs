@@ -16,7 +16,7 @@ const USAGE = `Usage: node scripts/release.mjs <plugin> <major|minor|patch|X.Y.Z
   patch  fixes and wording
 
 Example:
-  node scripts/release.mjs example-plugin minor --note "Add the digest-weekly skill"`;
+  node scripts/release.mjs sdd-engineering minor --note "Add the spec-review skill"`;
 
 run(() => {
   const { positional, flags } = parseArgs(process.argv.slice(2), { booleans: ['dry-run', 'help'], multiple: ['note'] });
