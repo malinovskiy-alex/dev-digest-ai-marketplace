@@ -115,14 +115,17 @@ test('check-versions --check-tags rejects reusing a released version', (t) => {
   assert.match(r.out, /not greater than the released 1\.0\.1/);
 });
 
-test('tag-releases tags the last commit touching the plugin, idempotently', (t) => {
+test('tag-releases tags HEAD with the released plugin tree, idempotently', (t) => {
   const root = makeRepo(t);
   const pluginCommit = sh(root, 'git', 'rev-parse', 'HEAD');
   write(root, 'README.md', 'unrelated\n');
   commit(root, 'docs');
   let r = script(root, 'tag-releases.mjs');
   assert.equal(r.code, 0, r.out);
-  assert.equal(sh(root, 'git', 'rev-list', '-n', '1', 'demo--v1.0.0'), pluginCommit);
+  // HEAD, not the older plugin commit: GitHub rejects GITHUB_TOKEN tags on commits whose workflows differ.
+  assert.equal(sh(root, 'git', 'rev-list', '-n', '1', 'demo--v1.0.0'), sh(root, 'git', 'rev-parse', 'HEAD'));
+  const pluginTree = (ref) => sh(root, 'git', 'rev-parse', `${ref}:plugins/demo`);
+  assert.equal(pluginTree('demo--v1.0.0'), pluginTree(pluginCommit));
   r = script(root, 'tag-releases.mjs');
   assert.match(r.out, /skip demo--v1\.0\.0 \(exists\)/);
   assert.match(r.out, /0 tag\(s\) created/);

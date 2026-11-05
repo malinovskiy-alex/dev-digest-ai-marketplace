@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 // Create the missing release tags <plugin>--v<version> for every local plugin.
 // Idempotent: plugins whose current version is already tagged are skipped.
-// Each tag points at the last commit that touched the plugin folder, i.e. the released code.
+// Each tag points at HEAD. The plugin folder at HEAD is identical to the last commit that
+// touched it, so the tag holds the released code. Tagging an older commit is rejected by GitHub
+// for GITHUB_TOKEN whenever .github/workflows/ differs there from the default branch
+// ("refusing to allow a GitHub App to create or update workflow ... without `workflows` permission").
 // Same tag format as `claude plugin tag`. Runs in CI after every push to main.
 import {
   git, gitTry, localPlugins, parseArgs, readManifest, repoRoot, run, tagName, UsageError,
@@ -30,11 +33,11 @@ run(() => {
       console.log(`skip ${tag} (exists)`);
       continue;
     }
-    const commit = git(root, 'log', '-1', '--format=%H', 'HEAD', '--', plugin.dir);
-    if (!commit) {
+    if (!git(root, 'log', '-1', '--format=%H', 'HEAD', '--', plugin.dir)) {
       console.log(`skip ${plugin.name} (no commits touch ${plugin.dir})`);
       continue;
     }
+    const commit = git(root, 'rev-parse', 'HEAD');
     console.log(`tag  ${tag} -> ${commit.slice(0, 7)}`);
     if (flags['dry-run']) continue;
     git(root, 'tag', '-a', tag, commit, '-m', `${plugin.name} v${version}`);

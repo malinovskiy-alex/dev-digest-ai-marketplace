@@ -40,7 +40,7 @@ Pre-1.0 (`0.x.y`) plugins may break in MINOR bumps.
    node scripts/check-versions.mjs --base origin/main --check-tags
    ```
 
-4. After merge to `main`, `.github/workflows/release.yml` tags the release automatically: `<plugin-name>--v<version>` (e.g. `example-plugin--v0.2.0`), pointing at the last commit that touched the plugin folder. It runs `scripts/tag-releases.mjs`, which skips existing tags. To tag by hand instead (same format, also checks that plugin.json and the marketplace entry agree):
+4. After merge to `main`, `.github/workflows/release.yml` tags the release automatically: `<plugin-name>--v<version>` (e.g. `example-plugin--v0.2.0`), pointing at the merge commit on `main` (the plugin folder there is identical to the released code). It runs `scripts/tag-releases.mjs`, which skips existing tags. To tag by hand instead (same format, also checks that plugin.json and the marketplace entry agree):
 
    ```
    claude plugin tag plugins/<plugin-name> --push
