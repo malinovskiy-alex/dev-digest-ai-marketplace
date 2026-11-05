@@ -35,8 +35,5 @@
       "category": "development",
       "tags": ["sdd", "spec", "planning", "workflow"]
     }
-  ],
-  "renames": {
-    "example-plugin": null
-  }
+  ]
 }

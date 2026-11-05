@@ -16,7 +16,7 @@ This document has two parts. **Part I** defines behaviour and data. **Part II** 
 
 The `dev-digest-ai` marketplace will grow lesson by lesson, and every plugin ships several artifacts: skills, agents, hooks, MCP servers. The only way to find something today is to browse the repository folders or run `/plugin` inside Claude Code, where you can see plugin names but can't search inside them. Users need to answer three questions quickly:
 
-1. *Is there something here for my task?*: "I need a skill that summarizes a changelog".
+1. *Is there something here for my task?*: "I need an agent that reviews the architecture of a change".
 2. *What exactly will it do on my machine?*: hooks, network calls, required secrets.
 3. *How do I install it, for me or for my whole team?*
 
@@ -41,7 +41,7 @@ The `dev-digest-ai` marketplace will grow lesson by lesson, and every plugin shi
 
 | # | User | Scenario |
 |---|---|---|
-| S1 | Developer | Types `I need a skill to summarize release notes`. Sees the `summarize` skill card at the top, clicks Copy install. |
+| S1 | Developer | Types `I need an agent to review architecture`. Sees the `architecture-reviewer` agent card at the top, clicks Copy install. |
 | S2 | Developer | Opens a plugin page, reads which hooks run and which env vars are needed, then decides whether to install it. |
 | S3 | Team lead | Picks 3 plugins with "Add to stack", downloads `settings.json`, commits it to the team project. Every teammate gets the same plugins. |
 | S4 | Contributor | Adds a plugin in a PR. After merge the site shows it within minutes, with no extra work. |
@@ -98,34 +98,34 @@ The site lives in `site/` with its own `package.json`. It is not a plugin, and n
   "marketplace": { "name": "dev-digest-ai", "repo": "malinovskiy-alex/dev-digest-ai-marketplace", "builtAt": "2026-11-04T12:00:00Z", "commit": "ddfc467" },
   "plugins": [
     {
-      "name": "example-plugin",
+      "name": "sdd-engineering",
       "displayName": null,
-      "version": "0.1.0",
+      "version": "1.0.0",
       "description": "…",
-      "category": "productivity",
-      "tags": ["digest", "summary"],          // marketplace.json tags ∪ plugin.json keywords
+      "category": "development",
+      "tags": ["sdd", "spec"],                // marketplace.json tags ∪ plugin.json keywords
       "author": { "name": "…", "url": "…" },
       "license": "MIT",
       "dependencies": [],
       "readmeHtml": "…",                       // sanitized
       "updatedAt": "2026-11-04",               // last commit touching plugins/<name>/
-      "sourceUrl": "https://github.com/…/tree/main/plugins/example-plugin",
+      "sourceUrl": "https://github.com/…/tree/main/plugins/sdd-engineering",
       "security": { /* §8 */ },
-      "artifacts": ["example-plugin:summarize"]
+      "artifacts": ["sdd-engineering:run-plan"]
     }
   ],
   "artifacts": [
     {
-      "id": "example-plugin:summarize",
+      "id": "sdd-engineering:run-plan",
       "type": "skill",                         // skill | agent | command | hook | mcp
-      "plugin": "example-plugin",
-      "name": "summarize",
-      "invocation": "/example-plugin:summarize",
-      "description": "Summarizes articles, changelogs or notes…",
+      "plugin": "sdd-engineering",
+      "name": "run-plan",
+      "invocation": "/sdd-engineering:run-plan",
+      "description": "Executes an approved implementation plan…",
       "bodyHtml": "…",                          // sanitized SKILL.md / agent body
       "bodyText": "…",                          // plain text for search
       "meta": { "allowedTools": null },         // type-specific, see below
-      "sourceUrl": "https://github.com/…/blob/main/plugins/example-plugin/skills/summarize/SKILL.md"
+      "sourceUrl": "https://github.com/…/blob/main/plugins/sdd-engineering/skills/run-plan/SKILL.md"
     }
   ]
 }
@@ -173,7 +173,7 @@ Before searching, the query is lower-cased and these are removed:
 1. **Stop words.** A standard English list, plus intent filler such as `i, need, want, looking, for, a, an, the, to, that, which, can, help, me, something, tool, plugin, skill, agent, please`.
 2. **Type words become filters.** If the query contains `skill(s)`, `agent(s)`, `hook(s)`, `mcp` or `command(s)` and no type filter is set, that type is pre-selected as a *soft* filter. The chip is shown and the user can clear it.
 
-Example: `I need a skill to summarize release notes` → terms `summarize release notes`, soft filter `type=skill`.
+Example: `I need an agent to review architecture` → terms `review architecture`, soft filter `type=agent`.
 
 ### 6.3 Synonyms
 
@@ -181,8 +181,8 @@ Example: `I need a skill to summarize release notes` → terms `summarize releas
 
 ```json
 {
-  "tldr": ["summarize", "summary", "digest"],
-  "summary": ["summarize", "digest", "tldr"],
+  "spec": ["requirements", "specification"],
+  "plan": ["planning", "roadmap"],
   "changelog": ["release", "notes", "changes"],
   "pr": ["pull", "request", "review"]
 }
@@ -194,11 +194,11 @@ This is the only hand-maintained search data. CONTRIBUTING.md gets one line aski
 
 ```
 ┌──────────────────────────────────────────────┐
-│ [SKILL]  summarize                 v0.1.0    │
-│ example-plugin · productivity                │
-│ Summarizes articles, changelogs or notes     │
-│ into a short developer digest…               │
-│ #digest #summary            ⚠ hooks  🔌 MCP  │
+│ [SKILL]  run-plan                  v1.0.0    │
+│ sdd-engineering · development                │
+│ Executes an approved implementation plan     │
+│ step by step with subagents…                 │
+│ #sdd #spec                  ⚠ hooks  🔌 MCP  │
 │ [Copy install]  [Add to stack]  [Details →]  │
 └──────────────────────────────────────────────┘
 ```
@@ -222,7 +222,7 @@ All features in this section are in scope. §11 sets only the delivery order. Th
 
 #### 7.2 Artifact page: `/plugins/<name>/<type>/<artifact>/`
 
-- Header: type badge, namespaced invocation (`/example-plugin:summarize`), the parent plugin.
+- Header: type badge, namespaced invocation (`/sdd-engineering:run-plan`), the parent plugin.
 - The full description. For skills this text decides *when Claude triggers it*, so it is shown prominently under the heading "When it activates".
 - Type-specific metadata (`allowed-tools`, agent `tools` and `model`, hook event and matcher, MCP transport and env vars).
 - Rendered body (SKILL.md / agent prompt). Hooks show the full command in a code block.
@@ -237,7 +237,7 @@ Shown on cards, plugin pages and artifact pages, each line with its own copy but
 /plugin install <plugin>@dev-digest-ai
 ```
 
-Artifact pages also show how to use it (`/example-plugin:summarize`) and the update command from RELEASES.md.
+Artifact pages also show how to use it (`/sdd-engineering:run-plan`) and the update command from RELEASES.md.
 
 #### 7.4 Stack builder: `/stack/`
 
@@ -253,7 +253,7 @@ Artifact pages also show how to use it (`/example-plugin:summarize`) and the upd
     }
   },
   "enabledPlugins": {
-    "example-plugin@dev-digest-ai": true
+    "sdd-engineering@dev-digest-ai": true
   }
 }
 ```
@@ -368,9 +368,9 @@ Every feature in §7 is in scope for the first release. The order below only ref
 
 1. Merging a PR that adds a plugin with one skill and one agent makes both appear in search and get their own pages, with no changes in `site/`.
 2. A PR with a SKILL.md whose frontmatter has no `description` fails the `pages.yml` build, and the error names the file.
-3. Query `I need a skill to summarize release notes` returns `example-plugin:summarize` as the first result, with the `skill` chip active.
-4. Query `sumarize` (typo) returns `example-plugin:summarize` in the top 3.
-5. Query `tldr` returns `example-plugin:summarize` (via synonyms).
+3. Query `I need an agent to review architecture` returns `architecture-review:architecture-reviewer` as the first result, with the `agent` chip active.
+4. Query `arhitecture` (typo) returns `architecture-review:architecture-reviewer` in the top 3.
+5. Query `pr` returns `architecture-review:architecture-reviewer` (via synonyms: pull request review).
 6. Opening `?q=digest&type=skill` directly shows the same results as typing it.
 7. A plugin with a `PreToolUse` hook and matcher `*` shows "⚠ Runs hooks" and "⚠ Broad hook" on its card. Covered by a test fixture.
 8. MCP `env` values never appear in `catalog.json` or `search-index.json`. Covered by a fixture that contains a fake secret value.
@@ -466,7 +466,7 @@ Constraints:
 ### D4.2 Typography
 
 - UI typeface: a sans-serif with good small sizes, self-hosted or a system stack. No third-party font CDN at runtime, because of the CSP (§9).
-- Monospace for: commands, artifact invocations (`/example-plugin:summarize`), versions, file paths, code blocks.
+- Monospace for: commands, artifact invocations (`/sdd-engineering:run-plan`), versions, file paths, code blocks.
 - Scale: `display` (home hero), `h1`, `h2`, `h3`, `body`, `body-sm`, `caption`, `mono`, `mono-sm`. Define size, line height and weight for each.
 - Prose (rendered README / SKILL.md): style headings, lists, tables, inline code, blockquotes, links. Maximum line length about 75 characters.
 
@@ -519,7 +519,7 @@ Each component must be designed with all listed states, in both themes.
 ### D6.1 Search box
 
 - Large on Home, compact in the header.
-- Placeholder: `Describe what you need — e.g. "summarize release notes"`.
+- Placeholder: `Describe what you need — e.g. "review architecture"`.
 - Left: search icon. Right: clear button (when not empty), keyboard hint `/` (when empty and not focused), **Smart search** toggle (D§6.12).
 - States: default, hover, focus, filled, loading index (thin progress line under the field), index failed (inline error under the field, see D§7.1).
 
@@ -541,7 +541,7 @@ Pill with icon + label, coloured with `type-*`: `PLUGIN`, `SKILL`, `AGENT`, `COM
 Anatomy, top to bottom:
 
 1. Type badge · name (mono, bold) · version (mono, muted, right-aligned).
-2. Parent line: `in example-plugin · productivity`. Plugin cards show category only.
+2. Parent line: `in sdd-engineering · development`. Plugin cards show category only.
 3. Description, clamped to 3 lines, matched terms highlighted with `mark-*`.
 4. Tags (max 4, then `+n`).
 5. Security badges (D§6.6), only those that apply, max 3 then `+n`.
@@ -583,7 +583,7 @@ Badges (§8): **Runs hooks**, **Broad hook**, **MCP**, **Remote MCP**, **Insecur
 - Title "Install".
 - Step 1 `Add the marketplace (once)`: copy command.
 - Step 2 `Install the plugin`: copy command.
-- Step 3 (artifact pages only) `Use it`: the invocation, e.g. `/example-plugin:summarize`, or for agents "Claude delegates to `example-plugin:<agent>` automatically, or ask for it by name".
+- Step 3 (artifact pages only) `Use it`: the invocation, e.g. `/sdd-engineering:run-plan`, or for agents "Claude delegates to `sdd-engineering:<agent>` automatically, or ask for it by name".
 - Secondary row: **Add to stack**, link "Updating and removing →" (to `/start/#update`).
 
 ### D6.8 Metadata list
@@ -640,16 +640,16 @@ For each screen deliver desktop and mobile in both themes, plus every listed sta
 ├───────────────────────────────────────────────────────────────────────┤
 │        Find skills, agents and plugins for Claude Code                │
 │  ┌─────────────────────────────────────────────────────────────────┐  │
-│  │ 🔍  Describe what you need — e.g. "summarize release notes"  ✨ │  │
+│  │ 🔍  Describe what you need — e.g. "review architecture"      ✨ │  │
 │  └─────────────────────────────────────────────────────────────────┘  │
 │   New here? Getting started →                    12 plugins · 41 items│
 ├──────────────┬────────────────────────────────────────────────────────┤
-│ TYPE         │ 4 results for "summarize release notes"   [auto: Skill]│
+│ TYPE         │ 2 results for "review architecture"       [auto: Agent]│
 │ ☐ Plugin  3  │ ┌──────────────────────┐ ┌──────────────────────┐      │
-│ ☑ Skill   4  │ │ SKILL summarize  0.1 │ │ SKILL changelog  1.2 │      │
-│ ☐ Agent   1  │ │ in example-plugin    │ │ in release-tools     │      │
-│ ☐ Hook    2  │ │ Summarizes articles… │ │ …                    │      │
-│ CATEGORY     │ │ #digest #summary     │ │ ⚠ Runs hooks         │      │
+│ ☑ Skill   4  │ │ SKILL run-plan   1.0 │ │ SKILL changelog  1.2 │      │
+│ ☐ Agent   1  │ │ in sdd-engineering   │ │ in release-tools     │      │
+│ ☐ Hook    2  │ │ Executes a plan…     │ │ …                    │      │
+│ CATEGORY     │ │ #sdd #spec           │ │ ⚠ Runs hooks         │      │
 │ …            │ │ [Copy install][+Stack]│ │ [Copy install][+Stack]│     │
 │ TAGS         │ └──────────────────────┘ └──────────────────────┘      │
 │ …            │                       [Show more]                      │
@@ -685,17 +685,17 @@ A server-rendered grid of plugin cards with category sections. It is the no-JS f
 ### D7.3 Plugin page: `/plugins/<name>/`
 
 ```
-Plugins / example-plugin
+Plugins / sdd-engineering
 ┌─────────────────────────────────────────────┬──────────────────────┐
-│ PLUGIN  example-plugin              v0.1.0  │ Install              │
-│ Summarizes text into a short developer      │ 1 Add marketplace [⧉]│
-│ digest                                      │ 2 Install plugin  [⧉]│
-│ productivity · #digest #summary             │ [+ Add to stack]     │
+│ PLUGIN  sdd-engineering             v1.0.0  │ Install              │
+│ Spec Driven Development workflow: spec,     │ 1 Add marketplace [⧉]│
+│ plan, implement, review, retro              │ 2 Install plugin  [⧉]│
+│ development · #sdd #spec                    │ [+ Add to stack]     │
 │ Oleksandr Malinovskyi · MIT · Updated Nov 4 │                      │
 │ View source on GitHub ↗   Report an issue ↗ │ What it can do       │
 ├─────────────────────────────────────────────┤ ✓ Prompts only       │
 │ Components (1)                              │ (security panel)     │
-│ SKILL /example-plugin:summarize  Summarizes…│                      │
+│ SKILL /sdd-engineering:run-plan  Executes a…│                      │
 ├─────────────────────────────────────────────┤ Metadata             │
 │ README (prose)                              │ Version, deps, …     │
 ├─────────────────────────────────────────────┤                      │
@@ -713,7 +713,7 @@ Plugins / example-plugin
 
 ### D7.4 Artifact page: `/plugins/<name>/<type>/<id>/`
 
-Shared layout: breadcrumbs (`Plugins / example-plugin / summarize`), header (type badge, invocation in mono, parent plugin link, version), main column, sidebar with Install block (D§6.7) and Metadata.
+Shared layout: breadcrumbs (`Plugins / sdd-engineering / run-plan`), header (type badge, invocation in mono, parent plugin link, version), main column, sidebar with Install block (D§6.7) and Metadata.
 
 Per-type main content:
 
@@ -732,7 +732,7 @@ Also: "Other components in this plugin" list (max 6) at the bottom. Then **Repor
 ```
 Your stack (2)                                   [Share stack] [Clear]
 ┌──────────────────────────────────┬────────────────────────────────┐
-│ example-plugin   v0.1.0     [–]  │ settings.json                  │
+│ sdd-engineering  v1.0.0     [–]  │ settings.json                  │
 │ release-tools    v1.2.0     [–]  │ ┌────────────────────────────┐ │
 │   └ added as dependency of …     │ │ { "extraKnownMarketplaces" │ │
 │                                  │ │   …                        │ │
@@ -851,7 +851,7 @@ Key strings (final copy can be adjusted in design, keep meaning):
 | Key | Text |
 |---|---|
 | hero.title | Find skills, agents and plugins for Claude Code |
-| search.placeholder | Describe what you need — e.g. "summarize release notes" |
+| search.placeholder | Describe what you need — e.g. "review architecture" |
 | results.count | {n} results for "{query}" |
 | results.partial | No exact matches — showing partial matches. |
 | results.none | Nothing matches "{query}". |
@@ -881,7 +881,7 @@ Security badge tooltips (one sentence each):
 
 ## D10. Mock data for designs
 
-Use `example-plugin` (real) plus these **placeholder** plugins. They exist only in mockups and must not be added to the repository.
+Use the real plugins (e.g. `sdd-engineering`) plus these **placeholder** plugins. They exist only in mockups and must not be added to the repository.
 
 | Plugin | Purpose in mockups |
 |---|---|
