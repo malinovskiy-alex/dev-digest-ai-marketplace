@@ -24,9 +24,21 @@ Or enable auto-update: `/plugin` → Marketplaces → `dev-digest-ai` → Enable
 
 ## Plugins
 
-| Plugin | Description |
-|--------|-------------|
-| [example-plugin](plugins/example-plugin) | Summarizes text into a short developer digest |
+| Plugin | Description | Depends on |
+|--------|-------------|------------|
+| [sdd-engineering](plugins/sdd-engineering) | Spec Driven Development workflow: requirements → plan → implement → review/verify → retro | engineering-paved-path, research-tools, architecture-review |
+| [architecture-review](plugins/architecture-review) | Read-only architecture reviewer agent | engineering-paved-path |
+| [research-tools](plugins/research-tools) | Read-only researcher agent with cited evidence | — |
+| [engineering-paved-path](plugins/engineering-paved-path) | Shared skills: React, Next.js, Fastify, architecture, testing, security, diagrams | — |
+| [example-plugin](plugins/example-plugin) | Summarizes text into a short developer digest | — |
+
+Installing a plugin installs its dependencies too. Start with `sdd-engineering` for the full workflow: see its [README](plugins/sdd-engineering/README.md).
+
+```
+sdd-engineering ──► research-tools
+       │       └──► architecture-review ──► engineering-paved-path
+       └──────────────────────────────────► engineering-paved-path
+```
 
 ## Structure
 
@@ -54,6 +66,7 @@ claude plugin install <plugin-name>@dev-digest-ai
 - [docs/PLUGIN-GUIDELINES.md](docs/PLUGIN-GUIDELINES.md) — plugin structure, manifest, dependency requirements
 - [docs/SECURITY.md](docs/SECURITY.md) — permissions, secrets policy, script review
 - [docs/RELEASES.md](docs/RELEASES.md) — SemVer, tags, updates, rollback
+- [docs/SDD-PLUGINS-SPEC.md](docs/SDD-PLUGINS-SPEC.md) — design of the SDD plugin family
 
 ## Access (private repository)
 

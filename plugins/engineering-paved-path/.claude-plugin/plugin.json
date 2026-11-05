@@ -1,0 +1,12 @@
+{
+  "name": "engineering-paved-path",
+  "version": "1.0.0",
+  "description": "Shared engineering skills: React, Next.js, Fastify, onion and frontend architecture, testing, security and Mermaid diagrams",
+  "author": {
+    "name": "Oleksandr Malinovskyi",
+    "url": "https://github.com/malinovskiy-alex"
+  },
+  "repository": "https://github.com/malinovskiy-alex/dev-digest-ai-marketplace",
+  "license": "MIT",
+  "keywords": ["skills", "react", "nextjs", "fastify", "architecture", "testing", "security"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "research-tools",
+  "version": "1.0.0",
+  "description": "Read-only researcher agent that answers questions about a codebase or external docs with cited evidence",
+  "author": {
+    "name": "Oleksandr Malinovskyi",
+    "url": "https://github.com/malinovskiy-alex"
+  },
+  "repository": "https://github.com/malinovskiy-alex/dev-digest-ai-marketplace",
+  "license": "MIT",
+  "keywords": ["research", "agent", "read-only", "docs"]
+}
