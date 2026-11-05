@@ -1,0 +1,15 @@
+{
+  "name": "architecture-review",
+  "version": "1.0.0",
+  "description": "Read-only architecture reviewer agent: checks layer placement, import direction and module boundaries of a change",
+  "author": {
+    "name": "Oleksandr Malinovskyi",
+    "url": "https://github.com/malinovskiy-alex"
+  },
+  "repository": "https://github.com/malinovskiy-alex/dev-digest-ai-marketplace",
+  "license": "MIT",
+  "keywords": ["architecture", "review", "agent", "boundaries"],
+  "dependencies": [
+    { "name": "engineering-paved-path", "version": "^1.0.0" }
+  ]
+}

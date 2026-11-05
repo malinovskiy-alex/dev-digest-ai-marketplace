@@ -1,0 +1,17 @@
+{
+  "name": "sdd-engineering",
+  "version": "1.0.0",
+  "description": "Spec Driven Development workflow: requirements, implementation plan, implementation, review and verification, retro",
+  "author": {
+    "name": "Oleksandr Malinovskyi",
+    "url": "https://github.com/malinovskiy-alex"
+  },
+  "repository": "https://github.com/malinovskiy-alex/dev-digest-ai-marketplace",
+  "license": "MIT",
+  "keywords": ["sdd", "spec", "planning", "workflow", "agents"],
+  "dependencies": [
+    { "name": "engineering-paved-path", "version": "^1.0.0" },
+    { "name": "research-tools", "version": "^1.0.0" },
+    { "name": "architecture-review", "version": "^1.0.0" }
+  ]
+}

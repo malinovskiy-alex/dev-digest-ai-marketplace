@@ -8,11 +8,39 @@
   },
   "plugins": [
     {
+      "name": "architecture-review",
+      "source": "./plugins/architecture-review",
+      "description": "Read-only architecture reviewer agent: checks layer placement, import direction and module boundaries of a change",
+      "category": "development",
+      "tags": ["architecture", "review", "agent"]
+    },
+    {
+      "name": "engineering-paved-path",
+      "source": "./plugins/engineering-paved-path",
+      "description": "Shared engineering skills: React, Next.js, Fastify, onion and frontend architecture, testing, security and Mermaid diagrams",
+      "category": "development",
+      "tags": ["skills", "react", "nextjs", "fastify", "architecture", "security"]
+    },
+    {
       "name": "example-plugin",
       "source": "./plugins/example-plugin",
       "description": "Example plugin: summarizes text into a short developer digest",
       "category": "productivity",
       "tags": ["digest", "summary"]
+    },
+    {
+      "name": "research-tools",
+      "source": "./plugins/research-tools",
+      "description": "Read-only researcher agent that answers questions about a codebase or external docs with cited evidence",
+      "category": "productivity",
+      "tags": ["research", "agent", "read-only"]
+    },
+    {
+      "name": "sdd-engineering",
+      "source": "./plugins/sdd-engineering",
+      "description": "Spec Driven Development workflow: requirements, implementation plan, implementation, review and verification, retro",
+      "category": "development",
+      "tags": ["sdd", "spec", "planning", "workflow"]
     }
   ]
 }
