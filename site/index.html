@@ -7,14 +7,16 @@
 <meta name="description" content="Search skills, agents, hooks and MCP servers in the dev-digest-ai Claude Code plugin marketplace.">
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="data:,">
+<link rel="alternate" type="application/rss+xml" title="dev-digest-ai: plugin releases" href="/dev-digest-ai-marketplace/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 <style>body{margin:0;background:#0E0F11;color:#ECEDEF}</style>
-<!-- Absolute paths: this same file is served as 404.html for every deep link (GitHub Pages SPA fallback). -->
-<script src="/dev-digest-ai-marketplace/runtime/dc-lite.js" data-dc-src="/dev-digest-ai-marketplace/design/Main.dc.html" data-dc-router defer></script>
 </head>
 <body>
-<div id="dc-root"></div>
+<!-- Asset URLs are absolute under the base path: this same file is served as 404.html for deep links (GitHub Pages SPA fallback). -->
+<div id="root"></div>
 <noscript><p style="font:14px system-ui;padding:24px">This catalog needs JavaScript. Browse the plugins on <a href="https://github.com/malinovskiy-alex/dev-digest-ai-marketplace" style="color:#9AA8FF">GitHub</a>.</p></noscript>
+<script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

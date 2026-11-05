@@ -691,7 +691,7 @@ textarea.in{height:auto;min-height:84px;padding:8px 10px;line-height:20px;resize
 
 <footer class="ftr">
 <div class="wrap ftrin">
-<div class="stackv4 grow" style="flex-basis: 260px"><span class="mono strong">dev-digest-ai</span><span class="muted">Claude Code plugins built lesson by lesson in the GoIT course.</span><span class="mono subtle xs">Built from ddfc467 · 2026-11-04 · MIT</span></div>
+<div class="stackv4 grow" style="flex-basis: 260px"><span class="mono strong">dev-digest-ai</span><span class="muted">Claude Code plugins built lesson by lesson in the GoIT course.</span><span class="mono subtle xs">Built from {{build}}</span></div>
 <nav class="fnav" aria-label="Footer">
 <a href="{{gh}}" target="_blank" rel="noopener">Repository</a>
 <a href="{{contribHref}}" target="_blank" rel="noopener">Contributing</a>
@@ -756,50 +756,14 @@ hook: { label: 'HOOK', cls: 't-hook', icon: I.hook, one: 'hook', many: 'hooks', 
 mcp: { label: 'MCP', cls: 't-mcp', icon: I.plug, one: 'MCP server', many: 'MCP servers', chip: 'MCP', name: 'MCP server' }
 };
 const TYPE_ORDER = ['plugin', 'skill', 'agent', 'command', 'hook', 'mcp'];
-const AUTHOR = 'Oleksandr Malinovskyi';
-const PLUGINS = [
-{ name: 'a-plugin-with-a-deliberately-long-name-to-test-wrapping-x', version: '10.12.3', description: 'Exists to test long names and long versions in every layout.', category: 'testing', tags: ['test'], updatedAt: '2026-09-18', deps: [], scripts: [], readme: [] },
-{ name: 'example-plugin', version: '0.1.0', description: 'Summarizes text into a short developer digest.', category: 'productivity', tags: ['digest', 'summary'], updatedAt: '2026-11-04', deps: [], scripts: [], readme: [['p', 'A minimal example plugin for the dev-digest-ai marketplace. It ships one skill, summarize.'], ['h', 'Usage'], ['p', 'Ask Claude for a TL;DR of an article, changelog or notes, or call the skill directly:'], ['pre', '/example-plugin:summarize']] },
-{ name: 'guarded-review', version: '1.0.0', description: 'Guards risky shell commands and sends diffs to a review service before they are applied.', category: 'security', tags: ['review', 'security', 'guard'], updatedAt: '2026-10-30', deps: [], scripts: ['scripts/guard.mjs', 'package.json'], readme: [['p', 'Every tool call is checked by a PreToolUse hook. Risky commands are sent to the review service before they run.'], ['h', 'Configuration'], ['p', 'Set REVIEW_API_KEY in your environment before enabling the plugin.']] },
-{ name: 'jira-digest', version: '0.3.1', description: 'Sprint and ticket digests from Jira through a remote MCP server.', category: 'integrations', tags: ['jira', 'digest', 'sprint'], updatedAt: '2026-10-29', deps: [], scripts: [], readme: [['p', 'Connects Claude to Jira through an MCP server and adds a skill that turns the current sprint into a digest.'], ['h', 'Setup'], ['li', 'Create an API token in Jira.'], ['li', 'Export it as JIRA_TOKEN before starting Claude Code.']] },
-{ name: 'legacy-notes', version: '2.0.0', description: 'Commands for exporting and searching Markdown notes, written before skills existed. They still work, but new capabilities in this marketplace are written as skills, so this plugin only receives fixes. It exports a folder of notes to a single Markdown file with a table of contents, and searches notes by tag, title or full text, returning matching lines with links back to the file. Prefer the summarize skill in example-plugin for digests of notes.', category: 'productivity', tags: ['notes', 'archive', 'export', 'search', 'markdown', 'legacy', 'journal', 'meeting', 'todo'], updatedAt: '2026-10-12', deps: [], scripts: [], readme: [['p', 'Legacy commands for working with Markdown notes.']] },
-{ name: 'release-tools', version: '1.2.0', description: 'Drafts changelogs and release notes from git history, and reviews a release before it is tagged.', category: 'release', tags: ['release', 'changelog', 'git'], updatedAt: '2026-11-03', deps: ['example-plugin'], scripts: ['scripts/log-release.mjs'], readme: [['p', 'release-tools helps you cut a release without writing the notes by hand. It reads your git history, groups changes by area and drafts both the CHANGELOG entry and the release notes.'], ['h', 'Usage'], ['li', '/release-tools:changelog updates CHANGELOG.md for the next version.'], ['li', '/release-tools:draft-release-notes writes notes for the GitHub release.'], ['li', 'Ask Claude to review this release to delegate to the release-reviewer agent.'], ['h', 'Hook'], ['p', 'After each Bash call the plugin records git tag and npm version commands to .claude/release-log.json, so notes can reference the exact tag.'], ['pre', 'node ${CLAUDE_PLUGIN_ROOT}/scripts/log-release.mjs']] }
-];
-const ARTS = [
-{ plugin: 'a-plugin-with-a-deliberately-long-name-to-test-wrapping-x', type: 'skill', name: 'wrap-check', description: 'Checks that long plugin names and versions wrap correctly in every layout.', meta: { allowedTools: null }, body: [['p', 'Test fixture.']] },
-{ plugin: 'example-plugin', type: 'skill', name: 'summarize', description: 'Summarizes articles, changelogs or notes into a short developer digest. Use when the user asks for a summary, a TL;DR or a digest of text they paste or link.', meta: { allowedTools: null }, body: [['p', 'Turn the input into a digest a developer can act on.'], ['h', 'Output format'], ['li', 'A one-line headline.'], ['li', 'Three to five bullets with the changes to act on.'], ['li', 'Links back to the source when the input had them.'], ['q', 'Keep the digest under 120 words unless the user asks for more.']] },
-{ plugin: 'guarded-review', type: 'skill', name: 'review-diff', description: 'Reviews a staged diff for risky changes before commit. Use when the user asks for a pre-commit review.', meta: { allowedTools: ['Read', 'Grep'] }, body: [['p', 'Read the staged diff and flag risky changes.']] },
-{ plugin: 'guarded-review', type: 'hook', name: 'pretooluse-all', meta: { event: 'PreToolUse', matcher: '*', command: 'node ${CLAUDE_PLUGIN_ROOT}/scripts/guard.mjs --key ${REVIEW_API_KEY}' } },
-{ plugin: 'guarded-review', type: 'mcp', name: 'review-api', meta: { transport: 'http', url: 'http://review.example.net/mcp', envVars: ['REVIEW_API_KEY'] } },
-{ plugin: 'jira-digest', type: 'skill', name: 'sprint-digest', description: 'Summarizes the current sprint\'s tickets into a digest of what shipped, what slipped and what is blocked.', meta: { allowedTools: ['mcp__jira__search', 'mcp__jira__get_issue'] }, body: [['p', 'Query the active sprint and group tickets by status.'], ['h', 'Sections'], ['li', 'Shipped'], ['li', 'Slipped'], ['li', 'Blocked, with the blocker']] },
-{ plugin: 'jira-digest', type: 'mcp', name: 'jira', meta: { transport: 'http', url: 'https://jira.example.com/mcp', envVars: ['JIRA_TOKEN'] } },
-{ plugin: 'legacy-notes', type: 'command', name: 'notes-export', description: 'Exports a folder of Markdown notes to a single file with a table of contents.', meta: { legacy: true }, body: [['p', 'Export every note under the given folder, newest first.']] },
-{ plugin: 'legacy-notes', type: 'command', name: 'notes-search', description: 'Searches notes by tag, title or full text and returns matching lines with links.', meta: { legacy: true }, body: [['p', 'Search notes and print matching lines with file links.']] },
-{ plugin: 'release-tools', type: 'skill', name: 'changelog', description: 'Updates CHANGELOG.md from commit history, grouping entries into Added, Changed and Fixed before a release.', meta: { allowedTools: ['Read', 'Edit', 'Bash(git log:*)'] }, body: [['p', 'Read commits since the last tag and update CHANGELOG.md.'], ['h', 'Rules'], ['li', 'Group entries into Added, Changed and Fixed.'], ['li', 'Skip merge commits.']] },
-{ plugin: 'release-tools', type: 'skill', name: 'draft-release-notes', description: 'Drafts release notes from merged pull requests since the last tag, grouped by area.', meta: { allowedTools: ['Read', 'Bash(git:*)'] }, body: [['p', 'List merged pull requests since the last tag and draft notes grouped by area.']] },
-{ plugin: 'release-tools', type: 'agent', name: 'release-reviewer', description: 'Reviews a release branch for missing notes, version bumps and migrations. Use before tagging a release.', meta: { tools: ['Read', 'Grep', 'Bash'], model: 'sonnet' }, body: [['p', 'You review release branches before they are tagged.'], ['li', 'Check that the version was bumped.'], ['li', 'Check that CHANGELOG.md has an entry.'], ['li', 'List migrations that need a note.']] },
-{ plugin: 'release-tools', type: 'hook', name: 'posttooluse-bash', meta: { event: 'PostToolUse', matcher: 'Bash', command: 'node ${CLAUDE_PLUGIN_ROOT}/scripts/log-release.mjs' } }
-];
-const LOGRAW = [
-['example-plugin', '0.0.9', '0.1.0', '2026-11-04', 'Add summarize skill'],
-['release-tools', '1.1.2', '1.2.0', '2026-11-03', 'Add draft-release-notes skill'],
-['guarded-review', '1.0.1', '1.0.0', '2026-10-30', 'Rollback: PreToolUse hook blocked git push on Windows'],
-['jira-digest', '0.3.0', '0.3.1', '2026-10-29', 'Fix pagination in sprint query'],
-['release-tools', '1.1.0', '1.1.2', '2026-10-21', 'Skip merge commits in changelog'],
-['guarded-review', '1.0.0', '1.0.1', '2026-10-20', 'Faster diff upload'],
-['release-tools', '1.0.0', '1.1.0', '2026-10-14', 'Add release-reviewer agent'],
-['legacy-notes', '1.4.0', '2.0.0', '2026-10-12', 'Drop notes-import; use notes-export instead'],
-['release-tools', '0.9.0', '1.0.0', '2026-10-06', 'Rename commands to skills'],
-['old-digest', '0.1.0', '0.2.0', '2026-10-02', 'Last release before removal'],
-['a-plugin-with-a-deliberately-long-name-to-test-wrapping-x', '10.12.2', '10.12.3', '2026-09-18', 'Longer name test']
-];
-const LESSONS = [
-{ n: 1, title: 'Your first plugin', desc: 'Plugin manifest, a first skill and the marketplace entry.', plugins: ['example-plugin'] },
-{ n: 2, title: 'Hooks and automation', desc: 'Running commands on Claude Code events.', plugins: ['release-tools'] },
-{ n: 3, title: 'MCP servers', desc: 'Connecting Claude to external tools.', plugins: ['jira-digest'] },
-{ n: 4, title: 'Guardrails', desc: 'Checking tool calls before they run.', plugins: ['guarded-review'] },
-{ n: 5, title: 'Agents', desc: 'Delegating work to a subagent.', plugins: [] }
-];
+// Real data only: generated from the repository by site/build/catalog.mjs (no sample data on the site).
+const DATA = (typeof window !== "undefined" && window.DD_DATA) || null;
+if (!DATA) throw new Error("Catalog data is missing (window.DD_DATA). Run: node site/build/catalog.mjs");
+const PLUGINS = DATA.plugins;
+const ARTS = DATA.arts;
+const LOGRAW = DATA.log;
+const LESSONS = DATA.lessons;
+const BUILD = DATA.build;
 const SYN = { tldr: ['summarize', 'summary', 'digest'], summary: ['summarize', 'digest', 'tldr'], changelog: ['release', 'notes', 'changes'], release: ['changelog', 'version'], pr: ['pull', 'request', 'review'] };
 const STOP = new Set('i me my we our you your need needs want wants looking look for a an the to that which can could help me something tool tools plugin plugins skill skills agent agents please is are was be of on in with and or it this that how do does find some any would like should will from by at as get make'.split(' '));
 const TYPEW = { skill: 'skill', skills: 'skill', agent: 'agent', agents: 'agent', hook: 'hook', hooks: 'hook', mcp: 'mcp', command: 'command', commands: 'command' };
@@ -814,7 +778,7 @@ const wscore = (term, word) => { if (word === term) return 1; if (word.startsWit
 const hostOf = (u) => { try { return new URL(u).host; } catch (e) { return u; } };
 const hookPlain = (m) => { const any = !m.matcher || m.matcher === '*'; if (m.event === 'PreToolUse') return 'Before every ' + (any ? '' : m.matcher + ' ') + 'tool call'; if (m.event === 'PostToolUse') return 'After every ' + (any ? '' : m.matcher + ' ') + 'tool call'; if (m.event === 'UserPromptSubmit') return 'Every time you submit a prompt'; return m.event; };
 const PM = {};
-PLUGINS.forEach((p) => { PM[p.name] = p; p.author = AUTHOR; p.license = 'MIT'; });
+PLUGINS.forEach((p) => { PM[p.name] = p; p.author = p.author || ''; p.license = p.license || ''; });
 ARTS.forEach((a) => {
 a.id = a.plugin + ':' + a.name;
 if (a.type === 'hook') { const mt = a.meta.matcher || '*'; a.label = a.meta.event + ' hook · matcher: ' + mt; a.description = a.meta.event + ' hook (matcher: ' + mt + ')'; a.file = 'hooks/hooks.json'; }
@@ -861,7 +825,7 @@ const LOG = LOGRAW.map(([plugin, from, to, date, summary]) => { const bump = bum
 const url = (r) => { switch (r.n) { case 'plugins': return BASE + 'plugins/'; case 'plugin': return BASE + 'plugins/' + r.p + '/'; case 'artifact': return BASE + 'plugins/' + r.p + '/' + r.t + '/' + r.a + '/'; case 'stack': return BASE + 'stack/'; case 'changelog': return BASE + 'changelog/' + (r.plugin ? '?plugin=' + r.plugin : ''); case 'start': return BASE + 'start/'; case 'course': return BASE + 'course/'; case 'newp': return BASE + 'new/'; case 'nf': return BASE + '404'; default: return BASE; } };
 const installText = (name) => '/plugin marketplace add ' + REPO + '\n/plugin install ' + name + '@' + MKT;
 const settingsJson = (names) => { const enabled = {}; names.slice().sort().forEach((n) => { enabled[n + '@' + MKT] = true; }); return JSON.stringify({ extraKnownMarketplaces: { [MKT]: { source: { source: 'github', repo: REPO } } }, enabledPlugins: enabled }, null, 2); };
-return { BASE, SITE, REPO, GH, MKT, I, TYPES, TYPE_ORDER, PLUGINS, ARTS, PM, LOG, LESSONS, SYN, DOCS, analyze, scoreDoc, seg, fmt, url, installText, settingsJson, countLine, security, hookPlain, hostOf };
+return { BASE, SITE, REPO, GH, MKT, I, TYPES, TYPE_ORDER, PLUGINS, ARTS, PM, LOG, LESSONS, BUILD, SYN, DOCS, analyze, scoreDoc, seg, fmt, url, installText, settingsJson, countLine, security, hookPlain, hostOf };
 })();
 
 class Component extends DCLogic {
@@ -1096,11 +1060,11 @@ downloaded: st.downloaded, insertAt, validate: [cmd('v1', 'claude plugin validat
 
 const stackCount = st.stack.length;
 return {
-themeCls: theme === 'light' ? 'light' : '', ic: I, nav, is, nf, menu: st.menu, menuIcon: st.menu ? I.close : I.menu, toggleMenu: () => this.setState({ menu: !st.menu }),
+themeCls: theme === 'light' ? 'light' : '', build: DD.BUILD, ic: I, nav, is, nf, menu: st.menu, menuIcon: st.menu ? I.close : I.menu, toggleMenu: () => this.setState({ menu: !st.menu }),
 homeHref: href({ n: 'home' }), goHome: go({ n: 'home' }), notHome: r.n !== 'home', goSearch: go({ n: 'home' }, () => this.focusQ()),
 stackCount, cntCls: stackCount ? '' : 'zero', stackBtnCls: (stackCount ? '' : 'hide-m') + (r.n === 'stack' ? ' on' : ''), stackAria: 'Stack, ' + stackCount + (stackCount === 1 ? ' plugin' : ' plugins'), goStack: go({ n: 'stack' }),
 toggleTheme: () => { const next = theme === 'dark' ? 'light' : 'dark'; this.setState({ theme: next }); this.save('theme', next); }, themeLabel: theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme', themeIcon: theme === 'dark' ? I.sun : I.moon,
-gh: DD.GH, contribHref: DD.GH + '/blob/main/CONTRIBUTING.md', securityHref: DD.GH + '/blob/main/SECURITY.md#5', releasesHref: DD.GH + '/blob/main/RELEASES.md', discussionsHref: DD.GH + '/discussions/categories/plugins', feedHref: DD.BASE + 'feed.xml', requestHref, requestHrefPlain,
+gh: DD.GH, contribHref: DD.GH + '/blob/main/CONTRIBUTING.md', securityHref: DD.GH + '/blob/main/docs/SECURITY.md#5-reporting-a-vulnerability', releasesHref: DD.GH + '/blob/main/docs/RELEASES.md', discussionsHref: DD.GH + '/discussions/categories/plugins', feedHref: DD.BASE + 'feed.xml', requestHref, requestHrefPlain,
 q: st.q, onQ: (e) => this.setState({ q: e.target.value, sel: -1, limit: 20 }), hasQText: st.q.length > 0, noQText: st.q.length === 0, clearQ: () => { this.setState({ q: '', sel: -1 }); this.focusQ(); },
 onQKey: (e) => { const len = this._cards.length; if (e.key === 'ArrowDown') { e.preventDefault(); this.setState({ sel: Math.min(this.state.sel + 1, len - 1) }); } else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState({ sel: Math.max(this.state.sel - 1, -1) }); } else if (e.key === 'Enter') { const c = this._cards[Math.max(this.state.sel, 0)]; if (c) { e.preventDefault(); this.nav(null, c.route); } } else if (e.key === 'Escape') { if (this.state.q) this.setState({ q: '', sel: -1 }); else e.target.blur(); } },
 nfKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); this.nav(null, { n: 'home' }, () => this.focusQ()); } },

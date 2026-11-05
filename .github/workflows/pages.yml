@@ -1,10 +1,14 @@
-name: Deploy site to GitHub Pages
+name: Site deploy
 
+# Builds the React + Vite catalog in site/ and publishes site/dist.
+# Catalog data is generated at build time from plugins/ and .claude-plugin/marketplace.json (real plugins only).
 on:
   push:
     branches: [main]
     paths:
       - 'site/**'
+      - 'plugins/**'
+      - '.claude-plugin/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -18,27 +22,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: site
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # commit dates and release tags for the catalog
 
-      - name: Assemble site
-        run: |
-          mkdir -p _site
-          cp -R site/. _site/
-          rm -f _site/serve.mjs _site/README.md _site/package.json
-          # GitHub Pages has no server-side routing: serve the app shell for every deep link.
-          cp _site/index.html _site/404.html
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      # GitHub Pages has no server-side routing: serve the app shell for every deep link.
+      - run: cp dist/index.html dist/404.html
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: site/dist
 
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
